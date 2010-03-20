@@ -37,11 +37,11 @@ public class HillClimbing {
 	
 	
 	public static State initialize(Random random){
-		return new State (random.nextDouble());
+		return null;//new State (random.nextDouble());
 	}
 	
 	public static State perturb(State x, Random random){
-		return new State (x.getCoordinates()[0] + random.nextDouble());
+		return null;//new State (x.getCoordinates()[0] + random.nextDouble());
 	}
 	
 }

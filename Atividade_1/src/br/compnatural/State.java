@@ -1,10 +1,14 @@
 package br.compnatural;
 
 import java.util.Arrays;
+import java.util.List;
+
+import br.compnatural.Specification.Coordinate;
 
 public class State {
 	private double[] coordinates ;
 	private double value ;
+	private List<Coordinate> coordinate;
 	
 	public double getValue() {
 		return value;
@@ -14,12 +18,13 @@ public class State {
 		this.value = value;
 	}
 
-	protected State (double ... coordinates){
+	protected State (List<Coordinate> coordinate, double ... coordinates){
 		this.coordinates = new double[coordinates.length];
 		int i = 0;
 		for (double d : coordinates) {
 			coordinates[i++] = d;
 		}
+		setCoordinate(coordinate);
 	}
 	
 	public double[] getCoordinates(){
@@ -55,5 +60,13 @@ public class State {
 		}
 			
 		return true;
+	}
+
+	private void setCoordinate(List<Coordinate> coordinate) {
+		this.coordinate = coordinate;
+	}
+
+	public List<Coordinate> getCoordinate() {
+		return coordinate;
 	}
 }
