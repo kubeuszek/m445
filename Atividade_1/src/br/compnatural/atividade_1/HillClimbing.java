@@ -14,12 +14,18 @@ public class HillClimbing {
 		
 		int t = 0;
 		
+		Integer it_first_best = null;
+		
 		while(t < max_it && equals_witherror( x, g)){
 			State x_linha = perturb(x, specification);
 			x_linha.setValue( function.eval(x_linha));
 			
 			if(x_linha.getValue() > x.getValue()){
 				x = x_linha;
+				
+				if(null == it_first_best){
+					it_first_best = t;
+				}
 			}
 			
 			t++;

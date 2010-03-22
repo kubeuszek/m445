@@ -1,5 +1,6 @@
 package br.compnatural;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -29,5 +30,9 @@ public class State {
 
 	public List<Coordinate> getCoordinate() {
 		return coordinate;
+	}
+	
+	public static State getState(){
+		return new State(new ArrayList<Coordinate>());
 	}
 }

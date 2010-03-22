@@ -18,7 +18,7 @@ public class Specification {
 	
 	List<Coordinate> coordinates = new ArrayList<Coordinate>();
 	
-	public void addCoordinate(String name, int min, int max){
+	public void addCoordinate(String name, double min, double max){
 		coordinates.add(new Coordinate(name, min, max));
 	}
 	
