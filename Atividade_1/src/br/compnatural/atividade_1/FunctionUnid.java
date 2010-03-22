@@ -9,7 +9,7 @@ public class FunctionUnid implements MathFunction {
 
 	@Override
 	public Double eval(State state) {
-		BigDecimal x = new BigDecimal(state.getCoordinates()[0]);
+		BigDecimal x = new BigDecimal(state.getCoordinate().get(0).getValue());
 		Integer dois = new Integer(2);
 		Integer seis = new Integer(6);
 		Integer cinco = new Integer(5);
