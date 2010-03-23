@@ -12,12 +12,22 @@ public class State {
 	private double value ;
 	private List<Coordinate> coordinate;
 	
+	
 	public double getValue() {
 		return value;
 	}
 
 	public void setValue(double value) {
 		this.value = value;
+	}
+	
+	protected State (State state){
+		setCoordinate(new ArrayList<Coordinate>(state.getCoordinate().size()));
+		for (Coordinate coordinate : state.getCoordinate()) {
+			Coordinate lCoordinate = new Coordinate(coordinate.name, coordinate.min, coordinate.max);
+			lCoordinate.setValue(coordinate.getValue());
+			getCoordinate().add(lCoordinate);
+		}
 	}
 
 	protected State (List<Coordinate> coordinate){		

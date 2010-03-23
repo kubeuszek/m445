@@ -74,11 +74,11 @@ public class Specification {
 		return true;
 	}
 	
-	public State perturb(State state){
+	public State perturb(State pState){
 		
-		int index = random2.nextInt(state.getCoordinate().size()); 
-		
-		Coordinate coordinate = state.getCoordinate().get(index);
+		int index = random2.nextInt(pState.getCoordinate().size()); 
+		State retorno = new State(pState);
+		Coordinate coordinate = retorno.getCoordinate().get(index);
 		
 		double min = coordinate.getValue() - coordinate.delta;
 		double max = coordinate.getValue() + coordinate.delta;
@@ -112,7 +112,7 @@ public class Specification {
 		
 		coordinate.setValue(value);
 		
-		return new State(state.getCoordinate());
+		return retorno;
 	}
 	
 	public static class Coordinate{
@@ -134,7 +134,7 @@ public class Specification {
 			this.name = name;
 			this.min = min;
 			this.max = max;
-			delta = (double)(Math.abs(min) + Math.abs(max)) * 2d / 100d;
+			delta = (double)(Math.abs(min) + Math.abs(max)) * 20d / 100d;
 		}
 		
 		public String toString(){

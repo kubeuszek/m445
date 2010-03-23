@@ -1,13 +1,15 @@
 package br.compnatural.atividade_1;
 
 import br.compnatural.MathFunction;
+import br.compnatural.OptimizationAlgorithm;
 import br.compnatural.Specification;
 import br.compnatural.State;
+import br.compnatural.experiment.report.ReportUnit;
 
-public class HillClimbing {
+public class HillClimbing extends OptimizationAlgorithm{
 	
 	
-	public static State hillClimbingStandard(int max_it, State g, MathFunction function, Specification specification){
+	public State hillClimbingStandard(int max_it, State g, MathFunction function, Specification specification, ReportUnit report){
 		
 		State x = initialize(specification);
 		x.setValue( function.eval(x)) ;
@@ -16,7 +18,7 @@ public class HillClimbing {
 		
 		Integer it_first_best = null;
 		
-		while(t < max_it && equals_witherror( x, g)){
+		while(t < max_it && !equals_witherror( x, g)){
 			State x_linha = perturb(x, specification);
 			x_linha.setValue( function.eval(x_linha));
 			
@@ -30,28 +32,13 @@ public class HillClimbing {
 			
 			t++;
 		}
+		
+		report.setFirstBestSoluctionIteraction(it_first_best);
+		
+		if(t != max_it){
+			report.setBestSoluctionIteraction(t);
+		}
+		report.setBestSoluctionSoFar(x.getValue());
 		return x;
 	}
-
-	private static boolean  equals_witherror(State x, State g) {		
-		double diff = x.getValue() - g.getValue();
-		
-		diff *= (double) 1000000;
-		
-		if(diff != 0){
-			return false;
-		}
-
-		return true;
-	}
-	
-	
-	public static State initialize(Specification specification){
-		return specification.initialize();
-	}
-	
-	public static State perturb(State x, Specification specification){
-		return specification.perturb(x);
-	}
-	
 }
