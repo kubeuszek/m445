@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project Atividade_1">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <target name="create_run_jar">
+        <jar destfile="/home/mathcunha/atividade_1.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="br.compnatural.atividade_1.Experimento_1"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="/home/mathcunha/workspace_compnatural/Atividade_1/target/classes"/>
+            <zipfileset excludes="META-INF/*.SF" src="/home/mathcunha/apps/eclipse/plugins/org.junit_3.8.2.v20090203-1005/junit.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/home/mathcunha/workspace_compnatural/Atividade_1/lib/jasperreports-3.7.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/home/mathcunha/.m2/repository/commons-digester/commons-digester/1.7/commons-digester-1.7.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/home/mathcunha/.m2/repository/commons-beanutils/commons-beanutils/1.6/commons-beanutils-1.6.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/home/mathcunha/.m2/repository/commons-logging/commons-logging/1.0/commons-logging-1.0.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/home/mathcunha/.m2/repository/commons-collections/commons-collections/2.1/commons-collections-2.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/home/mathcunha/.m2/repository/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/home/mathcunha/.m2/repository/org/codehaus/groovy/groovy-all/1.5.5/groovy-all-1.5.5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/home/mathcunha/.m2/repository/junit/junit/3.8.2/junit-3.8.2.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/home/mathcunha/.m2/repository/org/apache/ant/ant/1.7.0/ant-1.7.0.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/home/mathcunha/.m2/repository/org/apache/ant/ant-launcher/1.7.0/ant-launcher-1.7.0.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/home/mathcunha/.m2/repository/jline/jline/0.9.94/jline-0.9.94.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/home/mathcunha/.m2/repository/com/lowagie/itext/2.1.0/itext-2.1.0.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/home/mathcunha/.m2/repository/bouncycastle/bcmail-jdk14/136/bcmail-jdk14-136.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/home/mathcunha/.m2/repository/bouncycastle/bcprov-jdk14/136/bcprov-jdk14-136.jar"/>
+        </jar>
+    </target>
+</project>

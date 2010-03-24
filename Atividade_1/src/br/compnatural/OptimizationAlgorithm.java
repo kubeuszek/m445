@@ -1,6 +1,11 @@
 package br.compnatural;
 
+import java.util.logging.Logger;
+
 public class OptimizationAlgorithm {
+	
+	protected Logger log = Logger.getLogger(OptimizationAlgorithm.class.getName());
+	
 	protected static boolean  equals_witherror(State x, State g) {		
 		double diff = x.getValue() - g.getValue();
 		

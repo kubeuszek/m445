@@ -30,6 +30,12 @@ public class FunctionUnid implements MathFunction {
 				.sin(cinco * StrictMath.PI * x.doubleValue())), seis));
 
 		return primeiraParte.multiply(segundaParte).doubleValue();
+		
+//		double primeiraParte = Math.pow(2, -2 * Math.pow(((x.doubleValue() - 0.1) / 0.9), 2)) ;
+//		double segundaParte = Math.pow(Math.sin(5 * Math.PI * x.doubleValue()), 6);
+//		
+//		return primeiraParte * segundaParte;
+		
 	}
 
 }
