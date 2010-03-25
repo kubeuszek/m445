@@ -1,10 +1,18 @@
 package br.compnatural.experiment.report;
 
+import br.compnatural.Experiment;
+import br.compnatural.State;
+
 public class ReportUnit {
 	private Integer firstBestSoluctionIteraction;
 	private Double bestSoluctionSoFar;
 	private Integer bestSoluctionIteraction;
+	private Integer totalIteraction;
+	private State initialState;
 	private Long time;
+	
+	private Experiment.AlgorithmWrapper algorithm;
+	private Experiment.MathFunctionWrapper function;
 
 	public Integer getFirstBestSoluctionIteraction() {
 		return firstBestSoluctionIteraction;
@@ -42,5 +50,37 @@ public class ReportUnit {
 	public String toString() {
 		return firstBestSoluctionIteraction + ";" + bestSoluctionSoFar + ";"
 				+ bestSoluctionIteraction + ";" + time;
+	}
+
+	public void setTotalIteraction(Integer totalIteraction) {
+		this.totalIteraction = totalIteraction;
+	}
+
+	public Integer getTotalIteraction() {
+		return totalIteraction;
+	}
+
+	public void setInitialState(State initialState) {
+		this.initialState = initialState;
+	}
+
+	public State getInitialState() {
+		return initialState;
+	}
+
+	public void setAlgorithm(Experiment.AlgorithmWrapper algorithm) {
+		this.algorithm = algorithm;
+	}
+
+	public Experiment.AlgorithmWrapper getAlgorithm() {
+		return algorithm;
+	}
+
+	public void setFunction(Experiment.MathFunctionWrapper function) {
+		this.function = function;
+	}
+
+	public Experiment.MathFunctionWrapper getFunction() {
+		return function;
 	}
 }

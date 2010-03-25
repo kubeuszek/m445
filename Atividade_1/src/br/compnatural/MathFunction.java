@@ -9,4 +9,6 @@ package br.compnatural;
  */
 public interface MathFunction {
 	public Double eval(State state);
+	
+	public String getName();
 }

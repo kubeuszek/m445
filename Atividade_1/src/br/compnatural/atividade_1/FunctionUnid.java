@@ -38,4 +38,10 @@ public class FunctionUnid implements MathFunction {
 		
 	}
 
+	@Override
+	public String getName() {
+		
+		return "FuncUnid";
+	}
+
 }

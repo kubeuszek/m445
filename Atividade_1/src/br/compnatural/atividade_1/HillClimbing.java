@@ -15,6 +15,8 @@ public class HillClimbing extends OptimizationAlgorithm{
 		State x = initialize(specification);
 		x.setValue( function.eval(x)) ;
 		
+		report.setInitialState(x);
+		
 		log.info("para x = "+x.getCoordinate().get(0).getValue() +" func="+x.getValue());
 		
 		int t = 0;
@@ -44,5 +46,10 @@ public class HillClimbing extends OptimizationAlgorithm{
 		}
 		report.setBestSoluctionSoFar(x.getValue());
 		return x;
+	}
+
+	@Override
+	public String getName() {
+		return "hillclimbing";
 	}
 }

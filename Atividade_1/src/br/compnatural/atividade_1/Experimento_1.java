@@ -13,10 +13,8 @@ import br.compnatural.experiment.report.ReportUnit;
 
 public class Experimento_1 implements Runnable {
 
-	private Experiment dez_iteracoes = new Experiment(
-			"Primeira questão, 10 iterações");
-	private Experiment cem_iteracoes = new Experiment(
-			"Primeira questão, 100 iterações");
+	private Experiment experiment = new Experiment(
+			"Primeira questão");
 
 	public Experimento_1() {
 
@@ -24,52 +22,56 @@ public class Experimento_1 implements Runnable {
 		functions.add(new Experiment.MathFunctionWrapper(new FunctionUnid(),
 				new ArrayList<ReportUnit>()));
 
-		dez_iteracoes.setAlgorithms(new ArrayList<Experiment.AlgorithmWrapper>(
+		experiment.setAlgorithms(new ArrayList<Experiment.AlgorithmWrapper>(
 				4));
-		dez_iteracoes.getAlgorithms().add(
+		experiment.getAlgorithms().add(
 				new Experiment.AlgorithmWrapper(new HillClimbing(), functions));
-
-		cem_iteracoes.setAlgorithms(dez_iteracoes.getAlgorithms());
-
 	}
 
 	@Override
 	public void run() {
 
 		State g = State.getState();
-		List ds = null;
+		List<ReportUnit> ds = new ArrayList<ReportUnit>(1000);
 
 		g.setValue(1);
 
 		Specification specification = null;
 
-		for (Experiment.AlgorithmWrapper algorithm : dez_iteracoes
+		for (Experiment.AlgorithmWrapper algorithm : experiment
 				.getAlgorithms()) {
 			for (Experiment.MathFunctionWrapper mathFunction : algorithm
 					.getMathFunctionWrapper()) {
+				
+				for(int it = 10; it <= 1000; it *= 10){
+					for (int i = 0; i < 10; i++) {
 
-				for (int i = 0; i < 10; i++) {
+						ReportUnit reportUnit = new ReportUnit();
+						
+						reportUnit.setAlgorithm(algorithm);
+						reportUnit.setFunction(mathFunction);
+						
+						long ini = System.nanoTime();
 
-					ReportUnit reportUnit = new ReportUnit();
-					long ini = System.nanoTime();
+						specification = new Specification();
 
-					specification = new Specification();
+						specification.addCoordinate("x", 0, 1);
 
-					specification.addCoordinate("x", 0, 1);
+						HillClimbing hillClimbing = (HillClimbing) algorithm
+								.getOptimizationAlgorithm();
 
-					HillClimbing hillClimbing = (HillClimbing) algorithm
-							.getOptimizationAlgorithm();
+						hillClimbing.hillClimbingStandard(it, g, mathFunction
+								.getFunction(), specification, reportUnit);
 
-					hillClimbing.hillClimbingStandard(10, g, mathFunction
-							.getFunction(), specification, reportUnit);
+						reportUnit.setTime(System.nanoTime() - ini);
+						
+						reportUnit.setTotalIteraction(it);
 
-					reportUnit.setTime(System.nanoTime() - ini);
-
-					mathFunction.getReport().add(reportUnit);
-					
-					ds = mathFunction.getReport(); 
-
+						ds.add(reportUnit);
+					}
 				}
+
+				
 			}
 
 		}
