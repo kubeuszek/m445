@@ -10,7 +10,7 @@ public class HillClimbing extends OptimizationAlgorithm{
 	
 	
 	
-	public State hillClimbingStandard(int max_it, State g, MathFunction function, Specification specification, ReportUnit report){
+	public State optimize(int max_it, State g, MathFunction function, Specification specification, ReportUnit report){
 		
 		State x = initialize(specification);
 		x.setValue( function.eval(x)) ;
@@ -21,9 +21,10 @@ public class HillClimbing extends OptimizationAlgorithm{
 		
 		int t = 0;
 		
-		Integer it_first_best = null;
+		Integer it_first_best = 0;
 		
 		while(t < max_it && !equals_witherror( x, g)){
+			t++;
 			State x_linha = perturb(x, specification);
 			x_linha.setValue( function.eval(x_linha));
 			log.info("para x_linha = "+x_linha.getCoordinate().get(0).getValue() +" func="+x_linha.getValue());
@@ -31,12 +32,12 @@ public class HillClimbing extends OptimizationAlgorithm{
 			if(x_linha.getValue() > x.getValue()){
 				x = x_linha;
 				
-				if(null == it_first_best){
+				if(0 == it_first_best){
 					it_first_best = t;
 				}
 			}
 			
-			t++;
+			
 		}
 		
 		report.setFirstBestSoluctionIteraction(it_first_best);
@@ -50,6 +51,6 @@ public class HillClimbing extends OptimizationAlgorithm{
 
 	@Override
 	public String getName() {
-		return "hillclimbing";
+		return "hillclimbingstandard";
 	}
 }
