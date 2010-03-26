@@ -2,6 +2,7 @@ package br.compnatural.experiment.report;
 
 import br.compnatural.Experiment;
 import br.compnatural.State;
+import br.compnatural.function.MathFunction;
 
 public class ReportUnit {
 	private Integer firstBestSoluctionIteraction;
@@ -12,7 +13,7 @@ public class ReportUnit {
 	private Long time;
 	
 	private Experiment.AlgorithmWrapper algorithm;
-	private Experiment.MathFunctionWrapper function;
+	private MathFunction function;
 
 	public Integer getFirstBestSoluctionIteraction() {
 		return firstBestSoluctionIteraction;
@@ -76,11 +77,11 @@ public class ReportUnit {
 		return algorithm;
 	}
 
-	public void setFunction(Experiment.MathFunctionWrapper function) {
+	public void setFunction(MathFunction function) {
 		this.function = function;
 	}
 
-	public Experiment.MathFunctionWrapper getFunction() {
+	public MathFunction getFunction() {
 		return function;
 	}
 }

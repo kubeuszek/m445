@@ -8,8 +8,13 @@ import java.util.Map;
 import br.compnatural.Experiment;
 import br.compnatural.Specification;
 import br.compnatural.State;
+import br.compnatural.algorithm.HillClimbing;
+import br.compnatural.algorithm.HillClimbingIterated;
 import br.compnatural.experiment.report.ReportManager;
 import br.compnatural.experiment.report.ReportUnit;
+import br.compnatural.function.FunctionGriewank;
+import br.compnatural.function.FunctionUnid;
+import br.compnatural.function.MathFunction;
 
 public class Experimento_1 implements Runnable {
 
@@ -17,9 +22,9 @@ public class Experimento_1 implements Runnable {
 
 	public Experimento_1() {
 
-		List<Experiment.MathFunctionWrapper> functions = new ArrayList<Experiment.MathFunctionWrapper>();
-		functions.add(new Experiment.MathFunctionWrapper(new FunctionUnid(),
-				new ArrayList<ReportUnit>()));
+		List<MathFunction> functions = new ArrayList<MathFunction>();
+		functions.add(new FunctionUnid(Boolean.TRUE));
+		functions.add(new FunctionGriewank(Boolean.TRUE));
 
 		experiment.setAlgorithms(new ArrayList<Experiment.AlgorithmWrapper>(4));
 		experiment.getAlgorithms().add(
@@ -32,16 +37,15 @@ public class Experimento_1 implements Runnable {
 	@Override
 	public void run() {
 
-		State g = State.getState();
+		
 		List<ReportUnit> ds = new ArrayList<ReportUnit>(1000);
 
-		g.setValue(1);
+		
 
 		Specification specification = null;
 
 		for (Experiment.AlgorithmWrapper algorithm : experiment.getAlgorithms()) {
-			for (Experiment.MathFunctionWrapper mathFunction : algorithm
-					.getMathFunctionWrapper()) {
+			for (MathFunction mathFunction : algorithm.getFunctionUnid()) {
 
 				for (int it = 10; it <= 1000; it *= 10) {
 					for (int i = 0; i < 10; i++) {
@@ -53,11 +57,9 @@ public class Experimento_1 implements Runnable {
 
 						long ini = System.nanoTime();
 
-						specification = new Specification();
+						specification = getSpecification(mathFunction);
 
-						specification.addCoordinate("x", 0, 1);
-
-						eval(g, specification, algorithm, mathFunction, it,
+						eval(mathFunction.getMax(), specification, algorithm, mathFunction, it,
 								reportUnit);
 
 						reportUnit.setTime(System.nanoTime() - ini);
@@ -81,24 +83,37 @@ public class Experimento_1 implements Runnable {
 
 	}
 
+	private Specification getSpecification(MathFunction mathFunction) {
+		Specification specification;
+		if(mathFunction instanceof FunctionGriewank){
+			specification = new Specification();
+			for (int i = 1; i <= 10; i++) {
+				specification.addCoordinate("x"+i, -600, 600);
+			}
+		}else{
+			specification = new Specification();
+			specification.addCoordinate("x", 0, 1);
+		}
+
+		return specification;
+	}
+
 	private void eval(State g, Specification specification,
-			Experiment.AlgorithmWrapper algorithm,
-			Experiment.MathFunctionWrapper mathFunction, int it,
-			ReportUnit reportUnit) {
+			Experiment.AlgorithmWrapper algorithm, MathFunction function,
+			int it, ReportUnit reportUnit) {
 
 		if (algorithm.getOptimizationAlgorithm() instanceof HillClimbingIterated) {
 
 			HillClimbingIterated hillClimbing = (HillClimbingIterated) algorithm
 					.getOptimizationAlgorithm();
 
-			hillClimbing.optimize(10, it, g, mathFunction.getFunction(),
-					specification, reportUnit);
+			hillClimbing.optimize(10, it, g, function, specification,
+					reportUnit);
 		} else if (algorithm.getOptimizationAlgorithm() instanceof HillClimbing) {
 			HillClimbing hillClimbing = (HillClimbing) algorithm
 					.getOptimizationAlgorithm();
 
-			hillClimbing.optimize(it, g, mathFunction.getFunction(),
-					specification, reportUnit);
+			hillClimbing.optimize(it, g, function, specification, reportUnit);
 		}
 
 	}

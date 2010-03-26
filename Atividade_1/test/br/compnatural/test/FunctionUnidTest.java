@@ -2,13 +2,13 @@ package br.compnatural.test;
 
 import br.compnatural.Specification;
 import br.compnatural.State;
-import br.compnatural.atividade_1.FunctionUnid;
+import br.compnatural.function.FunctionUnid;
 import junit.framework.TestCase;
 
 public class FunctionUnidTest extends TestCase {
 
 	public void testEval() {
-		FunctionUnid function = new FunctionUnid();
+		FunctionUnid function = new FunctionUnid(Boolean.TRUE);
 		
 		Specification specification = new Specification();   
 		specification.addCoordinate("x", 0, 1);

@@ -1,23 +1,34 @@
-package br.compnatural.atividade_1;
+package br.compnatural.function;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 
-import br.compnatural.MathFunction;
 import br.compnatural.State;
 
 public class FunctionUnid implements MathFunction {
+	
+	final Integer dois = new Integer(2);
+	final Integer seis = new Integer(6);
+	final Integer cinco = new Integer(5);
+	final Float zero_um = new Float(0.1);
+	final Float zero_nove = new Float(0.9);
+	private State g;
+	final Boolean max;
+	
+	
+	
+	public FunctionUnid(Boolean max){
+		this.max = max;
+		g = State.getState();
+		g.setValue(1);
+	}
 
 	@Override
 	public Double eval(State state) {
 		
 		MathContext context = MathContext.DECIMAL128;
 		BigDecimal x = new BigDecimal(state.getCoordinate().get(0).getValue());
-		Integer dois = new Integer(2);
-		Integer seis = new Integer(6);
-		Integer cinco = new Integer(5);
-		Float zero_um = new Float(0.1);
-		Float zero_nove = new Float(0.9);
+		
 
 		BigDecimal primeiraParte = x.subtract(new BigDecimal(zero_um))
 		.divide(new BigDecimal(zero_nove),context)
@@ -29,12 +40,15 @@ public class FunctionUnid implements MathFunction {
 		BigDecimal segundaParte = new BigDecimal(StrictMath.pow((StrictMath
 				.sin(cinco * StrictMath.PI * x.doubleValue())), seis));
 
-		return primeiraParte.multiply(segundaParte).doubleValue();
 		
-//		double primeiraParte = Math.pow(2, -2 * Math.pow(((x.doubleValue() - 0.1) / 0.9), 2)) ;
-//		double segundaParte = Math.pow(Math.sin(5 * Math.PI * x.doubleValue()), 6);
-//		
-//		return primeiraParte * segundaParte;
+		primeiraParte = primeiraParte.multiply(segundaParte);
+		
+		if(!max){
+			primeiraParte = primeiraParte.negate();
+		}
+		
+		return primeiraParte.doubleValue();
+		
 		
 	}
 
@@ -42,6 +56,11 @@ public class FunctionUnid implements MathFunction {
 	public String getName() {
 		
 		return "FuncUnid";
+	}
+
+	@Override
+	public State getMax() {
+		return g;
 	}
 
 }

@@ -45,4 +45,14 @@ public class State {
 	public static State getState(){
 		return new State(new ArrayList<Coordinate>());
 	}
+	
+	@Override
+	public String toString(){
+		String retorno = "";
+		for (Coordinate coordinate : getCoordinate()) {
+			retorno += coordinate.name + "="+ coordinate.getValue()+", ";
+		}
+		
+		return retorno;
+	}
 }

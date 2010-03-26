@@ -1,6 +1,9 @@
-package br.compnatural;
+package br.compnatural.algorithm;
 
 import java.util.logging.Logger;
+
+import br.compnatural.Specification;
+import br.compnatural.State;
 
 public abstract class OptimizationAlgorithm {
 	

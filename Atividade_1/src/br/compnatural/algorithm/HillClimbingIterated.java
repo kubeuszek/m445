@@ -1,9 +1,9 @@
-package br.compnatural.atividade_1;
+package br.compnatural.algorithm;
 
-import br.compnatural.MathFunction;
 import br.compnatural.Specification;
 import br.compnatural.State;
 import br.compnatural.experiment.report.ReportUnit;
+import br.compnatural.function.MathFunction;
 
 public class HillClimbingIterated extends HillClimbing {
 
