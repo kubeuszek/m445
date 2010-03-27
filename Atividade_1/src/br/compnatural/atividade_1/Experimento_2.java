@@ -17,11 +17,11 @@ import br.compnatural.function.FunctionSumPow;
 import br.compnatural.function.FunctionUnid;
 import br.compnatural.function.MathFunction;
 
-public class Experimento_1 implements Runnable {
+public class Experimento_2 implements Runnable {
 
-	private Experiment experiment = new Experiment("Primeira questão");
+	private Experiment experiment = new Experiment("Segunda questão");
 
-	public Experimento_1() {
+	public Experimento_2() {
 
 		List<MathFunction> functions = new ArrayList<MathFunction>();
 		functions.add(new FunctionUnid(Boolean.TRUE));
@@ -30,8 +30,7 @@ public class Experimento_1 implements Runnable {
 
 		experiment.setAlgorithms(new ArrayList<Experiment.AlgorithmWrapper>(4));
 		experiment.getAlgorithms().add(
-				new Experiment.AlgorithmWrapper(new HillClimbing(Boolean.TRUE), functions));
-		//experiment.getAlgorithms().add(new Experiment.AlgorithmWrapper(new HillClimbingIterated(), functions));
+				new Experiment.AlgorithmWrapper(new HillClimbing(Boolean.FALSE), functions));
 	}
 
 	@Override
@@ -47,7 +46,7 @@ public class Experimento_1 implements Runnable {
 		for (Experiment.AlgorithmWrapper algorithm : experiment.getAlgorithms()) {
 			for (MathFunction mathFunction : algorithm.getFunctionUnid()) {
 
-				for (int it = 10; it <= 1000; it *= 10) {
+				for (double it = 0.1; it <= 100; it *= 10) {
 					for (int i = 0; i < 10; i++) {
 
 						ReportUnit reportUnit = new ReportUnit();
@@ -58,13 +57,16 @@ public class Experimento_1 implements Runnable {
 						long ini = System.nanoTime();
 
 						specification = getSpecification(mathFunction);
+						
+						HillClimbing hill = (HillClimbing) algorithm.getOptimizationAlgorithm();
+						hill.setT(it);
 
-						eval(mathFunction.getMax(), specification, algorithm, mathFunction, it,
+						eval(mathFunction.getMax(), specification, algorithm, mathFunction, 1000,
 								reportUnit);
 
 						reportUnit.setTime(System.nanoTime() - ini);
 
-						reportUnit.setTotalIteraction(new Double(it));
+						reportUnit.setTotalIteraction(it);
 
 						ds.add(reportUnit);
 					}
@@ -79,7 +81,7 @@ public class Experimento_1 implements Runnable {
 		parameters.put("ds", ds);
 
 		ReportManager
-				.saveReport("/otimizacao.jrxml", parameters, "experimento_1.pdf");
+				.saveReport("/otimizacao.jrxml", parameters, "experimento_2.pdf");
 
 	}
 
@@ -124,7 +126,7 @@ public class Experimento_1 implements Runnable {
 	}
 
 	public static void main(String[] args) {
-		Experimento_1 teste = new Experimento_1();
+		Experimento_2 teste = new Experimento_2();
 		teste.run();
 	}
 

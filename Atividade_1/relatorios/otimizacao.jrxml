@@ -9,7 +9,7 @@
 	<field name="firstBestSoluctionIteraction" class="java.lang.Integer"/>
 	<field name="time" class="java.lang.Long"/>
 	<field name="bestSoluctionIteraction" class="java.lang.Integer"/>
-	<field name="totalIteraction" class="java.lang.Integer"/>
+	<field name="totalIteraction" class="java.lang.Double"/>
 	<field name="initialState.value" class="java.lang.Double"/>
 	<field name="algorithm.optimizationAlgorithm.name" class="java.lang.String"/>
 	<field name="function.name" class="java.lang.String"/>
@@ -60,7 +60,7 @@
 				<textField>
 					<reportElement x="442" y="1" width="100" height="20"/>
 					<textElement/>
-					<textFieldExpression class="java.lang.Integer"><![CDATA[$F{totalIteraction}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$F{totalIteraction}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="10" y="1" width="100" height="20"/>

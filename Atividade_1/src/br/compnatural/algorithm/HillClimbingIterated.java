@@ -7,6 +7,10 @@ import br.compnatural.function.MathFunction;
 
 public class HillClimbingIterated extends HillClimbing {
 
+	public HillClimbingIterated(Boolean standard) {
+		super(standard);		
+	}
+
 	public State optimize(int n_start, int max_it, State g, MathFunction function, Specification specification, ReportUnit report){
 		State best = initialize(specification);
 		best.setValue(function.eval(best));

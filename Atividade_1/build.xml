@@ -5,7 +5,7 @@
     <target name="create_run_jar">
         <jar destfile="/home/mathcunha/atividade_1.jar" filesetmanifest="mergewithoutmain">
             <manifest>
-                <attribute name="Main-Class" value="br.compnatural.atividade_1.Experimento_1"/>
+                <attribute name="Main-Class" value="br.compnatural.atividade_1.Main"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
             <fileset dir="/home/mathcunha/workspace_compnatural/Atividade_1/target/classes"/>

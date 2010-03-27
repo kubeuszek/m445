@@ -8,7 +8,7 @@ public class ReportUnit {
 	private Integer firstBestSoluctionIteraction;
 	private Double bestSoluctionSoFar;
 	private Integer bestSoluctionIteraction;
-	private Integer totalIteraction;
+	private Double totalIteraction;
 	private State initialState;
 	private Long time;
 	
@@ -53,11 +53,11 @@ public class ReportUnit {
 				+ bestSoluctionIteraction + ";" + time;
 	}
 
-	public void setTotalIteraction(Integer totalIteraction) {
+	public void setTotalIteraction(Double totalIteraction) {
 		this.totalIteraction = totalIteraction;
 	}
 
-	public Integer getTotalIteraction() {
+	public Double getTotalIteraction() {
 		return totalIteraction;
 	}
 
