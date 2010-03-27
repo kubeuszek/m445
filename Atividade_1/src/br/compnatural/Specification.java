@@ -132,7 +132,7 @@ public class Specification {
 			this.name = name;
 			this.min = min;
 			this.max = max;
-			delta = (double)(Math.abs(min) + Math.abs(max)) * 30d / 100d;
+			delta = (double)(Math.abs(min) + Math.abs(max)) * 10d / 100d;
 		}
 		
 		public String toString(){

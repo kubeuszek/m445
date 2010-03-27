@@ -13,6 +13,7 @@ import br.compnatural.algorithm.HillClimbingIterated;
 import br.compnatural.experiment.report.ReportManager;
 import br.compnatural.experiment.report.ReportUnit;
 import br.compnatural.function.FunctionGriewank;
+import br.compnatural.function.FunctionSumPow;
 import br.compnatural.function.FunctionUnid;
 import br.compnatural.function.MathFunction;
 
@@ -25,13 +26,12 @@ public class Experimento_1 implements Runnable {
 		List<MathFunction> functions = new ArrayList<MathFunction>();
 		functions.add(new FunctionUnid(Boolean.TRUE));
 		functions.add(new FunctionGriewank(Boolean.TRUE));
+		functions.add(new FunctionSumPow(Boolean.TRUE));
 
 		experiment.setAlgorithms(new ArrayList<Experiment.AlgorithmWrapper>(4));
 		experiment.getAlgorithms().add(
 				new Experiment.AlgorithmWrapper(new HillClimbing(), functions));
-		experiment.getAlgorithms().add(
-				new Experiment.AlgorithmWrapper(new HillClimbingIterated(),
-						functions));
+		//experiment.getAlgorithms().add(new Experiment.AlgorithmWrapper(new HillClimbingIterated(), functions));
 	}
 
 	@Override
@@ -90,6 +90,11 @@ public class Experimento_1 implements Runnable {
 			for (int i = 1; i <= 10; i++) {
 				specification.addCoordinate("x"+i, -600, 600);
 			}
+		}else if(mathFunction instanceof FunctionSumPow){
+			specification = new Specification();
+			for (int i = 1; i <= 10; i++) {
+				specification.addCoordinate("x"+i, -1, 1);
+			}
 		}else{
 			specification = new Specification();
 			specification.addCoordinate("x", 0, 1);
@@ -107,7 +112,7 @@ public class Experimento_1 implements Runnable {
 			HillClimbingIterated hillClimbing = (HillClimbingIterated) algorithm
 					.getOptimizationAlgorithm();
 
-			hillClimbing.optimize(10, it, g, function, specification,
+			hillClimbing.optimize(1000, it, g, function, specification,
 					reportUnit);
 		} else if (algorithm.getOptimizationAlgorithm() instanceof HillClimbing) {
 			HillClimbing hillClimbing = (HillClimbing) algorithm

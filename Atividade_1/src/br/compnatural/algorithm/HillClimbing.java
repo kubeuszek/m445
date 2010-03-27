@@ -1,5 +1,7 @@
 package br.compnatural.algorithm;
 
+import java.util.logging.Level;
+
 import br.compnatural.Specification;
 import br.compnatural.State;
 import br.compnatural.experiment.report.ReportUnit;
@@ -42,6 +44,7 @@ public class HillClimbing extends OptimizationAlgorithm{
 		report.setFirstBestSoluctionIteraction(it_first_best);
 		
 		if(t != max_it){
+			log.log(Level.INFO, "encontrou! " +x.getValue() +" "+g.getValue());
 			report.setBestSoluctionIteraction(t);
 		}
 		report.setBestSoluctionSoFar(x.getValue());
@@ -50,6 +53,6 @@ public class HillClimbing extends OptimizationAlgorithm{
 
 	@Override
 	public String getName() {
-		return "hillclimbingstandard";
+		return "Hill Climbing Standard";
 	}
 }

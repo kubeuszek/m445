@@ -71,7 +71,7 @@ public class FunctionGriewank implements MathFunction {
 
 	@Override
 	public String getName() {
-		return "Griewank";
+		return "Função Griewank";
 	}
 
 	@Override

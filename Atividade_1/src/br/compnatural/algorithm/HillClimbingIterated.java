@@ -44,7 +44,7 @@ public class HillClimbingIterated extends HillClimbing {
 	
 	@Override
 	public String getName() {
-		return "hillclimbingiterated";
+		return "Iterated Hill Climbing";
 	}
 
 }

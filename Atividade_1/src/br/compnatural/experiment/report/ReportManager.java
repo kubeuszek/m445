@@ -25,6 +25,9 @@ public class ReportManager {
 	
 	public static byte[] generateReport(String reportPath, Map parameters){
 		InputStream reportStream = ReportManager.class.getResourceAsStream(reportPath);
+		
+		parameters.put("LOGO", ReportManager.class.getResourceAsStream("/logo.jpg"));
+		
 		JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource((List<ReportUnit>)parameters.remove("ds"));
 		try {
 			return JasperRunManager.runReportToPdf(JasperCompileManager.compileReport(reportStream), parameters,ds);
