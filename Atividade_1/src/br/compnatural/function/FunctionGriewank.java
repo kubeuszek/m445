@@ -79,4 +79,9 @@ public class FunctionGriewank implements MathFunction {
 		return g;
 	}
 
+	@Override
+	public Boolean hasMaximum() {
+		return Boolean.FALSE;
+	}
+
 }

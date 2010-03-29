@@ -63,4 +63,8 @@ public class FunctionUnid implements MathFunction {
 		return g;
 	}
 
+	@Override
+	public Boolean hasMaximum() {
+		return Boolean.TRUE;
+	}
 }

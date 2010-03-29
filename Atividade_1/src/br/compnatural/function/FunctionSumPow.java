@@ -56,5 +56,10 @@ public class FunctionSumPow implements MathFunction {
 	public String getName() {
 		return "Função Sum Pow";
 	}
+	
+	@Override
+	public Boolean hasMaximum() {
+		return Boolean.FALSE;
+	}
 
 }

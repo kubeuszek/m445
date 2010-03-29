@@ -15,4 +15,6 @@ public interface MathFunction {
 	public String getName();
 	
 	public State getMax();
+	
+	public Boolean hasMaximum();
 }

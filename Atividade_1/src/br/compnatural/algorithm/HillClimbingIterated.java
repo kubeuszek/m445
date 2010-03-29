@@ -1,5 +1,7 @@
 package br.compnatural.algorithm;
 
+import java.math.BigDecimal;
+
 import br.compnatural.Specification;
 import br.compnatural.State;
 import br.compnatural.experiment.report.ReportUnit;
@@ -26,7 +28,7 @@ public class HillClimbingIterated extends HillClimbing {
 			
 			if(x.getValue() > best.getValue()){
 				best = x;
-				if(0 == it_first_best){
+				if(!equals_witherror( x, g)){
 					it_first_best = t;
 				}
 			}
@@ -41,7 +43,12 @@ public class HillClimbingIterated extends HillClimbing {
 		if(t != n_start){
 			report.setBestSoluctionIteraction(t);
 		}
-		report.setBestSoluctionSoFar(best.getValue());
+		
+		if(function.hasMaximum()){
+			report.setBestSoluctionSoFar(best.getValue());
+		}else{
+			report.setBestSoluctionSoFar((new BigDecimal(best.getValue())).negate().doubleValue());
+		}
 		
 		return best;
 	}

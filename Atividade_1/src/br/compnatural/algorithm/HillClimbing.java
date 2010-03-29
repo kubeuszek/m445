@@ -1,5 +1,6 @@
 package br.compnatural.algorithm;
 
+import java.math.BigDecimal;
 import java.util.Random;
 import java.util.logging.Level;
 
@@ -60,7 +61,7 @@ public class HillClimbing extends OptimizationAlgorithm{
 			if(decide(x, x_linha)){
 				x = x_linha;
 				
-				if(0 == it_first_best){
+				if(!equals_witherror( x, g)){
 					it_first_best = t;
 				}
 			}
@@ -74,7 +75,12 @@ public class HillClimbing extends OptimizationAlgorithm{
 			log.log(Level.INFO, "encontrou! " +x.getValue() +" "+g.getValue());
 			report.setBestSoluctionIteraction(t);
 		}
-		report.setBestSoluctionSoFar(x.getValue());
+		if(function.hasMaximum()){
+			report.setBestSoluctionSoFar(x.getValue());
+		}else{
+			report.setBestSoluctionSoFar((new BigDecimal(x.getValue())).negate().doubleValue());
+		}
+		
 		return x;
 	}
 

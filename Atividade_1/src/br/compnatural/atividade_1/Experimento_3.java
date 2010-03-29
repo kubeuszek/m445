@@ -112,7 +112,7 @@ public class Experimento_3 implements Runnable {
 			HillClimbingIterated hillClimbing = (HillClimbingIterated) algorithm
 					.getOptimizationAlgorithm();
 
-			hillClimbing.optimize(1000, it, g, function, specification,
+			hillClimbing.optimize(it, 1000, g, function, specification,
 					reportUnit);
 		} else if (algorithm.getOptimizationAlgorithm() instanceof HillClimbing) {
 			HillClimbing hillClimbing = (HillClimbing) algorithm
