@@ -17,11 +17,11 @@ import br.compnatural.function.FunctionSumPow;
 import br.compnatural.function.FunctionUnid;
 import br.compnatural.function.MathFunction;
 
-public class Experimento_1 implements Runnable {
+public class Experimento_4 implements Runnable {
 
-	private Experiment experiment = new Experiment("Primeira questão");
+	private Experiment experiment = new Experiment("Quarta questão");
 
-	public Experimento_1() {
+	public Experimento_4() {
 
 		List<MathFunction> functions = new ArrayList<MathFunction>();
 		functions.add(new FunctionUnid(Boolean.TRUE));
@@ -30,8 +30,7 @@ public class Experimento_1 implements Runnable {
 
 		experiment.setAlgorithms(new ArrayList<Experiment.AlgorithmWrapper>(4));
 		experiment.getAlgorithms().add(
-				new Experiment.AlgorithmWrapper(new HillClimbing(Boolean.TRUE), functions));
-		//experiment.getAlgorithms().add(new Experiment.AlgorithmWrapper(new HillClimbingIterated(), functions));
+				new Experiment.AlgorithmWrapper(new HillClimbingIterated(Boolean.FALSE), functions));
 	}
 
 	@Override
@@ -47,7 +46,7 @@ public class Experimento_1 implements Runnable {
 		for (Experiment.AlgorithmWrapper algorithm : experiment.getAlgorithms()) {
 			for (MathFunction mathFunction : algorithm.getFunctionUnid()) {
 
-				for (int it = 10; it <= 1000; it *= 10) {
+				for (int it = 10; it <= 100; it *= 10) {
 					for (int i = 0; i < 10; i++) {
 
 						ReportUnit reportUnit = new ReportUnit();
@@ -58,6 +57,9 @@ public class Experimento_1 implements Runnable {
 						long ini = System.nanoTime();
 
 						specification = getSpecification(mathFunction);
+						
+						HillClimbing hill = (HillClimbing) algorithm.getOptimizationAlgorithm();
+						hill.setT(1.0d);
 
 						eval(mathFunction.getMax(), specification, algorithm, mathFunction, it,
 								reportUnit);
@@ -79,7 +81,7 @@ public class Experimento_1 implements Runnable {
 		parameters.put("ds", ds);
 
 		ReportManager
-				.saveReport("/otimizacao.jrxml", parameters, "experimento_1.pdf");
+				.saveReport("/otimizacao.jrxml", parameters, "experimento_4.pdf");
 
 	}
 
@@ -124,7 +126,7 @@ public class Experimento_1 implements Runnable {
 	}
 
 	public static void main(String[] args) {
-		Experimento_1 teste = new Experimento_1();
+		Experimento_4 teste = new Experimento_4();
 		teste.run();
 	}
 

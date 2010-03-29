@@ -79,7 +79,8 @@ public class Experimento_2 implements Runnable {
 		Map parameters = new HashMap();
 		
 		parameters.put("ds", ds);
-
+		parameters.put("nome", experiment.getName());
+		
 		ReportManager
 				.saveReport("/otimizacao.jrxml", parameters, "experimento_2.pdf");
 

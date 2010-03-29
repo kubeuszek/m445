@@ -3,7 +3,7 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="NOME" class="java.lang.String"/>
+	<parameter name="nome" class="java.lang.String"/>
 	<parameter name="LOGO" class="java.io.InputStream" isForPrompting="false"/>
 	<field name="bestSoluctionSoFar" class="java.lang.Double"/>
 	<field name="firstBestSoluctionIteraction" class="java.lang.Integer"/>
@@ -63,12 +63,12 @@
 					<textFieldExpression class="java.lang.Double"><![CDATA[$F{totalIteraction}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="10" y="1" width="100" height="20"/>
+					<reportElement x="10" y="1" width="205" height="20"/>
 					<textElement/>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{algorithm.optimizationAlgorithm.name}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="162" y="1" width="100" height="20"/>
+					<reportElement x="251" y="1" width="100" height="20"/>
 					<textElement/>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{function.name}]]></textFieldExpression>
 				</textField>
@@ -130,6 +130,11 @@ Aluno: Matheus Cunha – 0914328
 Turma 11
 UNIFOR – Universidade de Fortaleza]]></text>
 			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="70" y="59" width="192" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{nome}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
