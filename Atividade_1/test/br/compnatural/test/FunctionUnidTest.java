@@ -37,8 +37,8 @@ public class FunctionUnidTest extends TestCase {
 		state.getCoordinate().get(0).setValue(0.3067682741640493);
 		assertEquals(0.8983962057670858, function.eval(state));
 		
-		state.getCoordinate().get(0).setValue(0.2931445169958321);
-		assertEquals(0.9060124029472527, function.eval(state));
+		state.getCoordinate().get(0).setValue(0.8361000255062404);
+		System.out.println("parsa x = "+state.getCoordinate().get(0).getValue() +" func="+function.eval(state));
 		
 		state.getCoordinate().get(0).setValue(0.5);
 		System.out.println("parsa x = "+state.getCoordinate().get(0).getValue() +" func="+function.eval(state));

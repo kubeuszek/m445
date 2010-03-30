@@ -43,14 +43,11 @@ public class Experimento_5 implements Runnable {
 
 	@Override
 	public void run() {
-
 		
 		List<ReportUnit> ds = new ArrayList<ReportUnit>(1000);
 
-		
-
 		Specification specification = null;
-
+		double j = 0;
 		for (Experiment.AlgorithmWrapper algorithm : experiment.getAlgorithms()) {
 			for (MathFunction mathFunction : algorithm.getFunctionUnid()) {
 					
@@ -69,11 +66,12 @@ public class Experimento_5 implements Runnable {
 								reportUnit);
 
 						reportUnit.setTime(System.nanoTime() - ini);
-
-						reportUnit.setTotalIteraction(new Double(it));
+						
+						reportUnit.setTotalIteraction(j);
 
 						ds.add(reportUnit);
 					}
+					j += 1;
 				
 
 			}

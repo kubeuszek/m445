@@ -45,6 +45,7 @@ public class FunctionUnid implements MathFunction {
 		
 		if(!max){
 			primeiraParte = primeiraParte.negate();
+			g.setValue(-1);
 		}
 		
 		return primeiraParte.doubleValue();

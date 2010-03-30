@@ -14,6 +14,9 @@ public class Main {
 		}else if("4".equals(args[0])){
 			Experimento_4 teste = new Experimento_4();
 			teste.run();
+		}else if("5".equals(args[0])){
+			Experimento_5 teste = new Experimento_5();
+			teste.run();
 		}
 	}
 }
