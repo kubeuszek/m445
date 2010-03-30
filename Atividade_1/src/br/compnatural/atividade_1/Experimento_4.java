@@ -59,7 +59,11 @@ public class Experimento_4 implements Runnable {
 						specification = getSpecification(mathFunction);
 						
 						HillClimbing hill = (HillClimbing) algorithm.getOptimizationAlgorithm();
-						hill.setT(1.0d);
+						
+						if(mathFunction instanceof FunctionUnid)
+							hill.setT(1.0d);
+						else
+							hill.setT(0.1d);
 
 						eval(mathFunction.getMax(), specification, algorithm, mathFunction, it,
 								reportUnit);

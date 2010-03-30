@@ -98,6 +98,11 @@ public class HillClimbing extends OptimizationAlgorithm{
 	}
 	
 	private boolean stochastic(State x, State x_linha) {
+		
+		if(!standard(x, x_linha)){
+			return false;
+		}
+		
 		double p = random.nextDouble();
 		
 		double value = 1d / (1d + StrictMath.exp((x.getValue() - x_linha.getValue())/T));
