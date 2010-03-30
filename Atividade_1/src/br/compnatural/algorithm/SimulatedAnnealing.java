@@ -10,55 +10,70 @@ import br.compnatural.experiment.report.ReportUnit;
 import br.compnatural.function.MathFunction;
 
 public class SimulatedAnnealing extends OptimizationAlgorithm {
-	
+
+	private double T_max;
+	private double T_min;
+	private double beta;
+	private int k;
+
+	public SimulatedAnnealing(double T_max, double T_min, double beta, int k) {
+		this.T_max = T_max;
+		this.T_min = T_min;
+		this.beta = beta;
+		this.k = k;
+	}
+
 	private Random random = new Random(System.currentTimeMillis());
-	
-	public State optimize(double T_max, double T_min, double beta, State g, int k, MathFunction function, Specification specification, ReportUnit report){
+
+	public State optimize(State g, MathFunction function,
+			Specification specification, ReportUnit report) {
 		State x = specification.initialize();
 		double T = T_max;
-		
-		loop_k: for (int i = 0; i < k && !equals_witherror( x, g); i++) {
-			while(T < T_min && !equals_witherror( x, g)){
-				
+
+		while (T < T_min && !equals_witherror(x, g)) {
+			loop_k: for (int i = 0; i < k && !equals_witherror(x, g); i++) {
 				State x_linha = perturb(x, specification);
-				x_linha.setValue( function.eval(x_linha));
-				log.info("para x_linha = "+x_linha.getCoordinate().get(0).getValue() +" func="+x_linha.getValue());
-				
-				if(x_linha.getValue() < x.getValue()){
+				x_linha.setValue(function.eval(x_linha));
+				log.info("para x_linha = "
+						+ x_linha.getCoordinate().get(0).getValue() + " func="
+						+ x_linha.getValue());
+
+				if (x_linha.getValue() < x.getValue()) {
 					x = x_linha;
-				}else{
+				} else {
 					double p = random.nextDouble();
-					
-					double value = 1d / (1d + StrictMath.exp((x.getValue() - x_linha.getValue())/T));
-					if(p <= value){
+
+					double value = 1d / (1d + StrictMath
+							.exp((x.getValue() - x_linha.getValue()) / T));
+					if (p <= value) {
 						x = x_linha;
-						
-						report.setFirstBestSoluctionIteraction(it_first_best);
+
+						report.setFirstBestSoluctionIteraction(i);
 					}
 				}
-				
-				T *= beta; 
+
+				T *= beta;
 			}
 		}
-		
-		
-		
-		if(t != max_it){
-			log.log(Level.INFO, "encontrou! " +x.getValue() +" "+g.getValue());
-			report.setBestSoluctionIteraction(t);
+
+		if (equals_witherror(x, g)) {
+			log.log(Level.INFO, "encontrou! " + x.getValue() + " "
+					+ g.getValue());
+			report.setBestSoluctionIteraction(0);
 		}
-		if(function.hasMaximum()){
+		if (function.hasMaximum()) {
 			report.setBestSoluctionSoFar(x.getValue());
-		}else{
-			report.setBestSoluctionSoFar((new BigDecimal(x.getValue())).negate().doubleValue());
+		} else {
+			report.setBestSoluctionSoFar((new BigDecimal(x.getValue()))
+					.negate().doubleValue());
 		}
-		
+
 		return x;
 	}
 
 	@Override
-	public String getName() {		
-		return "Simulated Annealing";
+	public String getName() {
+		return "Simulated Annealing ("+T_max+", "+T_min+", "+beta+", "+k+")";
 	}
 
 }
