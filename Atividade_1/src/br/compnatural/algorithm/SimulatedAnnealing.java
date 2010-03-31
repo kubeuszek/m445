@@ -33,6 +33,7 @@ public class SimulatedAnnealing extends OptimizationAlgorithm {
 		State best = x;
 
 		double T = T_max;
+		int j = 0;
 
 		while (T >= T_min && !equals_witherror(x, g)) {
 			for (int i = 0; i < k && !equals_witherror(x, g); i++) {
@@ -45,18 +46,19 @@ public class SimulatedAnnealing extends OptimizationAlgorithm {
 
 				if (x_linha.getValue() < x.getValue()) {
 					x = x_linha;
-					report.setFirstBestSoluctionIteraction(i);
+					report.setFirstBestSoluctionIteraction(j);
 				} else {
 					double p = random.nextDouble();
 					double value = StrictMath.exp((x.getValue() - x_linha.getValue()) / T);
 					if (p <= value) {
 						x = x_linha;
-						report.setFirstBestSoluctionIteraction(i);
+						report.setFirstBestSoluctionIteraction(j);
 					}
 				}
 				if(best.getValue() > x.getValue()){
 					best = x;
 				}
+				j++;
 			}
 			T *= beta;
 		}
@@ -64,7 +66,7 @@ public class SimulatedAnnealing extends OptimizationAlgorithm {
 		if (equals_witherror(x, g)) {
 			log.log(Level.INFO, "encontrou! " + x.getValue() + " "
 					+ g.getValue());
-			report.setBestSoluctionIteraction(0);
+			report.setBestSoluctionIteraction(j);
 		}
 		if (!function.hasMaximum()) {
 			report.setBestSoluctionSoFar(best.getValue());

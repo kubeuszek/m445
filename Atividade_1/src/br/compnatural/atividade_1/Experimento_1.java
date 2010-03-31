@@ -19,7 +19,7 @@ import br.compnatural.function.MathFunction;
 
 public class Experimento_1 implements Runnable {
 
-	private Experiment experiment = new Experiment("Primeira quest√£o");
+	private Experiment experiment = new Experiment("Primeira quest„o");
 
 	public Experimento_1() {
 
