@@ -56,7 +56,7 @@ public class FunctionUnid implements MathFunction {
 	@Override
 	public String getName() {
 		
-		return "Função Unid";
+		return "FunÃ§Ã£o Unid";
 	}
 
 	@Override

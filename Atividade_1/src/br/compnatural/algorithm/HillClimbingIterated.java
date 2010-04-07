@@ -28,25 +28,14 @@ public class HillClimbingIterated extends HillClimbing {
 			
 			if(x.getValue() > best.getValue()){
 				best = x;
-				if(!equals_witherror( x, g)){
-					it_first_best = ((t-1)*max_it)+report.getFirstBestSoluctionIteraction();
-				}
+				it_first_best = ((t-1)*max_it)+report.getFirstBestSoluctionIteraction();
 			}
 			
 			
 		}
 		
 		report.setInitialState(initial);
-		
-		if(it_first_best == 0){
-			it_first_best = report.getFirstBestSoluctionIteraction();
-		}
-		
 		report.setFirstBestSoluctionIteraction(it_first_best);
-		
-		if(t != n_start){
-			report.setBestSoluctionIteraction(((t-1)*max_it)+report.getBestSoluctionIteraction());
-		}
 		
 		if(function.hasMaximum()){
 			report.setBestSoluctionSoFar(best.getValue());

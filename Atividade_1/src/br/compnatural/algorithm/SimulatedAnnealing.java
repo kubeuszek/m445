@@ -63,10 +63,12 @@ public class SimulatedAnnealing extends OptimizationAlgorithm {
 			T *= beta;
 		}
 
+		report.setBestSoluctionIteraction(0);
 		if (equals_witherror(x, g)) {
 			log.log(Level.INFO, "encontrou! " + x.getValue() + " "
 					+ g.getValue());
-			report.setBestSoluctionIteraction(j);
+			report.setBestSoluctionIteraction(1);
+			report.setFirstBestSoluctionIteraction(j);
 		}
 		if (!function.hasMaximum()) {
 			report.setBestSoluctionSoFar(best.getValue());

@@ -60,21 +60,17 @@ public class HillClimbing extends OptimizationAlgorithm{
 			
 			if(decide(x, x_linha)){
 				x = x_linha;
-				
-				if(!equals_witherror( x, g)){
-					it_first_best = t;
-				}
+				it_first_best = t;
 			}
-			
-			
 		}
 		
 		report.setFirstBestSoluctionIteraction(it_first_best);
-		
+		report.setBestSoluctionIteraction(0);
 		if(t != max_it){
 			log.log(Level.INFO, "encontrou! " +x.getValue() +" "+g.getValue());
-			report.setBestSoluctionIteraction(t);
+			report.setBestSoluctionIteraction(1);			
 		}
+		
 		if(function.hasMaximum()){
 			report.setBestSoluctionSoFar(x.getValue());
 		}else{
