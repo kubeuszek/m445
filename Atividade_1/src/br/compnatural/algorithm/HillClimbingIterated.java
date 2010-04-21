@@ -2,10 +2,10 @@ package br.compnatural.algorithm;
 
 import java.math.BigDecimal;
 
-import br.compnatural.Specification;
 import br.compnatural.State;
 import br.compnatural.experiment.report.ReportUnit;
 import br.compnatural.function.MathFunction;
+import br.compnatural.specification.Specification;
 
 public class HillClimbingIterated extends HillClimbing {
 

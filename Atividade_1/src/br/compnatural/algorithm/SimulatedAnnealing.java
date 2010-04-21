@@ -4,10 +4,10 @@ import java.math.BigDecimal;
 import java.util.Random;
 import java.util.logging.Level;
 
-import br.compnatural.Specification;
 import br.compnatural.State;
 import br.compnatural.experiment.report.ReportUnit;
 import br.compnatural.function.MathFunction;
+import br.compnatural.specification.Specification;
 
 public class SimulatedAnnealing extends OptimizationAlgorithm {
 

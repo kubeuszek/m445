@@ -2,14 +2,14 @@ package br.compnatural.test;
 
 import java.util.logging.Logger;
 
-import br.compnatural.Specification;
 import br.compnatural.State;
 import br.compnatural.coordinate.RealCoordinate;
+import br.compnatural.specification.RealSpecification;
 import junit.framework.TestCase;
 
 public class SpecificationTest extends TestCase {
 	
-	private Specification specification = new Specification();
+	private RealSpecification specification = new RealSpecification();
 	protected Logger log = Logger.getLogger(SpecificationTest.class.getName());
 
 	public void testInitializeRange_zero_um() {

@@ -1,4 +1,4 @@
-package br.compnatural;
+package br.compnatural.specification;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,12 +6,13 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import br.compnatural.State;
 import br.compnatural.coordinate.Coordinate;
 import br.compnatural.coordinate.RealCoordinate;
 
-public class Specification {
+public class RealSpecification implements Specification{
 	
-	Logger log = Logger.getLogger(Specification.class.getName());
+	Logger log = Logger.getLogger(RealSpecification.class.getName());
 	
 	Random random = new Random(System.currentTimeMillis());	
 	

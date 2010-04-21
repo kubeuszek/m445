@@ -21,7 +21,7 @@ public class State {
 		this.value = value;
 	}
 	
-	protected State (State state, Boolean binary){
+	public State (State state, Boolean binary){
 		this.binary = binary;
 		setCoordinate(new ArrayList<Coordinate>(state.getCoordinate().size()));
 		Coordinate lCoordinate; 
@@ -37,7 +37,7 @@ public class State {
 		}
 	}
 
-	protected State (List<Coordinate> coordinate, Boolean binary){
+	public State (List<Coordinate> coordinate, Boolean binary){
 		this.binary = binary;
 		setCoordinate(coordinate);
 	}

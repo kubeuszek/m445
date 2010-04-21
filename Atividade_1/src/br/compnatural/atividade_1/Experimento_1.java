@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import br.compnatural.Experiment;
-import br.compnatural.Specification;
 import br.compnatural.State;
 import br.compnatural.algorithm.HillClimbing;
 import br.compnatural.algorithm.HillClimbingIterated;
@@ -16,6 +15,7 @@ import br.compnatural.function.FunctionGriewank;
 import br.compnatural.function.FunctionSumPow;
 import br.compnatural.function.FunctionUnid;
 import br.compnatural.function.MathFunction;
+import br.compnatural.specification.RealSpecification;
 
 public class Experimento_1 implements Runnable {
 
@@ -42,7 +42,7 @@ public class Experimento_1 implements Runnable {
 
 		
 
-		Specification specification = null;
+		RealSpecification specification = null;
 
 		for (Experiment.AlgorithmWrapper algorithm : experiment.getAlgorithms()) {
 			for (MathFunction mathFunction : algorithm.getFunctionUnid()) {
@@ -83,27 +83,27 @@ public class Experimento_1 implements Runnable {
 
 	}
 
-	private Specification getSpecification(MathFunction mathFunction) {
-		Specification specification;
+	private RealSpecification getSpecification(MathFunction mathFunction) {
+		RealSpecification specification;
 		if(mathFunction instanceof FunctionGriewank){
-			specification = new Specification();
+			specification = new RealSpecification();
 			for (int i = 1; i <= 10; i++) {
 				specification.addCoordinate("x"+i, -600, 600);
 			}
 		}else if(mathFunction instanceof FunctionSumPow){
-			specification = new Specification();
+			specification = new RealSpecification();
 			for (int i = 1; i <= 10; i++) {
 				specification.addCoordinate("x"+i, -1, 1);
 			}
 		}else{
-			specification = new Specification();
+			specification = new RealSpecification();
 			specification.addCoordinate("x", 0, 1);
 		}
 
 		return specification;
 	}
 
-	private void eval(State g, Specification specification,
+	private void eval(State g, RealSpecification specification,
 			Experiment.AlgorithmWrapper algorithm, MathFunction function,
 			int it, ReportUnit reportUnit) {
 

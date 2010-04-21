@@ -1,8 +1,8 @@
 package br.compnatural.test;
 
-import br.compnatural.Specification;
 import br.compnatural.State;
 import br.compnatural.function.FunctionGriewank;
+import br.compnatural.specification.RealSpecification;
 import junit.framework.TestCase;
 
 public class FunctionGriewankTest extends TestCase {
@@ -10,7 +10,7 @@ public class FunctionGriewankTest extends TestCase {
 	public void testEval() {
 		FunctionGriewank function = new FunctionGriewank(Boolean.TRUE);
 		
-		Specification specification = new Specification();
+		RealSpecification specification = new RealSpecification();
 		for (int i = 1; i <= 10; i++) {
 			specification.addCoordinate("x"+i, -600, 600);
 		}

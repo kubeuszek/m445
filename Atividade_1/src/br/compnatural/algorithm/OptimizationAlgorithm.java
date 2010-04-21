@@ -2,8 +2,8 @@ package br.compnatural.algorithm;
 
 import java.util.logging.Logger;
 
-import br.compnatural.Specification;
 import br.compnatural.State;
+import br.compnatural.specification.Specification;
 
 public abstract class OptimizationAlgorithm {
 	

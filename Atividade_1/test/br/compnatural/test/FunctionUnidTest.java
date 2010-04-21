@@ -1,9 +1,9 @@
 package br.compnatural.test;
 
-import br.compnatural.Specification;
 import br.compnatural.State;
 import br.compnatural.coordinate.RealCoordinate;
 import br.compnatural.function.FunctionUnid;
+import br.compnatural.specification.RealSpecification;
 import junit.framework.TestCase;
 
 public class FunctionUnidTest extends TestCase {
@@ -11,7 +11,7 @@ public class FunctionUnidTest extends TestCase {
 	public void testEval() {
 		FunctionUnid function = new FunctionUnid(Boolean.TRUE);
 		
-		Specification specification = new Specification();   
+		RealSpecification specification = new RealSpecification();   
 		specification.addCoordinate("x", 0, 1);
 		
 		 
