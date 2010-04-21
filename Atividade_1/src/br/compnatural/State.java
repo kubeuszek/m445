@@ -1,8 +1,6 @@
 package br.compnatural;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import br.compnatural.Specification.Coordinate;
@@ -34,7 +32,7 @@ public class State {
 		setCoordinate(coordinate);
 	}
 
-	private void setCoordinate(List<Coordinate> coordinate) {
+	protected void setCoordinate(List<Coordinate> coordinate) {
 		this.coordinate = coordinate;
 	}
 
