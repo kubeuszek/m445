@@ -3,7 +3,8 @@ package br.compnatural.function;
 import java.math.BigDecimal;
 
 import br.compnatural.State;
-import br.compnatural.Specification.Coordinate;
+import br.compnatural.coordinate.Coordinate;
+import br.compnatural.coordinate.RealCoordinate;
 
 public class FunctionSumPow implements MathFunction {
 
@@ -22,9 +23,9 @@ public class FunctionSumPow implements MathFunction {
 		int i =1;
 		for (Coordinate coordinate : state.getCoordinate()) {
 			if(retorno == null){
-				retorno = sumUnit(coordinate, i);
+				retorno = sumUnit((RealCoordinate)coordinate, i);
 			}else{
-				retorno = retorno.add(sumUnit(coordinate, i));
+				retorno = retorno.add(sumUnit((RealCoordinate)coordinate, i));
 			}
 			++i;
 			
@@ -32,7 +33,7 @@ public class FunctionSumPow implements MathFunction {
 		return retorno;
 	}
 
-	private BigDecimal sumUnit(Coordinate coordinate, int i) {
+	private BigDecimal sumUnit(RealCoordinate coordinate, int i) {
 		return new BigDecimal(Math.pow(Math.abs(coordinate.getValue()), i + 1));
 	}
 	

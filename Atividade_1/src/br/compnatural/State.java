@@ -3,13 +3,15 @@ package br.compnatural;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.compnatural.Specification.Coordinate;
+import br.compnatural.coordinate.BinaryCoordinate;
+import br.compnatural.coordinate.Coordinate;
+import br.compnatural.coordinate.RealCoordinate;
 
 public class State {
 	
 	private double value ;
 	private List<Coordinate> coordinate;
-	
+	private Boolean binary;
 	
 	public double getValue() {
 		return value;
@@ -19,16 +21,24 @@ public class State {
 		this.value = value;
 	}
 	
-	protected State (State state){
+	protected State (State state, Boolean binary){
+		this.binary = binary;
 		setCoordinate(new ArrayList<Coordinate>(state.getCoordinate().size()));
+		Coordinate lCoordinate; 
 		for (Coordinate coordinate : state.getCoordinate()) {
-			Coordinate lCoordinate = new Coordinate(coordinate.name, coordinate.min, coordinate.max);
-			lCoordinate.setValue(coordinate.getValue());
+			if(!binary){
+				lCoordinate = new RealCoordinate(coordinate.name, ((RealCoordinate)coordinate).min, ((RealCoordinate)coordinate).max);
+				((RealCoordinate)lCoordinate).setValue(((RealCoordinate)coordinate).getValue());
+			}else{
+				lCoordinate = new BinaryCoordinate(coordinate.name, ((BinaryCoordinate) coordinate).length);
+				((BinaryCoordinate)lCoordinate).setValue(((BinaryCoordinate)coordinate).getValue());
+			}
 			getCoordinate().add(lCoordinate);
 		}
 	}
 
-	protected State (List<Coordinate> coordinate){		
+	protected State (List<Coordinate> coordinate, Boolean binary){
+		this.binary = binary;
 		setCoordinate(coordinate);
 	}
 
@@ -41,14 +51,15 @@ public class State {
 	}
 	
 	public static State getState(){
-		return new State(new ArrayList<Coordinate>());
+		return new State(new ArrayList<Coordinate>(),Boolean.FALSE);
 	}
-	
+
 	@Override
 	public String toString(){
 		String retorno = "";
 		for (Coordinate coordinate : getCoordinate()) {
-			retorno += coordinate.name + "="+ coordinate.getValue()+", ";
+			Object lValue = binary ? ((BinaryCoordinate)coordinate).getValue() : ((RealCoordinate)coordinate).getValue();
+			retorno += coordinate.name + "="+ lValue+", ";
 		}
 		
 		return retorno;

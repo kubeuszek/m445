@@ -6,6 +6,9 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import br.compnatural.coordinate.Coordinate;
+import br.compnatural.coordinate.RealCoordinate;
+
 public class Specification {
 	
 	Logger log = Logger.getLogger(Specification.class.getName());
@@ -16,15 +19,15 @@ public class Specification {
 	
 	public static final long error = 1000000;
 	
-	List<Coordinate> coordinates = new ArrayList<Coordinate>();
+	List<RealCoordinate> coordinates = new ArrayList<RealCoordinate>();
 	
 	public void addCoordinate(String name, double min, double max){
-		coordinates.add(new Coordinate(name, min, max));
+		coordinates.add(new RealCoordinate(name, min, max));
 	}
 	
 	public State initialize(){
 		
-		Coordinate coordinate;
+		RealCoordinate coordinate;
 		for (int i = 0; i < coordinates.size() ; ++i) {
 			
 			coordinate = coordinates.get(i);
@@ -37,10 +40,15 @@ public class Specification {
 			}
 		}
 		
-		return new State(coordinates);
+		List<Coordinate> lCoordinates = new ArrayList<Coordinate>(coordinates.size());
+		for (RealCoordinate lCoordinate : coordinates) {
+			lCoordinates.add(lCoordinate);
+		}
+		
+		return new State(lCoordinates, Boolean.FALSE);
 	}
 	
-	public double initialize(Coordinate coordinate){
+	public double initialize(RealCoordinate coordinate){
 		double value;
 		double range = Math.abs((coordinate.max - coordinate.min)); 
 		
@@ -49,7 +57,7 @@ public class Specification {
 		return value;
 	}
 	
-	public boolean isInRange(Coordinate coordinate, double value){
+	public boolean isInRange(RealCoordinate coordinate, double value){
 		
 		double diff = value - coordinate.min;
 		double diff2 = coordinate.max - value;
@@ -75,8 +83,8 @@ public class Specification {
 	public State perturb(State pState){
 		
 		int index = random2.nextInt(pState.getCoordinate().size()); 
-		State retorno = new State(pState);
-		Coordinate coordinate = retorno.getCoordinate().get(index);
+		State retorno = new State(pState, Boolean.FALSE);
+		RealCoordinate coordinate = (RealCoordinate) retorno.getCoordinate().get(index);
 		
 		double min = coordinate.getValue() - coordinate.delta;
 		double max = coordinate.getValue() + coordinate.delta;
@@ -96,7 +104,7 @@ public class Specification {
 			max = coordinate.max;
 		}
 		
-		Coordinate vizinho = new Coordinate("v_"+coordinate.name, min, max);
+		RealCoordinate vizinho = new RealCoordinate("v_"+coordinate.name, min, max);
 		vizinho.setValue(coordinate.value);
 		
 		log.info(vizinho.toString() + " delta "+coordinate.delta);
@@ -113,30 +121,5 @@ public class Specification {
 		return retorno;
 	}
 	
-	public static class Coordinate{
-		String name;
-		double min;
-		double max;
-		double delta;
-		double value;
-		
-		public double getValue() {
-			return value;
-		}
-
-		public void setValue(double value) {
-			this.value = value;
-		}
-
-		public Coordinate(String name, double min, double max){
-			this.name = name;
-			this.min = min;
-			this.max = max;
-			delta = (double)(Math.abs(min) + Math.abs(max)) * 10d / 100d;
-		}
-		
-		public String toString(){
-			return "name=("+name +") min=("+min +") max=("+max+") value=("+value+")" ; 
-		}
-	}
+	
 }

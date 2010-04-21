@@ -2,9 +2,9 @@ package br.compnatural.function;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-
 import br.compnatural.State;
-import br.compnatural.Specification.Coordinate;
+import br.compnatural.coordinate.Coordinate;
+import br.compnatural.coordinate.RealCoordinate;
 
 public class FunctionGriewank implements MathFunction {
 
@@ -37,20 +37,20 @@ public class FunctionGriewank implements MathFunction {
 		BigDecimal retorno = null;
 		for (Coordinate coordinate : state.getCoordinate()) {
 			if(retorno == null){
-				retorno = sumUnit(coordinate);
+				retorno = sumUnit((RealCoordinate)coordinate);
 			}else{
-				retorno = retorno.add(sumUnit(coordinate));
+				retorno = retorno.add(sumUnit((RealCoordinate)coordinate));
 			}
 			
 		}
 		return retorno;
 	}
 
-	private BigDecimal sumUnit(Coordinate coordinate) {
+	private BigDecimal sumUnit(RealCoordinate coordinate) {
 		return new BigDecimal(Math.pow(coordinate.getValue(), 2));
 	}
 	
-	private BigDecimal multiplyUnit(Coordinate coordinate, int i) {
+	private BigDecimal multiplyUnit(RealCoordinate coordinate, int i) {
 		return new BigDecimal(Math.cos(coordinate.getValue()/ Math.sqrt(i)));
 	}
 	
@@ -59,9 +59,9 @@ public class FunctionGriewank implements MathFunction {
 		int i = 1;
 		for (Coordinate coordinate : state.getCoordinate()) {
 			if(retorno == null){
-				retorno = multiplyUnit(coordinate, i);
+				retorno = multiplyUnit((RealCoordinate)coordinate, i);
 			}else{
-				retorno = retorno.multiply((multiplyUnit(coordinate, i)));
+				retorno = retorno.multiply((multiplyUnit((RealCoordinate)coordinate, i)));
 			}
 			
 			++i;

@@ -46,8 +46,6 @@ public class HillClimbing extends OptimizationAlgorithm{
 		
 		report.setInitialState(x);
 		
-		log.info("para x = "+x.getCoordinate().get(0).getValue() +" func="+x.getValue());
-		
 		int t = 0;
 		
 		Integer it_first_best = 0;
@@ -56,7 +54,6 @@ public class HillClimbing extends OptimizationAlgorithm{
 			t++;
 			State x_linha = perturb(x, specification);
 			x_linha.setValue( function.eval(x_linha));
-			log.info("para x_linha = "+x_linha.getCoordinate().get(0).getValue() +" func="+x_linha.getValue());
 			
 			if(decide(x, x_linha)){
 				x = x_linha;

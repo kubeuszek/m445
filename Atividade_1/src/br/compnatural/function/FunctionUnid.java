@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 
 import br.compnatural.State;
+import br.compnatural.coordinate.RealCoordinate;
 
 public class FunctionUnid implements MathFunction {
 	
@@ -27,7 +28,7 @@ public class FunctionUnid implements MathFunction {
 	public Double eval(State state) {
 		
 		MathContext context = MathContext.DECIMAL128;
-		BigDecimal x = new BigDecimal(state.getCoordinate().get(0).getValue());
+		BigDecimal x = new BigDecimal(((RealCoordinate)state.getCoordinate().get(0)).getValue());
 		
 
 		BigDecimal primeiraParte = x.subtract(new BigDecimal(zero_um))

@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import br.compnatural.Specification;
 import br.compnatural.State;
+import br.compnatural.coordinate.RealCoordinate;
 import junit.framework.TestCase;
 
 public class SpecificationTest extends TestCase {
@@ -21,22 +22,22 @@ public class SpecificationTest extends TestCase {
 		
 		State state = specification.initialize();
 		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
 		
 		state = specification.initialize();
 		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
 		
-		
-		
-		state = specification.initialize();
-		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
 		
 		
 		state = specification.initialize();
 		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
+		
+		
+		state = specification.initialize();
+		assertEquals(1,state.getCoordinate().size());
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
 		
 	}
 	
@@ -50,60 +51,60 @@ public class SpecificationTest extends TestCase {
 		
 		State state = specification.initialize();
 		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
 		
 		state = specification.initialize();
 		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
-		
-		
-		
-		state = specification.initialize();
-		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
-		
-		
-		state = specification.initialize();
-		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
-		
-		state = specification.initialize();
-		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
-		
-		state = specification.initialize();
-		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
 		
 		
 		
 		state = specification.initialize();
 		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
 		
 		
 		state = specification.initialize();
 		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
 		
 		state = specification.initialize();
 		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
 		
 		state = specification.initialize();
 		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
 		
-		
-		
-		state = specification.initialize();
-		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
 		
 		
 		state = specification.initialize();
 		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
+		
+		
+		state = specification.initialize();
+		assertEquals(1,state.getCoordinate().size());
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
+		
+		state = specification.initialize();
+		assertEquals(1,state.getCoordinate().size());
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
+		
+		state = specification.initialize();
+		assertEquals(1,state.getCoordinate().size());
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
+		
+		
+		
+		state = specification.initialize();
+		assertEquals(1,state.getCoordinate().size());
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
+		
+		
+		state = specification.initialize();
+		assertEquals(1,state.getCoordinate().size());
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
 		
 	}
 
@@ -117,60 +118,60 @@ public class SpecificationTest extends TestCase {
 		
 		State state = specification.initialize();
 		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
 		
 		state = specification.initialize();
 		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
-		
-		
-		
-		state = specification.initialize();
-		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
-		
-		
-		state = specification.initialize();
-		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
-		
-		state = specification.initialize();
-		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
-		
-		state = specification.initialize();
-		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
 		
 		
 		
 		state = specification.initialize();
 		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
 		
 		
 		state = specification.initialize();
 		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
 		
 		state = specification.initialize();
 		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
 		
 		state = specification.initialize();
 		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
 		
-		
-		
-		state = specification.initialize();
-		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
 		
 		
 		state = specification.initialize();
 		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
+		
+		
+		state = specification.initialize();
+		assertEquals(1,state.getCoordinate().size());
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
+		
+		state = specification.initialize();
+		assertEquals(1,state.getCoordinate().size());
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
+		
+		state = specification.initialize();
+		assertEquals(1,state.getCoordinate().size());
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
+		
+		
+		
+		state = specification.initialize();
+		assertEquals(1,state.getCoordinate().size());
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
+		
+		
+		state = specification.initialize();
+		assertEquals(1,state.getCoordinate().size());
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
 		
 	}
 	
@@ -184,22 +185,22 @@ public class SpecificationTest extends TestCase {
 		
 		State state = specification.initialize();
 		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
 		
 		state = specification.perturb(state);
 		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
 		
-		
-		
-		state = specification.perturb(state);
-		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
 		
 		
 		state = specification.perturb(state);
 		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
+		
+		
+		state = specification.perturb(state);
+		assertEquals(1,state.getCoordinate().size());
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
 		
 	}
 	
@@ -212,60 +213,60 @@ public class SpecificationTest extends TestCase {
 		 
 		
 		State state = specification.initialize();
-		state.getCoordinate().get(0).setValue(-1.96d);
+		((RealCoordinate)state.getCoordinate().get(0)).setValue(-1.96d);
 		
 		state =  specification.perturb(state);
 		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
-		
-		
-		
-		state =  specification.perturb(state);
-		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
-		
-		
-		state =  specification.perturb(state);
-		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
-		
-		state =  specification.perturb(state);
-		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
-		
-		state =  specification.perturb(state);
-		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
 		
 		
 		
 		state =  specification.perturb(state);
 		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
 		
 		
 		state =  specification.perturb(state);
 		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
 		
 		state =  specification.perturb(state);
 		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
 		
 		state =  specification.perturb(state);
 		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
 		
-		
-		
-		state =  specification.perturb(state);
-		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
 		
 		
 		state =  specification.perturb(state);
 		assertEquals(1,state.getCoordinate().size());
-		assertEquals(true, state.getCoordinate().get(0).getValue() <= (double) max && state.getCoordinate().get(0).getValue() >= (double) min);
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
+		
+		
+		state =  specification.perturb(state);
+		assertEquals(1,state.getCoordinate().size());
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
+		
+		state =  specification.perturb(state);
+		assertEquals(1,state.getCoordinate().size());
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
+		
+		state =  specification.perturb(state);
+		assertEquals(1,state.getCoordinate().size());
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
+		
+		
+		
+		state =  specification.perturb(state);
+		assertEquals(1,state.getCoordinate().size());
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
+		
+		
+		state =  specification.perturb(state);
+		assertEquals(1,state.getCoordinate().size());
+		assertEquals(true, ((RealCoordinate)state.getCoordinate().get(0)).getValue() <= (double) max && ((RealCoordinate)state.getCoordinate().get(0)).getValue() >= (double) min);
 		
 	}
 

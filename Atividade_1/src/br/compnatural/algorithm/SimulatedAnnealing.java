@@ -40,10 +40,6 @@ public class SimulatedAnnealing extends OptimizationAlgorithm {
 				State x_linha = perturb(x, specification);
 				x_linha.setValue(function.eval(x_linha));
 
-				log.info("para x_linha = "
-						+ x_linha.getCoordinate().get(0).getValue() + " func="
-						+ x_linha.getValue());
-
 				if (x_linha.getValue() < x.getValue()) {
 					x = x_linha;
 					report.setFirstBestSoluctionIteraction(j);
