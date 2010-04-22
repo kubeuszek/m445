@@ -1,23 +1,24 @@
 package br.compnatural;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import br.compnatural.coordinate.BinaryCoordinate;
 import br.compnatural.coordinate.Coordinate;
 import br.compnatural.coordinate.RealCoordinate;
 
-public class State {
+public class State implements Comparable<State>{
 	
-	private double value ;
+	private Double value ;
 	private List<Coordinate> coordinate;
 	private Boolean binary;
 	
-	public double getValue() {
+	public Double getValue() {
 		return value;
 	}
 
-	public void setValue(double value) {
+	public void setValue(Double value) {
 		this.value = value;
 	}
 	
@@ -63,5 +64,19 @@ public class State {
 		}
 		
 		return retorno;
+	}
+
+	@Override
+	public int compareTo(State o) {
+		return getValue().compareTo(o.getValue());
+	}
+	
+	public static class NaturalOrderState implements Comparator<State>{
+
+		@Override
+		public int compare(State o1, State o2) {
+			return o1.compareTo(o2);
+		}
+		
 	}
 }

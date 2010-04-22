@@ -29,9 +29,9 @@ public class RealSpecification implements Specification{
 	public State initialize(){
 		
 		RealCoordinate coordinate;
+		List<Coordinate> lCoordinates = new ArrayList<Coordinate>(coordinates.size());
 		for (int i = 0; i < coordinates.size() ; ++i) {
-			
-			coordinate = coordinates.get(i);
+			coordinate = new RealCoordinate(((RealCoordinate) coordinates.get(i)).name, ((RealCoordinate) coordinates.get(i)).min, ((RealCoordinate) coordinates.get(i)).max); 
 			
 			coordinate.setValue(initialize(coordinate));
 			
@@ -39,11 +39,8 @@ public class RealSpecification implements Specification{
 				i--;
 				log.log(Level.SEVERE, coordinate+" - valor fora do intervalo "+coordinate.getValue());
 			}
-		}
-		
-		List<Coordinate> lCoordinates = new ArrayList<Coordinate>(coordinates.size());
-		for (RealCoordinate lCoordinate : coordinates) {
-			lCoordinates.add(lCoordinate);
+			
+			lCoordinates.add((Coordinate)coordinate);
 		}
 		
 		return new State(lCoordinates, Boolean.FALSE);
@@ -122,5 +119,9 @@ public class RealSpecification implements Specification{
 		return retorno;
 	}
 	
-	
+	@Override
+	public State[] recombination(State male, State female, Boolean crossOver) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

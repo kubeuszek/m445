@@ -16,7 +16,7 @@ public class FunctionGriewank implements MathFunction {
 	public FunctionGriewank (Boolean max){
 		this.max = max;
 		g = State.getState();
-		g.setValue(0);
+		g.setValue(0d);
 	}
 	
 	@Override

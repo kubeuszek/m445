@@ -10,7 +10,7 @@ public class FunctionHamming implements MathFunction {
 	public FunctionHamming (Boolean max){
 		this.max = max;
 		g = State.getState();
-		g.setValue(0);
+		g.setValue(0d);
 	}
 
 	@Override

@@ -13,22 +13,19 @@ public class BinarySpecification implements Specification {
 	
 	Logger log = Logger.getLogger(BinarySpecification.class.getName());
 	Random random = new Random(System.currentTimeMillis());
-	List<BinaryCoordinate> population = new ArrayList<BinaryCoordinate>();
+	public final BinaryCoordinate coordinate;
+	
+	public BinarySpecification(int length){
+		coordinate = new BinaryCoordinate("x", length);
+	}
 	
 	public State initialize(){
 		
-		BinaryCoordinate coordinate;
-		for (int i = 0; i < population.size() ; ++i) {
-			
-			coordinate = population.get(i);
-			
-			initialize(coordinate);			
-		}
+		BinaryCoordinate lCoordinate = new BinaryCoordinate(coordinate.name, coordinate.length);	
+		initialize(lCoordinate);			
 		
-		List<Coordinate> lCoordinates = new ArrayList<Coordinate>(population.size());
-		for (BinaryCoordinate lCoordinate : population) {
-			lCoordinates.add(lCoordinate);
-		}
+		List<Coordinate> lCoordinates = new ArrayList<Coordinate>(1);
+		lCoordinates.add((Coordinate) lCoordinate);
 		
 		return new State(lCoordinates, Boolean.TRUE);
 	}
@@ -38,14 +35,34 @@ public class BinarySpecification implements Specification {
 			coordinate.getValue()[i] = random.nextBoolean();			
 		}
 	}
-	
-	public void addCoordinate(String name, int length){
-		population.add(new BinaryCoordinate(name, length));
-	}
 
 	@Override
 	public State perturb(State pState) {
-		// TODO Auto-generated method stub
-		return null;
+		BinaryCoordinate coordinate = ((BinaryCoordinate)pState.getCoordinate().get(0));
+		int indice = random.nextInt(coordinate.length);
+		coordinate.getValue()[indice] = !coordinate.getValue()[indice]; 
+		return pState;
+	}
+
+	@Override
+	public State[] recombination(State male, State female, Boolean crossOver) {
+		BinaryCoordinate coordinateFemale 	= (BinaryCoordinate)female.getCoordinate().get(0);
+		BinaryCoordinate coordinateMale		= (BinaryCoordinate)male.getCoordinate().get(0);
+		int indice = random.nextInt(coordinateFemale.length);
+		
+		State s1 = initialize();
+		State s2 = initialize();
+		
+		for (int i = 0; i < coordinateFemale.length; i++) {
+			if(i < indice){
+				((BinaryCoordinate)s1.getCoordinate().get(0)).getValue()[i] = coordinateFemale.getValue()[i];
+				((BinaryCoordinate)s2.getCoordinate().get(0)).getValue()[i] = coordinateMale.getValue()[i];
+			}else{
+				((BinaryCoordinate)s2.getCoordinate().get(0)).getValue()[i] = coordinateFemale.getValue()[i];
+				((BinaryCoordinate)s1.getCoordinate().get(0)).getValue()[i] = coordinateMale.getValue()[i];
+			}                                                      
+		}
+		
+		return new State[]{s1, s2};
 	}
 }

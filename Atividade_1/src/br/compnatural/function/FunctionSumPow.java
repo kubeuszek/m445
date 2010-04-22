@@ -14,7 +14,7 @@ public class FunctionSumPow implements MathFunction {
 	public FunctionSumPow (Boolean max){
 		this.max = max;
 		g = State.getState();
-		g.setValue(0);
+		g.setValue(0d);
 	}
 	
 	private BigDecimal sum(State state){

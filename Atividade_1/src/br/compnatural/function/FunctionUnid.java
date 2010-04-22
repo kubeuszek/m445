@@ -21,7 +21,7 @@ public class FunctionUnid implements MathFunction {
 	public FunctionUnid(Boolean max){
 		this.max = max;
 		g = State.getState();
-		g.setValue(1);
+		g.setValue(1d);
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class FunctionUnid implements MathFunction {
 		
 		if(!max){
 			primeiraParte = primeiraParte.negate();
-			g.setValue(-1);
+			g.setValue(-1d);
 		}
 		
 		return primeiraParte.doubleValue();
