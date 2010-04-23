@@ -35,8 +35,10 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 	public State optimize(int lenPopulation, int lenGeneration, State g, MathFunction function, Specification specification, ReportUnit report){
 		List<State> population = new ArrayList<State>(lenPopulation);
 		random = new Random(System.currentTimeMillis());
-		
+		int generation = 0;
 		State state ;
+		report.setBestSoluctionIteraction(null);
+		
 		/**
 		 * Initialization
 		 */
@@ -44,9 +46,12 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 			state = initialize(specification);
 			state.setValue(function.eval(state));
 			population.add(state);
+			
+			if(state.getValue() == function.getMax().getValue() && report.getBestSoluctionIteraction() == null){
+				report.setBestSoluctionIteraction(generation + 1);
+			}
 		}
 		
-		int generation = 0;
 		while (generation < lenGeneration) {
 			generation++;
 			/**
@@ -59,7 +64,8 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 			 */
 			for (int i = 0; i < lenPopulation; i++) {
 				State[] children = specification.recombination(population.get(i), population.get(++i), random.nextFloat() <= pc);
-				
+				children[0].setValue(function.eval(children[0]));
+				children[1].setValue(function.eval(children[1]));
 				population.add(children[0]);
 				population.add(children[1]);
 			}
@@ -70,6 +76,7 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 			for (int i = 0; i < population.size(); i++) {
 				if(random.nextFloat() <= pm){
 					population.set(i, specification.perturb(population.get(i)));
+					population.get(i).setValue (function.eval(population.get(i)));
 				}
 			}
 			
@@ -78,11 +85,21 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 			 */
 			Collections.sort(population);
 			population = population.subList(0, lenPopulation);
+			for (State lState : population) {
+				if(lState.getValue() == function.getMax().getValue() && report.getBestSoluctionIteraction() == null){
+					report.setBestSoluctionIteraction(generation);
+				}
+			}
 		}
 		
-		
-		
-		return population.get(0);
+		State best = null;
+		if(report.getBestSoluctionIteraction() == null){
+			best = population.get(0);			
+		}else{
+			best = function.getMax();
+		}
+		report.setBestSoluctionSoFar(best.getValue());
+		return best;
 	}
 	
 	public List<State> organizeCouples(List<State> population, RoulleteWheel roullete){
@@ -105,7 +122,8 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 		RoulleteWheel(List<State> population){
 			roullete = new LinkedList<State>();
 			for (State state : population) {
-				for (int i = 0; i < state.getValue().intValue(); i++) {
+				int max = Math.abs(state.getValue().intValue());
+				for (int i = 0; i < max; i++) {
 					roullete.add(state);
 				}
 			}
