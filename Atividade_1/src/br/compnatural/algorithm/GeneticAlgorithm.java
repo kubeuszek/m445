@@ -53,7 +53,7 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 			}
 		}
 		
-		while (generation < lenGeneration) {
+		apagar: while (generation < lenGeneration) {
 			generation++;
 			/**
 			 * Selection
@@ -99,7 +99,8 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 			
 			for (State lState : population) {
 				if(lState.getValue().equals(g.getValue()) && report.getBestSoluctionIteraction() == null){
-					report.setBestSoluctionIteraction(generation);					
+					report.setBestSoluctionIteraction(generation);
+					//break apagar;
 				}
 			}
 		}
