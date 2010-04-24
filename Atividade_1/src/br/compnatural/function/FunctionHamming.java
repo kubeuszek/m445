@@ -7,6 +7,7 @@ public class FunctionHamming implements MathFunction {
 	
 	private State g;
 	final Boolean max;
+	public final int length;
 	
 	private static final boolean ARRAY_4_3[] = new boolean[]{false, true, false,
 			false, true, false,
@@ -69,13 +70,14 @@ public class FunctionHamming implements MathFunction {
 			false, false, false, false, false, false, false, false, false, false, true, true, true, true, true, true, true, true, true, true, false, false, false, false, false, false, false, false, false, false
 			};
 	
-	public FunctionHamming (Boolean max, int lenght){
+	public FunctionHamming (Boolean max, int length){
 		if(!max){
 			throw new UnsupportedOperationException("Tem que rever esta implementação");			
 		}
 		this.max = max;
 		g = State.getState();
-		g.setValue((double)lenght);
+		g.setValue((double)length);
+		this.length = length;
 	}
 
 	@Override

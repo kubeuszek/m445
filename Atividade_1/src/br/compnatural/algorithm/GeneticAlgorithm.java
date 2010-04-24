@@ -38,7 +38,8 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 		int generation = 0;
 		State state ;
 		report.setBestSoluctionIteraction(null);
-		
+		Double bestValue = null;
+		int bestGeneration = -1;
 		/**
 		 * Initialization
 		 */
@@ -47,7 +48,7 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 			state.setValue(function.eval(state));
 			population.add(state);
 			
-			if(state.getValue() == function.getMax().getValue() && report.getBestSoluctionIteraction() == null){
+			if(state.getValue().equals(g.getValue()) && report.getBestSoluctionIteraction() == null){
 				report.setBestSoluctionIteraction(generation + 1);
 			}
 		}
@@ -83,22 +84,38 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 			/**
 			 * Substitution
 			 */
-			Collections.sort(population);
+			Collections.sort(population, new State.InverseOrderState());
 			population = population.subList(0, lenPopulation);
+			
+			if(bestValue != null){
+				if(bestValue < population.get(0).getValue()){
+					bestValue = new Double(population.get(0).getValue());
+					bestGeneration = generation;
+				}
+			}else{
+				bestGeneration = generation;
+				bestValue = new Double(population.get(0).getValue());
+			}
+			
 			for (State lState : population) {
-				if(lState.getValue() == function.getMax().getValue() && report.getBestSoluctionIteraction() == null){
-					report.setBestSoluctionIteraction(generation);
+				if(lState.getValue().equals(g.getValue()) && report.getBestSoluctionIteraction() == null){
+					report.setBestSoluctionIteraction(generation);					
 				}
 			}
 		}
 		
-		State best = null;
+		State best;
 		if(report.getBestSoluctionIteraction() == null){
+			report.setBestSoluctionIteraction(0);
 			best = population.get(0);			
 		}else{
-			best = function.getMax();
+			best = g;
+			report.setBestSoluctionIteraction(1);
 		}
+		
 		report.setBestSoluctionSoFar(best.getValue());
+		report.setFirstBestSoluctionIteraction(bestGeneration);
+		
 		return best;
 	}
 	

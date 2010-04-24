@@ -100,7 +100,7 @@ private static final boolean ARRAY_40_30[] = new boolean[]{false, false, false, 
 	public void testEval_12_9() {
 		int max = 108;
 		FunctionHamming function = new FunctionHamming(Boolean.TRUE, max);
-		Specification specification = new BinarySpecification(12);
+		Specification specification = new BinarySpecification(max);
 		State state = specification.initialize();
 		
 		((BinaryCoordinate)state.getCoordinate().get(0)).setValue(ARRAY_12_9.clone());
@@ -124,7 +124,7 @@ private static final boolean ARRAY_40_30[] = new boolean[]{false, false, false, 
 	public void testEval_40_30() {
 		int max = 1200;
 		FunctionHamming function = new FunctionHamming(Boolean.TRUE, max);
-		Specification specification = new BinarySpecification(12);
+		Specification specification = new BinarySpecification(max);
 		State state = specification.initialize();
 		
 		((BinaryCoordinate)state.getCoordinate().get(0)).setValue(ARRAY_40_30.clone());

@@ -39,16 +39,25 @@ public class BinarySpecification implements Specification {
 	@Override
 	public State perturb(State pState) {
 		BinaryCoordinate coordinate = ((BinaryCoordinate)pState.getCoordinate().get(0));
+		State s1 = initialize();
+		for (int i = 0; i < coordinate.length; i++) {
+			((BinaryCoordinate)s1.getCoordinate().get(0)).getValue()[i] = coordinate.getValue()[i];
+		}
+		
 		int indice = random.nextInt(coordinate.length);
-		coordinate.getValue()[indice] = !coordinate.getValue()[indice]; 
-		return pState;
+		((BinaryCoordinate)s1.getCoordinate().get(0)).getValue()[indice] = !coordinate.getValue()[indice]; 
+		return s1;
 	}
 
 	@Override
 	public State[] recombination(State male, State female, Boolean crossOver) {
 		BinaryCoordinate coordinateFemale 	= (BinaryCoordinate)female.getCoordinate().get(0);
 		BinaryCoordinate coordinateMale		= (BinaryCoordinate)male.getCoordinate().get(0);
-		int indice = random.nextInt(coordinateFemale.length);
+		int indice = coordinateFemale.length +1;
+		if(crossOver){
+			indice = random.nextInt(coordinateFemale.length);
+		}
+		
 		
 		State s1 = initialize();
 		State s2 = initialize();

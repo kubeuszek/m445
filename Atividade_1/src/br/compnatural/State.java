@@ -71,11 +71,11 @@ public class State implements Comparable<State>{
 		return getValue().compareTo(o.getValue());
 	}
 	
-	public static class NaturalOrderState implements Comparator<State>{
+	public static class InverseOrderState implements Comparator<State>{
 
 		@Override
 		public int compare(State o1, State o2) {
-			return o1.compareTo(o2);
+			return o2.compareTo(o1);
 		}
 		
 	}
