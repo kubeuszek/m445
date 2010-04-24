@@ -76,7 +76,7 @@ private static final boolean ARRAY_40_30[] = new boolean[]{false, false, false, 
 	public void testEval_4_3() {
 		int max = 12;
 		FunctionHamming function = new FunctionHamming(Boolean.TRUE, max);
-		Specification specification = new BinarySpecification(12);
+		Specification specification = new BinarySpecification(max, 0.01f);
 		State state = specification.initialize();
 		
 		((BinaryCoordinate)state.getCoordinate().get(0)).setValue(ARRAY_4_3.clone());
@@ -87,7 +87,7 @@ private static final boolean ARRAY_40_30[] = new boolean[]{false, false, false, 
 		
 		state = specification.perturb(state);
 		state.setValue(function.eval(state));
-		assertEquals((double)(max-1), state.getValue());
+		assertEquals(Boolean.TRUE, new Boolean (state.getValue() >= (double)(max-1)));
 		log.info("valor "+state.getValue());
 		
 		
@@ -100,7 +100,7 @@ private static final boolean ARRAY_40_30[] = new boolean[]{false, false, false, 
 	public void testEval_12_9() {
 		int max = 108;
 		FunctionHamming function = new FunctionHamming(Boolean.TRUE, max);
-		Specification specification = new BinarySpecification(max);
+		Specification specification = new BinarySpecification(max, 0.01f);
 		State state = specification.initialize();
 		
 		((BinaryCoordinate)state.getCoordinate().get(0)).setValue(ARRAY_12_9.clone());
@@ -111,7 +111,7 @@ private static final boolean ARRAY_40_30[] = new boolean[]{false, false, false, 
 		
 		state = specification.perturb(state);
 		state.setValue(function.eval(state));
-		assertEquals((double)(max-1), state.getValue());
+		assertEquals(Boolean.TRUE, new Boolean (state.getValue() >= (double)(max-1)));
 		log.info("valor "+state.getValue());
 		
 		
@@ -124,7 +124,7 @@ private static final boolean ARRAY_40_30[] = new boolean[]{false, false, false, 
 	public void testEval_40_30() {
 		int max = 1200;
 		FunctionHamming function = new FunctionHamming(Boolean.TRUE, max);
-		Specification specification = new BinarySpecification(max);
+		Specification specification = new BinarySpecification(max, 0.01f);
 		State state = specification.initialize();
 		
 		((BinaryCoordinate)state.getCoordinate().get(0)).setValue(ARRAY_40_30.clone());
@@ -135,7 +135,7 @@ private static final boolean ARRAY_40_30[] = new boolean[]{false, false, false, 
 		
 		state = specification.perturb(state);
 		state.setValue(function.eval(state));
-		assertEquals((double)(max-1), state.getValue());
+		assertEquals(Boolean.TRUE, new Boolean (state.getValue() >= (double)(max-1)));
 		log.info("valor "+state.getValue());
 		
 		

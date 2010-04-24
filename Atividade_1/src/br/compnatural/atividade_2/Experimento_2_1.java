@@ -107,7 +107,7 @@ public class Experimento_2_1 implements Runnable {
 		BinarySpecification specification = null;
 		if (mathFunction instanceof FunctionHamming) {
 			specification = new BinarySpecification(
-					((FunctionHamming) mathFunction).length);
+					((FunctionHamming) mathFunction).length, 0.01f);
 		}
 
 		return specification;

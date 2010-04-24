@@ -22,14 +22,8 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 	 */
 	public final float pc;
 	
-	/**
-	 * Mutation Probability
-	 */
-	public final float pm;
-	
 	public GeneticAlgorithm(float pc, float pm){
 		this.pc = pc;
-		this.pm = pm;
 	}
 	
 	public State optimize(int lenPopulation, int lenGeneration, State g, MathFunction function, Specification specification, ReportUnit report){
@@ -75,10 +69,8 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 			 * Mutation
 			 */
 			for (int i = 0; i < population.size(); i++) {
-				if(random.nextFloat() <= pm){
-					population.set(i, specification.perturb(population.get(i)));
-					population.get(i).setValue (function.eval(population.get(i)));
-				}
+				population.set(i, specification.perturb(population.get(i)));
+				population.get(i).setValue (function.eval(population.get(i)));
 			}
 			
 			/**

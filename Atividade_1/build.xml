@@ -5,7 +5,7 @@
     <target name="create_run_jar">
         <jar destfile="C:/Users/familia/Desktop/atividade_1.jar" filesetmanifest="mergewithoutmain">
             <manifest>
-                <attribute name="Main-Class" value="br.compnatural.atividade_1.Main"/>
+                <attribute name="Main-Class" value="br.compnatural.atividade_2.Experimento_2_1"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
             <fileset dir="C:/Users/familia/workspace_novo/Atividade_1/target/classes"/>
