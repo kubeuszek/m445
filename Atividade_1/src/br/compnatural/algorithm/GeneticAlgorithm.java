@@ -21,9 +21,15 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 	 * Crossover Probability
 	 */
 	public final float pc;
+	public final Boolean subsDeterministc;
 	
-	public GeneticAlgorithm(float pc, float pm){
+	public GeneticAlgorithm(float pc){
+		this(pc, Boolean.TRUE);
+	}
+	
+	public GeneticAlgorithm(float pc, Boolean subsDeterministc){
 		this.pc = pc;
+		this.subsDeterministc = subsDeterministc;
 	}
 	
 	public State optimize(int lenPopulation, int lenGeneration, State g, MathFunction function, Specification specification, ReportUnit report){
@@ -76,8 +82,7 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 			/**
 			 * Substitution
 			 */
-			Collections.sort(population, new State.InverseOrderState());
-			population = population.subList(0, lenPopulation);
+			population = substitution(lenPopulation, population);
 			
 			if(bestValue != null){
 				if(bestValue < population.get(0).getValue()){
@@ -111,6 +116,17 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 		
 		return best;
 	}
+
+	private List<State> substitution(int lenPopulation, List<State> population) {
+		if(subsDeterministc){
+			Collections.sort(population, new State.InverseOrderState());
+			population = population.subList(0, lenPopulation);
+			return population;
+		}else{
+			return organizeCouples(population, new RoulleteWheel(population));
+		}
+		
+	}
 	
 	public List<State> organizeCouples(List<State> population, RoulleteWheel roullete){
 		List<State> retorno = new ArrayList<State>(population.size());
@@ -129,11 +145,21 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 	
 	public static class RoulleteWheel{
 		List<State> roullete;
+		int worst = 0;
 		RoulleteWheel(List<State> population){
+			for (State state : population) {
+				int lMax = state.getValue().intValue();
+				if(worst > lMax){
+					worst = lMax;
+				}
+			}
+			
+			worst =  1+ Math.abs(worst);
+			
 			roullete = new LinkedList<State>();
 			for (State state : population) {
-				int max = Math.abs(state.getValue().intValue());
-				for (int i = 0; i < max; i++) {
+				int lMax = state.getValue().intValue() + worst;
+				for (int i = 0; i < lMax; i++) {
 					roullete.add(state);
 				}
 			}

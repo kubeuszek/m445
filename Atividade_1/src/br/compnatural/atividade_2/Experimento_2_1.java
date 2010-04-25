@@ -30,8 +30,7 @@ public class Experimento_2_1 implements Runnable {
 
 		experiment.setAlgorithms(new ArrayList<Experiment.AlgorithmWrapper>(4));
 		experiment.getAlgorithms().add(
-				new Experiment.AlgorithmWrapper(new GeneticAlgorithm(0.75f,
-						0.01f), functions));
+				new Experiment.AlgorithmWrapper(new GeneticAlgorithm(0.75f), functions));
 		
 		functions = new ArrayList<MathFunction>();
 		functions.add(new FunctionHamming(Boolean.TRUE, 12));
