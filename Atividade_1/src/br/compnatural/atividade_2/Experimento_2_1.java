@@ -94,7 +94,7 @@ public class Experimento_2_1 implements Runnable {
 		} else if (algorithm.getOptimizationAlgorithm() instanceof GeneticAlgorithm) {
 			GeneticAlgorithm genetic = (GeneticAlgorithm) algorithm
 					.getOptimizationAlgorithm();
-			genetic.optimize(50, 100, g, function, specification, reportUnit);
+			genetic.optimize(50, 100, function, specification, reportUnit);
 			reportUnit
 					.setTotalIteraction(((FunctionHamming) function).length + 0d);
 		}

@@ -32,7 +32,7 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 		this.subsDeterministc = subsDeterministc;
 	}
 	
-	public State optimize(int lenPopulation, int lenGeneration, State g, MathFunction function, Specification specification, ReportUnit report){
+	public State optimize(int lenPopulation, int lenGeneration, MathFunction function, Specification specification, ReportUnit report){
 		List<State> population = new ArrayList<State>(lenPopulation);
 		random = new Random(System.currentTimeMillis());
 		int generation = 0;
@@ -48,7 +48,7 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 			state.setValue(function.eval(state));
 			population.add(state);
 			
-			if(state.getValue().equals(g.getValue()) && report.getBestSoluctionIteraction() == null){
+			if(state.getValue().equals(function.getMax().getValue()) && report.getBestSoluctionIteraction() == null){
 				report.setBestSoluctionIteraction(generation + 1);
 			}
 		}
@@ -95,7 +95,7 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 			}
 			
 			for (State lState : population) {
-				if(lState.getValue().equals(g.getValue()) && report.getBestSoluctionIteraction() == null){
+				if(lState.getValue().equals(function.getMax().getValue()) && report.getBestSoluctionIteraction() == null){
 					report.setBestSoluctionIteraction(generation);
 					//break apagar;
 				}
@@ -107,7 +107,7 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 			report.setBestSoluctionIteraction(0);
 			best = population.get(0);			
 		}else{
-			best = g;
+			best = function.getMax();
 			report.setBestSoluctionIteraction(1);
 		}
 		
