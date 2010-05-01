@@ -12,6 +12,44 @@ public class ReportUnit {
 	private State initialState;
 	private Long time;
 	
+	private Double initialAverage;
+	private Double finalAverage;
+	
+	private Double initialSD;
+	private Double finalDS;
+	
+	public Double getInitialAverage() {
+		return initialAverage;
+	}
+
+	public void setInitialAverage(Double initialAverage) {
+		this.initialAverage = initialAverage;
+	}
+
+	public Double getFinalAverage() {
+		return finalAverage;
+	}
+
+	public void setFinalAverage(Double finalAverage) {
+		this.finalAverage = finalAverage;
+	}
+
+	public Double getInitialSD() {
+		return initialSD;
+	}
+
+	public void setInitialSD(Double initialSD) {
+		this.initialSD = initialSD;
+	}
+
+	public Double getFinalDS() {
+		return finalDS;
+	}
+
+	public void setFinalDS(Double finalDS) {
+		this.finalDS = finalDS;
+	}
+
 	private Experiment.AlgorithmWrapper algorithm;
 	private MathFunction function;
 

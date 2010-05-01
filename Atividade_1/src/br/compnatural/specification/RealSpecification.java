@@ -10,7 +10,7 @@ import br.compnatural.State;
 import br.compnatural.coordinate.Coordinate;
 import br.compnatural.coordinate.RealCoordinate;
 
-public class RealSpecification implements Specification {
+public class RealSpecification extends Specification {
 
 	Logger log = Logger.getLogger(RealSpecification.class.getName());
 

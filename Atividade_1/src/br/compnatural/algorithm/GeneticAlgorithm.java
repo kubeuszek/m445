@@ -53,6 +53,9 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 			}
 		}
 		
+		report.setInitialAverage(specification.getAverage(population));
+		
+		
 		apagar: while (generation < lenGeneration) {
 			generation++;
 			/**
@@ -113,6 +116,8 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 		
 		report.setBestSoluctionSoFar(best.getValue());
 		report.setFirstBestSoluctionIteraction(bestGeneration);
+		
+		report.setFinalAverage(specification.getAverage(population));
 		
 		return best;
 	}

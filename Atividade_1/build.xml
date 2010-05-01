@@ -5,7 +5,7 @@
     <target name="create_run_jar">
         <jar destfile="C:/Users/familia/Desktop/atividade_1.jar" filesetmanifest="mergewithoutmain">
             <manifest>
-                <attribute name="Main-Class" value="br.compnatural.atividade_2.Experimento_2_1"/>
+                <attribute name="Main-Class" value="br.compnatural.atividade_2.Experimento_2_2"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
             <fileset dir="C:/Users/familia/workspace_novo/Atividade_1/target/classes"/>
@@ -16,6 +16,7 @@
             <zipfileset excludes="META-INF/*.SF" src="C:/Users/familia/.m2/repository/commons-logging/commons-logging/1.0/commons-logging-1.0.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="C:/Users/familia/.m2/repository/commons-collections/commons-collections/2.1/commons-collections-2.1.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="C:/Users/familia/.m2/repository/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="C:/Users/familia/.m2/repository/commons-math/commons-math/1.2/commons-math-1.2.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="C:/Users/familia/.m2/repository/org/codehaus/groovy/groovy-all/1.5.5/groovy-all-1.5.5.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="C:/Users/familia/.m2/repository/junit/junit/3.8.2/junit-3.8.2.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="C:/Users/familia/.m2/repository/org/apache/ant/ant/1.7.0/ant-1.7.0.jar"/>

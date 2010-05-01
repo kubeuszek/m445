@@ -1,6 +1,8 @@
 package br.compnatural.algorithm;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import br.compnatural.State;
@@ -70,6 +72,12 @@ public class ParticleSwarm extends OptimizationAlgorithm {
 			}
 		}
 		
+		List<State> staPopulation = new ArrayList<State>(population.size());
+		for (Particle particle : population) {
+			staPopulation.add(particle.thisBest);
+		}
+		report.setInitialAverage(specification.getAverage(staPopulation));
+		
 		while (it < max_it) {
 			it++;
 			
@@ -80,18 +88,29 @@ public class ParticleSwarm extends OptimizationAlgorithm {
 			
 			int index = 0;
 			for (Particle particle : population) {
+				state = specification.initialize();
+				
 				particle.neigBest = getBestNeighbor(index, population);
 
 				particle.velocity = nextVelocity(particle, it, max_it, w);
 
 				RealCoordinate coordinate;
+				RealCoordinate newCoordinate;
 				for (int i = 0; i < particle.velocity.length; i++) {
 					coordinate = (RealCoordinate)particle.state.getCoordinate().get(i);
+					newCoordinate = (RealCoordinate)state.getCoordinate().get(i);
 					
-					coordinate.setValue(coordinate.getValue() + particle.velocity[i] );
+					newCoordinate.setValue(coordinate.getValue() + particle.velocity[i] );
 				}
 
+				particle.state = state;
 				particle.state.setValue(function.eval(particle.state));
+				
+				if(particle.state.getValue() > particle.thisBest.getValue()){
+					report.setFirstBestSoluctionIteraction(it);
+					particle.thisBest = particle.state; 
+				}
+				
 				if(particle.state.getValue().equals(function.getMax().getValue()) && report.getBestSoluctionIteraction() == null){
 					report.setBestSoluctionIteraction(it);
 				}
@@ -100,7 +119,25 @@ public class ParticleSwarm extends OptimizationAlgorithm {
 			}
 		}
 		
-		return null;
+		staPopulation = new ArrayList<State>(population.size());
+		for (Particle particle : population) {
+			staPopulation.add(particle.thisBest);
+		}
+		report.setFinalAverage(specification.getAverage(staPopulation));
+		Collections.sort(population, new InverseOrderParticle());
+		
+		State best;
+		if(report.getBestSoluctionIteraction() == null){
+			report.setBestSoluctionIteraction(0);
+			best = population.get(0).neigBest;			
+		}else{
+			best = function.getMax();
+			report.setBestSoluctionIteraction(1);
+		}
+		
+		report.setBestSoluctionSoFar(best.getValue());
+		
+		return best;
 		
 		
 	}
@@ -180,7 +217,17 @@ public class ParticleSwarm extends OptimizationAlgorithm {
 		return "Particle Swarm";
 	}
 	
-	private class Particle{
+	private static class InverseOrderParticle implements Comparator<Particle>{
+
+		@Override
+		public int compare(Particle o1, Particle o2) {
+			return o2.neigBest.compareTo(o1.neigBest);
+		}
+	}
+	
+	private class Particle {
+
+		
 		protected State state;
 		protected double[] velocity;
 		protected double[] velocityMax;
@@ -193,6 +240,7 @@ public class ParticleSwarm extends OptimizationAlgorithm {
 			this.state = state;
 			this.velocity = velocity;
 		}
+		
 	}
 
 }

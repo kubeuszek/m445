@@ -21,20 +21,38 @@ public class Experimento_2_2 implements Runnable {
 
 	public Experimento_2_2() {
 		List<MathFunction> functions = new ArrayList<MathFunction>();
-		functions.add(new FunctionUnid(Boolean.TRUE));
+		//functions.add(new FunctionUnid(Boolean.TRUE));
 		//functions.add(new FunctionGriewank(Boolean.TRUE));
 		functions.add(new FunctionSumPow(Boolean.TRUE));
 
-		experiment.setAlgorithms(new ArrayList<Experiment.AlgorithmWrapper>(4));
+		experiment.setAlgorithms(new ArrayList<Experiment.AlgorithmWrapper>(10));
+//		experiment.getAlgorithms().add(
+//				new Experiment.AlgorithmWrapper(new ParticleSwarm(20, 1, 1,
+//						2.05, 2.05), functions));
+//		
+//		
+//		experiment.getAlgorithms().add(
+//				new Experiment.AlgorithmWrapper(new ParticleSwarm(20, 1, 1,
+//						0.5, 0.5), functions));
+//		
+//		
+//		experiment.getAlgorithms().add(
+//				new Experiment.AlgorithmWrapper(new ParticleSwarm(100, 1, 1,
+//						2.05, 2.05), functions));
+//		
+//		
+//		experiment.getAlgorithms().add(
+//				new Experiment.AlgorithmWrapper(new ParticleSwarm(20, 0.01, 0.01,
+//						2.05, 2.05), functions));
+//		
+//		
 		experiment.getAlgorithms().add(
-				new Experiment.AlgorithmWrapper(new ParticleSwarm(20, 1, 1,
+				new Experiment.AlgorithmWrapper(new ParticleSwarm(20, 0.9, 0.1,
 						2.05, 2.05), functions));
-
-		experiment.getAlgorithms().add(
-				new Experiment.AlgorithmWrapper(new ParticleSwarm(20, 1, 1,
-						2.05, 2.05, Boolean.FALSE), functions));
-		// experiment.getAlgorithms().add(new Experiment.AlgorithmWrapper(new
-		// HillClimbingIterated(), functions));
+//
+//		experiment.getAlgorithms().add(
+//				new Experiment.AlgorithmWrapper(new ParticleSwarm(20, 1, 1,
+//						2.05, 2.05, Boolean.FALSE), functions));
 	}
 
 	@Override
@@ -101,7 +119,7 @@ public class Experimento_2_2 implements Runnable {
 		
 		if (algorithm.getOptimizationAlgorithm() instanceof ParticleSwarm) {
 			ParticleSwarm lParticleSwarm = (ParticleSwarm)algorithm.getOptimizationAlgorithm();
-			lParticleSwarm.optimize(2000, function, specification, reportUnit);
+			lParticleSwarm.optimize(5000, function, specification, reportUnit);
 			reportUnit.setTotalIteraction(lParticleSwarm.c1);
 		}
 	}

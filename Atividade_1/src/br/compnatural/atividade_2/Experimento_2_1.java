@@ -87,7 +87,7 @@ public class Experimento_2_1 implements Runnable {
 			HillClimbingIterated hillClimbing = (HillClimbingIterated) algorithm
 					.getOptimizationAlgorithm();
 
-			hillClimbing.optimize(500, 10, g, function, specification,
+			hillClimbing.optimize(50, 10, g, function, specification,
 					reportUnit);
 			reportUnit
 					.setTotalIteraction(((FunctionHamming) function).length + 0d);

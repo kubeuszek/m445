@@ -9,7 +9,7 @@ import br.compnatural.State;
 import br.compnatural.coordinate.BinaryCoordinate;
 import br.compnatural.coordinate.Coordinate;
 
-public class BinarySpecification implements Specification {
+public class BinarySpecification extends Specification {
 
 	Logger log = Logger.getLogger(BinarySpecification.class.getName());
 	Random random = new Random(System.currentTimeMillis());
