@@ -1,5 +1,6 @@
 package br.compnatural.algorithm;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -21,18 +22,30 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 	 * Crossover Probability
 	 */
 	public final float pc;
+	
+	/**
+	 * Mutation Probability
+	 */
+	public final float pm;
 	public final Boolean subsDeterministc;
+	public final int lenPopulation;
 	
 	public GeneticAlgorithm(float pc){
 		this(pc, Boolean.TRUE);
 	}
 	
-	public GeneticAlgorithm(float pc, Boolean subsDeterministc){
-		this.pc = pc;
+	public GeneticAlgorithm(int p1, float p3, float p4, Boolean subsDeterministc){
+		this.pc = p3;
 		this.subsDeterministc = subsDeterministc;
+		this.lenPopulation = p1;
+		pm = p4;
 	}
 	
-	public State optimize(int lenPopulation, int lenGeneration, MathFunction function, Specification specification, ReportUnit report){
+	public GeneticAlgorithm(float pc, Boolean subsDeterministc){
+		this(50, pc, 0.1f, Boolean.TRUE);
+	}
+	
+	public State optimize(int lenGeneration, MathFunction function, Specification specification, ReportUnit report){
 		List<State> population = new ArrayList<State>(lenPopulation);
 		random = new Random(System.currentTimeMillis());
 		int generation = 0;
@@ -48,7 +61,7 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 			state.setValue(function.eval(state));
 			population.add(state);
 			
-			if(state.getValue().equals(function.getMax().getValue()) && report.getBestSoluctionIteraction() == null){
+			if(equals_witherror(state, function.getMax()) && report.getBestSoluctionIteraction() == null){
 				report.setBestSoluctionIteraction(generation + 1);
 			}
 		}
@@ -98,7 +111,7 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 			}
 			
 			for (State lState : population) {
-				if(lState.getValue().equals(function.getMax().getValue()) && report.getBestSoluctionIteraction() == null){
+				if(equals_witherror(lState, function.getMax()) && report.getBestSoluctionIteraction() == null){
 					report.setBestSoluctionIteraction(generation);
 					//break apagar;
 				}
@@ -114,7 +127,13 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 			report.setBestSoluctionIteraction(1);
 		}
 		
-		report.setBestSoluctionSoFar(best.getValue());
+		if(function.hasMaximum()){
+			report.setBestSoluctionSoFar(best.getValue());
+		}else{
+			report.setBestSoluctionSoFar((new BigDecimal(best.getValue())).negate().doubleValue());
+		}
+		
+		
 		report.setFirstBestSoluctionIteraction(bestGeneration);
 		
 		report.setFinalAverage(specification.getAverage(population));

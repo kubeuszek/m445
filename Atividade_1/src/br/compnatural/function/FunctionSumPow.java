@@ -55,7 +55,7 @@ public class FunctionSumPow implements MathFunction {
 
 	@Override
 	public String getName() {
-		return "Função Sum Pow";
+		return "Function Sum Pow";
 	}
 	
 	@Override
