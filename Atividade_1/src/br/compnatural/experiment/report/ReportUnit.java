@@ -1,5 +1,7 @@
 package br.compnatural.experiment.report;
 
+import java.util.List;
+
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import br.compnatural.Experiment;
 import br.compnatural.State;
@@ -19,6 +21,8 @@ public class ReportUnit {
 	private Double initialSD;
 	private Double finalDS;
 	
+	private List<ReportGraphInfo> reportGraphInfos;
+
 	private JRBeanCollectionDataSource reportGraphInfo;
 	
 	public Double getInitialAverage() {
@@ -132,5 +136,14 @@ public class ReportUnit {
 
 	public JRBeanCollectionDataSource getReportGraphInfo() {
 		return reportGraphInfo;
+	}
+	
+	
+	public List<ReportGraphInfo> getReportGraphInfos() {
+		return reportGraphInfos;
+	}
+
+	public void setReportGraphInfos(List<ReportGraphInfo> reportGraphInfos) {
+		this.reportGraphInfos = reportGraphInfos;
 	}
 }

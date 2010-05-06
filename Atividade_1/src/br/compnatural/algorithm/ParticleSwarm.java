@@ -10,12 +10,13 @@ import java.util.Random;
 import br.compnatural.State;
 import br.compnatural.coordinate.Coordinate;
 import br.compnatural.coordinate.RealCoordinate;
+import br.compnatural.experiment.report.ReportGraphInfo;
 import br.compnatural.experiment.report.ReportUnit;
 import br.compnatural.function.MathFunction;
 import br.compnatural.specification.RealSpecification;
 
 public class ParticleSwarm extends OptimizationAlgorithm {
-	final Boolean lBest ;
+	public final Boolean lBest ;
 	
 	public final double w1;
 	public final double w2;
@@ -72,15 +73,17 @@ public class ParticleSwarm extends OptimizationAlgorithm {
 			particle.velocityMin = velocityMin;
 			population.add(particle);
 			
-			if(equals_witherror(state, function.getMax()) && report.getBestSoluctionIteraction() == null){
-				report.setBestSoluctionIteraction(it + 1);
-			}
+//			if(equals_witherror(state, function.getMax()) && report.getBestSoluctionIteraction() == null){
+//				report.setBestSoluctionIteraction(it + 1);
+//			}
 		}
 		
 		List<State> staPopulation = new ArrayList<State>(population.size());
 		for (Particle particle : population) {
 			staPopulation.add(particle.thisBest);
 		}
+		
+		report.setReportGraphInfos(new ArrayList<ReportGraphInfo>(lenPopulation+1));
 		report.setInitialAverage(specification.getAverage(staPopulation));
 		
 		while (it < max_it) {
@@ -138,6 +141,7 @@ public class ParticleSwarm extends OptimizationAlgorithm {
 
 				index++;
 			}
+			report.getReportGraphInfos().add(getReportGraphInfo(population, it, function));
 		}
 		
 		staPopulation = new ArrayList<State>(population.size());
@@ -173,6 +177,25 @@ public class ParticleSwarm extends OptimizationAlgorithm {
 		return best;
 		
 		
+	}
+	
+	private ReportGraphInfo getReportGraphInfo(List<Particle> population, int generation, MathFunction function){
+		double higher = -1;
+		double sum = 0;
+		State state;
+		for (Particle particle : population) {
+			state = particle.state;
+			if(higher == -1 || higher < state.getValue()){
+				higher = state.getValue();
+			}
+			sum += state.getValue();
+		}
+		
+		if(!function.hasMaximum()){
+			
+			higher =  ((new BigDecimal(higher)).negate().doubleValue());
+		}
+		return new ReportGraphInfo(sum/population.size(), higher, generation);
 	}
 	
 	private double[] nextVelocity(Particle particle, int it, int max_it, Double w){

@@ -6,7 +6,7 @@
 	<parameter name="nome" class="java.lang.String"/>
 	<parameter name="LOGO" class="java.io.InputStream" isForPrompting="false"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["M:\\matheus\\mestrado\\workspace\\Atividade_1\\relatorios\\"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
 	</parameter>
 	<field name="bestSoluctionSoFar" class="java.lang.Double"/>
 	<field name="firstBestSoluctionIteraction" class="java.lang.Integer"/>

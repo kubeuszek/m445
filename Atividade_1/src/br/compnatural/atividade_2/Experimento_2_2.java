@@ -5,8 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
 import br.compnatural.Experiment;
 import br.compnatural.algorithm.ParticleSwarm;
+import br.compnatural.experiment.report.ReportGraphInfo;
 import br.compnatural.experiment.report.ReportManager;
 import br.compnatural.experiment.report.ReportUnit;
 import br.compnatural.function.FunctionGriewank;
@@ -20,6 +23,8 @@ public class Experimento_2_2 implements Runnable {
 	private Experiment experiment = new Experiment(
 			"Segunda questao / atividade #2");
 
+	private final static int MAX_IT = 2000;
+	
 	public Experimento_2_2() {
 		List<MathFunction> functions = new ArrayList<MathFunction>();
 		functions.add(new FunctionUnid(Boolean.TRUE));
@@ -31,43 +36,71 @@ public class Experimento_2_2 implements Runnable {
 		experiment.getAlgorithms().add(
 				new Experiment.AlgorithmWrapper(new ParticleSwarm(20, 1, 1,
 						2.05, 2.05), functions));
-//		
-//		
-//		experiment.getAlgorithms().add(
-//				new Experiment.AlgorithmWrapper(new ParticleSwarm(20, 1, 1,
-//						0.5, 0.5), functions));
-//		
-//		
-//		experiment.getAlgorithms().add(
-//				new Experiment.AlgorithmWrapper(new ParticleSwarm(100, 1, 1,
-//						2.05, 2.05), functions));
-//		
-//		
-//		experiment.getAlgorithms().add(
-//				new Experiment.AlgorithmWrapper(new ParticleSwarm(20, 0.01, 0.01,
-//						2.05, 2.05), functions));
-//		
-//		
+		
+		
+		experiment.getAlgorithms().add(
+				new Experiment.AlgorithmWrapper(new ParticleSwarm(20, 1, 1,
+						0.5, 0.5), functions));
+		
+		
+		experiment.getAlgorithms().add(
+				new Experiment.AlgorithmWrapper(new ParticleSwarm(100, 1, 1,
+						2.05, 2.05), functions));
+		
+		
+		experiment.getAlgorithms().add(
+				new Experiment.AlgorithmWrapper(new ParticleSwarm(20, 0.01, 0.01,
+						2.05, 2.05), functions));
+		
+		
 		experiment.getAlgorithms().add(
 				new Experiment.AlgorithmWrapper(new ParticleSwarm(20, 0.9, 0.1,
 						2.05, 2.05), functions));
-//
-//		experiment.getAlgorithms().add(
-//				new Experiment.AlgorithmWrapper(new ParticleSwarm(20, 1, 1,
-//						2.05, 2.05, Boolean.FALSE), functions));
+
+		experiment.getAlgorithms().add(
+				new Experiment.AlgorithmWrapper(new ParticleSwarm(20, 1, 1,
+						2.05, 2.05, Boolean.FALSE), functions));
+		
+		
+		experiment.getAlgorithms().add(
+				new Experiment.AlgorithmWrapper(new ParticleSwarm(20, 1, 1,
+						0.5, 0.5, Boolean.FALSE), functions));
+		
+		
+		experiment.getAlgorithms().add(
+				new Experiment.AlgorithmWrapper(new ParticleSwarm(100, 1, 1,
+						2.05, 2.05, Boolean.FALSE), functions));
+		
+		
+		experiment.getAlgorithms().add(
+				new Experiment.AlgorithmWrapper(new ParticleSwarm(20, 0.01, 0.01,
+						2.05, 2.05, Boolean.FALSE), functions));
+		
+		
+		experiment.getAlgorithms().add(
+				new Experiment.AlgorithmWrapper(new ParticleSwarm(20, 0.9, 0.1,
+						2.05, 2.05, Boolean.FALSE), functions));
 	}
 
 	@Override
 	public void run() {
 
-		List<ReportUnit> ds = new ArrayList<ReportUnit>(1000);
-
-		RealSpecification specification = null;
 		int it = 0;
 		for (Experiment.AlgorithmWrapper algorithm : experiment.getAlgorithms()) {
 			for (MathFunction mathFunction : algorithm.getFunctionUnid()) {
+				
+				List<ReportUnit> ds = new ArrayList<ReportUnit>(10);
+				
+				RealSpecification specification = null;
+				ReportUnit reportUnit = null;
+				List<ReportGraphInfo> graphInfo = new ArrayList<ReportGraphInfo>(MAX_IT+1);
+				String nome = null;
+				for (int i = 0; i < MAX_IT; i++) {
+					graphInfo.add(new ReportGraphInfo(0d, 0d, 0));
+				}
+				
 				for (int i = 0; i < 10; i++) {
-					ReportUnit reportUnit = new ReportUnit();
+					reportUnit = new ReportUnit();
 
 					reportUnit.setAlgorithm(algorithm);
 					reportUnit.setFunction(mathFunction);
@@ -76,25 +109,46 @@ public class Experimento_2_2 implements Runnable {
 
 					specification = getSpecification(mathFunction);
 
-					eval(specification, algorithm, mathFunction, reportUnit);
+					nome = eval(specification, algorithm, mathFunction, reportUnit);
 
 					reportUnit.setTime(System.nanoTime() - ini);
 
 					reportUnit.setTotalIteraction((double)it);
 
 					ds.add(reportUnit);
+					
+					sum(graphInfo, reportUnit.getReportGraphInfos());
+					reportUnit.setReportGraphInfos(null);
 				}
+				Map parameters = new HashMap();
+				parameters.put("nome", experiment.getName());
+				parameters.put("ds", ds);
+				
+				avg(graphInfo, 10);
+				reportUnit.setReportGraphInfo(new JRBeanCollectionDataSource(graphInfo));
+				
+				
+				ReportManager.saveReport("/otimizacao_grafico.jrxml", parameters,
+				"experimento_2_2_PSO_"+nome+".pdf");
 				it++;
 			}
 
 		}
-
-		Map parameters = new HashMap();
-		parameters.put("nome", experiment.getName());
-		parameters.put("ds", ds);
-		
-		ReportManager.saveReport("/otimizacao.jrxml", parameters,
-		"experimento_2_2.pdf");
+	}
+	
+	private void avg(List<ReportGraphInfo> avgGraphInfo, int it){
+		for (int i = 0; i < MAX_IT; i++) {
+			avgGraphInfo.get(i).setAvg_population(avgGraphInfo.get(i).getAvg_population()/it);
+			avgGraphInfo.get(i).setBest_particle(avgGraphInfo.get(i).getBest_particle()/it);
+			avgGraphInfo.get(i).setGeneration(i);
+		}
+	}
+	
+	private void sum(List<ReportGraphInfo> avgGraphInfo, List<ReportGraphInfo> graphInfo){
+		for (int i = 0; i < MAX_IT; i++) {
+			avgGraphInfo.get(i).setAvg_population(graphInfo.get(i).getAvg_population() + avgGraphInfo.get(i).getAvg_population());
+			avgGraphInfo.get(i).setBest_particle(graphInfo.get(i).getBest_particle() + avgGraphInfo.get(i).getBest_particle());
+		}
 	}
 	
 	private RealSpecification getSpecification(MathFunction mathFunction) {
@@ -117,13 +171,17 @@ public class Experimento_2_2 implements Runnable {
 		return specification;
 	}
 	
-	private void eval(RealSpecification specification,
+	private String eval(RealSpecification specification,
 			Experiment.AlgorithmWrapper algorithm, MathFunction function, ReportUnit reportUnit) {
 		
 		if (algorithm.getOptimizationAlgorithm() instanceof ParticleSwarm) {
 			ParticleSwarm lParticleSwarm = (ParticleSwarm)algorithm.getOptimizationAlgorithm();
-			lParticleSwarm.optimize(20000, function, specification, reportUnit);
+			lParticleSwarm.optimize(MAX_IT, function, specification, reportUnit);
+			
+			return lParticleSwarm.lBest +" "+lParticleSwarm.lenPopulation+" "+lParticleSwarm.c1+ " "+lParticleSwarm.c2+" "+lParticleSwarm.w1+ " "+lParticleSwarm.w2+" ";
 		}
+		
+		return null;
 	}
 	
 	public static void main(String[] args) {

@@ -35,7 +35,7 @@
 						<labelExpression><![CDATA["melhor individuo"]]></labelExpression>
 					</xySeries>
 				</xyDataset>
-				<linePlot>
+				<linePlot isShowShapes="false">
 					<plot/>
 					<categoryAxisFormat>
 						<axisFormat>

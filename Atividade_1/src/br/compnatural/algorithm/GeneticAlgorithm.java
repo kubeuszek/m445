@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 
 import br.compnatural.State;
+import br.compnatural.experiment.report.ReportGraphInfo;
 import br.compnatural.experiment.report.ReportUnit;
 import br.compnatural.function.MathFunction;
 import br.compnatural.specification.Specification;
@@ -45,6 +46,23 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 		this(50, pc, 0.1f, Boolean.TRUE);
 	}
 	
+	private ReportGraphInfo getReportGraphInfo(List<State> population, int generation, MathFunction function){
+		double higher = -1;
+		double sum = 0;
+		for (State state : population) {
+			if(higher == -1 || higher < state.getValue()){
+				higher = state.getValue();
+			}
+			sum += state.getValue();
+		}
+		
+		if(!function.hasMaximum()){
+			
+			higher =  ((new BigDecimal(higher)).negate().doubleValue());
+		}
+		return new ReportGraphInfo(sum/population.size(), higher, generation);
+	}
+	
 	public State optimize(int lenGeneration, MathFunction function, Specification specification, ReportUnit report){
 		List<State> population = new ArrayList<State>(lenPopulation);
 		random = new Random(System.currentTimeMillis());
@@ -61,16 +79,19 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 			state.setValue(function.eval(state));
 			population.add(state);
 			
-			if(equals_witherror(state, function.getMax()) && report.getBestSoluctionIteraction() == null){
-				report.setBestSoluctionIteraction(generation + 1);
-			}
+//			if(equals_witherror(state, function.getMax()) && report.getBestSoluctionIteraction() == null){
+//				report.setBestSoluctionIteraction(generation + 1);
+//			}
 		}
+		report.setReportGraphInfos(new ArrayList<ReportGraphInfo>(lenPopulation+1));
 		
 		report.setInitialAverage(specification.getAverage(population));
 		
 		
 		apagar: while (generation < lenGeneration) {
 			generation++;
+			//log.info("nova geracao "+generation);
+			
 			/**
 			 * Selection
 			 */
@@ -116,6 +137,8 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 					//break apagar;
 				}
 			}
+			
+			report.getReportGraphInfos().add(getReportGraphInfo(population, generation, function));
 		}
 		
 		State best;
@@ -147,7 +170,7 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 			population = population.subList(0, lenPopulation);
 			return population;
 		}else{
-			return organizeCouples(population, new RoulleteWheel(population));
+			return organizeCouples(population, new RoulleteWheel(population)).subList(0, lenPopulation);
 		}
 		
 	}
