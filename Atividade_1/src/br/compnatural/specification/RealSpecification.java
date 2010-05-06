@@ -106,64 +106,64 @@ public class RealSpecification extends Specification {
 		if (pm != null && random2.nextFloat() <= pm.floatValue()) {
 
 			int index = 0;
-			if (perturbGaussian) {
-				double value = (random2.nextGaussian() * pState.getCoordinate()
-						.size());
-				index = (int) value;
 
-				if (index == pState.getCoordinate().size()) {
-					index = pState.getCoordinate().size() - 1;
-					log
-							.log(Level.WARNING,
-									"indice na gaussiana precisa ser melhorado, mas é muito difícil retornar 1");
-				}
-			} else {
-				index = random2.nextInt(pState.getCoordinate().size());
-			}
+			index = random2.nextInt(pState.getCoordinate().size());
 
 			State retorno = new State(pState, Boolean.FALSE);
 			RealCoordinate coordinate = (RealCoordinate) retorno
 					.getCoordinate().get(index);
 
-			double min = coordinate.getValue() - coordinate.delta;
-			double max = coordinate.getValue() + coordinate.delta;
-			double aux;
+			if (!perturbGaussian) {
+				double min = coordinate.getValue() - coordinate.delta;
+				double max = coordinate.getValue() + coordinate.delta;
+				double aux;
 
-			if (min > max) {
-				aux = max;
-				max = min;
-				min = aux;
+				if (min > max) {
+					aux = max;
+					max = min;
+					min = aux;
+				}
+
+				if (min < coordinate.min) {
+					min = coordinate.min;
+				}
+
+				if (max > coordinate.max) {
+					max = coordinate.max;
+				}
+
+				RealCoordinate vizinho = new RealCoordinate("v_"
+						+ coordinate.name, min, max);
+				vizinho.setValue(coordinate.value);
+
+				log.info(vizinho.toString() + " delta " + coordinate.delta);
+
+				double value = initialize(vizinho);
+
+				while (!isInRange(vizinho, value)) {
+					value = initialize(vizinho);
+					log.log(Level.SEVERE, vizinho
+							+ " - valor fora do intervalo "
+							+ vizinho.getValue());
+				}
+
+				coordinate.setValue(value);
+
+				
+			} else {
+				coordinate.setValue(coordinate.value + random2.nextGaussian());
+				
+				if(coordinate.getValue() > coordinate.max){
+					coordinate.setValue(coordinate.max);
+				}else if(coordinate.getValue() < coordinate.min){
+					coordinate.setValue(coordinate.min);
+				}				
 			}
-
-			if (min < coordinate.min) {
-				min = coordinate.min;
-			}
-
-			if (max > coordinate.max) {
-				max = coordinate.max;
-			}
-
-			RealCoordinate vizinho = new RealCoordinate("v_" + coordinate.name,
-					min, max);
-			vizinho.setValue(coordinate.value);
-
-			log.info(vizinho.toString() + " delta " + coordinate.delta);
-
-			double value = initialize(vizinho);
-
-			while (!isInRange(vizinho, value)) {
-				value = initialize(vizinho);
-				log.log(Level.SEVERE, vizinho + " - valor fora do intervalo "
-						+ vizinho.getValue());
-			}
-
-			coordinate.setValue(value);
-			
 			return retorno;
-		}else{
+		} else {
 			return pState;
 		}
-		
+
 	}
 
 	@Override

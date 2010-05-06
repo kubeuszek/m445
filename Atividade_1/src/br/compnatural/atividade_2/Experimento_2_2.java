@@ -10,6 +10,7 @@ import br.compnatural.algorithm.ParticleSwarm;
 import br.compnatural.experiment.report.ReportManager;
 import br.compnatural.experiment.report.ReportUnit;
 import br.compnatural.function.FunctionGriewank;
+import br.compnatural.function.FunctionRosenbrock;
 import br.compnatural.function.FunctionSumPow;
 import br.compnatural.function.FunctionUnid;
 import br.compnatural.function.MathFunction;
@@ -21,9 +22,10 @@ public class Experimento_2_2 implements Runnable {
 
 	public Experimento_2_2() {
 		List<MathFunction> functions = new ArrayList<MathFunction>();
-		//functions.add(new FunctionUnid(Boolean.TRUE));
-		//functions.add(new FunctionGriewank(Boolean.TRUE));
-		functions.add(new FunctionSumPow(Boolean.TRUE));
+		functions.add(new FunctionUnid(Boolean.TRUE));
+		
+		functions.add(new FunctionRosenbrock(Boolean.TRUE));
+		functions.add(new FunctionGriewank(Boolean.TRUE));
 
 		experiment.setAlgorithms(new ArrayList<Experiment.AlgorithmWrapper>(10));
 //		experiment.getAlgorithms().add(
@@ -101,10 +103,10 @@ public class Experimento_2_2 implements Runnable {
 			for (int i = 1; i <= 10; i++) {
 				specification.addCoordinate("x"+i, -600, 600);
 			}
-		}else if(mathFunction instanceof FunctionSumPow){
+		}else if(mathFunction instanceof FunctionRosenbrock){
 			specification = new RealSpecification();
 			for (int i = 1; i <= 10; i++) {
-				specification.addCoordinate("x"+i, -1, 1);
+				specification.addCoordinate("x"+i,-2.048, 2.048);
 			}
 		}else{
 			specification = new RealSpecification();

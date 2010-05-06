@@ -1,9 +1,11 @@
 package br.compnatural.algorithm;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 
 import br.compnatural.State;
 import br.compnatural.coordinate.Coordinate;
@@ -20,6 +22,7 @@ public class ParticleSwarm extends OptimizationAlgorithm {
 	public final double c1;
 	public final double c2; 
 	public final int lenPopulation;
+	public Random random = new Random(System.currentTimeMillis()) ;
 	
 	public ParticleSwarm(int lenPopulation, double w1, double w2, double c1, double c2){
 		this(lenPopulation, w1,w2, c1, c2, Boolean.TRUE);
@@ -38,6 +41,8 @@ public class ParticleSwarm extends OptimizationAlgorithm {
 		State state;
 		List<Particle> population = new ArrayList<Particle>(lenPopulation);
 		int it = 0;
+		Double bestValue = null;
+		int bestGeneration = -1;
 		/**
 		 * Initialization
 		 */
@@ -67,7 +72,7 @@ public class ParticleSwarm extends OptimizationAlgorithm {
 			particle.velocityMin = velocityMin;
 			population.add(particle);
 			
-			if(state.getValue().equals(function.getMax().getValue()) && report.getBestSoluctionIteraction() == null){
+			if(equals_witherror(state, function.getMax()) && report.getBestSoluctionIteraction() == null){
 				report.setBestSoluctionIteraction(it + 1);
 			}
 		}
@@ -101,6 +106,12 @@ public class ParticleSwarm extends OptimizationAlgorithm {
 					newCoordinate = (RealCoordinate)state.getCoordinate().get(i);
 					
 					newCoordinate.setValue(coordinate.getValue() + particle.velocity[i] );
+					
+					if(newCoordinate.getValue() > newCoordinate.max){
+						newCoordinate.setValue(newCoordinate.max);
+					}else if(newCoordinate.min > newCoordinate.getValue() ){
+						newCoordinate.setValue(newCoordinate.min); 
+					}
 				}
 
 				particle.state = state;
@@ -108,10 +119,20 @@ public class ParticleSwarm extends OptimizationAlgorithm {
 				
 				if(particle.state.getValue() > particle.thisBest.getValue()){
 					report.setFirstBestSoluctionIteraction(it);
-					particle.thisBest = particle.state; 
+					particle.thisBest = particle.state;
+					
+					if(bestValue == null){
+						bestValue = particle.state.getValue();
+						bestGeneration = it;
+					}else{
+						if(bestValue < particle.state.getValue()){
+							bestValue = particle.state.getValue();
+							bestGeneration = it;
+						}
+					}
 				}
 				
-				if(particle.state.getValue().equals(function.getMax().getValue()) && report.getBestSoluctionIteraction() == null){
+				if(equals_witherror(particle.state, function.getMax()) && report.getBestSoluctionIteraction() == null){
 					report.setBestSoluctionIteraction(it);
 				}
 
@@ -126,6 +147,7 @@ public class ParticleSwarm extends OptimizationAlgorithm {
 		report.setFinalAverage(specification.getAverage(staPopulation));
 		Collections.sort(population, new InverseOrderParticle());
 		
+		//
 		State best;
 		if(report.getBestSoluctionIteraction() == null){
 			report.setBestSoluctionIteraction(0);
@@ -135,7 +157,18 @@ public class ParticleSwarm extends OptimizationAlgorithm {
 			report.setBestSoluctionIteraction(1);
 		}
 		
-		report.setBestSoluctionSoFar(best.getValue());
+		if(function.hasMaximum()){
+			report.setBestSoluctionSoFar(best.getValue());
+		}else{
+			report.setBestSoluctionSoFar((new BigDecimal(best.getValue())).negate().doubleValue());
+		}
+		
+		report.setFirstBestSoluctionIteraction(bestGeneration);
+		staPopulation = new ArrayList<State>(population.size());
+		for (Particle particle : population) {
+			staPopulation.add(particle.state);
+		}
+		report.setFinalAverage(specification.getAverage(staPopulation));
 		
 		return best;
 		
@@ -166,7 +199,7 @@ public class ParticleSwarm extends OptimizationAlgorithm {
 				velocity[i] = w.doubleValue() * particle.velocity[i];
 			}
 			
-			velocity[i] = velocity[i] + (c1 *cognitivo[i]) + (c2 * social[i]);
+			velocity[i] = velocity[i] + (nextPhi(c1) *cognitivo[i]) + (nextPhi(c2) * social[i]);
 			
 			if(velocity[i] > particle.velocityMax[i]){
 				velocity[i] = particle.velocityMax[i];
@@ -178,6 +211,9 @@ public class ParticleSwarm extends OptimizationAlgorithm {
 		return velocity;
 	}
 	
+	public double nextPhi(double c){
+		return random.nextDouble() * c;
+	}
 	private State getBestNeighbor(int index, List<Particle> population){
 		State best = population.get(index).thisBest;
 		if(lBest){
