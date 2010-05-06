@@ -118,7 +118,7 @@ public class Experimento_2_2_GA implements Runnable {
 			
 			specification.pm = new Float (lGeneticAlgorithm.pm);
 			
-			lGeneticAlgorithm.optimize(2000 / lGeneticAlgorithm.lenPopulation, function, specification, reportUnit);
+			lGeneticAlgorithm.optimize(20000 / lGeneticAlgorithm.lenPopulation, function, specification, reportUnit);
 			
 			specification.pm = null;
 		}

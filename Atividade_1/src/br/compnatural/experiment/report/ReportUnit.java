@@ -1,5 +1,6 @@
 package br.compnatural.experiment.report;
 
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import br.compnatural.Experiment;
 import br.compnatural.State;
 import br.compnatural.function.MathFunction;
@@ -17,6 +18,8 @@ public class ReportUnit {
 	
 	private Double initialSD;
 	private Double finalDS;
+	
+	private JRBeanCollectionDataSource reportGraphInfo;
 	
 	public Double getInitialAverage() {
 		return initialAverage;
@@ -121,5 +124,13 @@ public class ReportUnit {
 
 	public MathFunction getFunction() {
 		return function;
+	}
+
+	public void setReportGraphInfo(JRBeanCollectionDataSource reportGraphInfo) {
+		this.reportGraphInfo = reportGraphInfo;
+	}
+
+	public JRBeanCollectionDataSource getReportGraphInfo() {
+		return reportGraphInfo;
 	}
 }

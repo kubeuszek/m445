@@ -28,9 +28,9 @@ public class Experimento_2_2 implements Runnable {
 		functions.add(new FunctionGriewank(Boolean.TRUE));
 
 		experiment.setAlgorithms(new ArrayList<Experiment.AlgorithmWrapper>(10));
-//		experiment.getAlgorithms().add(
-//				new Experiment.AlgorithmWrapper(new ParticleSwarm(20, 1, 1,
-//						2.05, 2.05), functions));
+		experiment.getAlgorithms().add(
+				new Experiment.AlgorithmWrapper(new ParticleSwarm(20, 1, 1,
+						2.05, 2.05), functions));
 //		
 //		
 //		experiment.getAlgorithms().add(
@@ -63,7 +63,7 @@ public class Experimento_2_2 implements Runnable {
 		List<ReportUnit> ds = new ArrayList<ReportUnit>(1000);
 
 		RealSpecification specification = null;
-
+		int it = 0;
 		for (Experiment.AlgorithmWrapper algorithm : experiment.getAlgorithms()) {
 			for (MathFunction mathFunction : algorithm.getFunctionUnid()) {
 				for (int i = 0; i < 10; i++) {
@@ -80,10 +80,11 @@ public class Experimento_2_2 implements Runnable {
 
 					reportUnit.setTime(System.nanoTime() - ini);
 
-					
+					reportUnit.setTotalIteraction((double)it);
 
 					ds.add(reportUnit);
 				}
+				it++;
 			}
 
 		}
@@ -121,8 +122,7 @@ public class Experimento_2_2 implements Runnable {
 		
 		if (algorithm.getOptimizationAlgorithm() instanceof ParticleSwarm) {
 			ParticleSwarm lParticleSwarm = (ParticleSwarm)algorithm.getOptimizationAlgorithm();
-			lParticleSwarm.optimize(5000, function, specification, reportUnit);
-			reportUnit.setTotalIteraction(lParticleSwarm.c1);
+			lParticleSwarm.optimize(20000, function, specification, reportUnit);
 		}
 	}
 	
