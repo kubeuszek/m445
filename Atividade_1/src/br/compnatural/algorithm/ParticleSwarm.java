@@ -183,10 +183,12 @@ public class ParticleSwarm extends OptimizationAlgorithm {
 		double higher = -1;
 		double sum = 0;
 		State state;
+		int i = 0;
 		for (Particle particle : population) {
 			state = particle.state;
-			if(higher == -1 || higher < state.getValue()){
+			if(i == 0 || higher < state.getValue()){
 				higher = state.getValue();
+				i++;
 			}
 			sum += state.getValue();
 		}
@@ -194,6 +196,7 @@ public class ParticleSwarm extends OptimizationAlgorithm {
 		if(!function.hasMaximum()){
 			
 			higher =  ((new BigDecimal(higher)).negate().doubleValue());
+			sum =  ((new BigDecimal(sum)).negate().doubleValue());
 		}
 		return new ReportGraphInfo(sum/population.size(), higher, generation);
 	}

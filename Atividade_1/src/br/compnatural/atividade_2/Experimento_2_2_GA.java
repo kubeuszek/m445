@@ -102,6 +102,7 @@ public class Experimento_2_2_GA implements Runnable {
 					sum(graphInfo, reportUnit.getReportGraphInfos());
 					reportUnit.setReportGraphInfos(null);
 				}
+				it++;
 				Map parameters = new HashMap();
 				parameters.put("nome", experiment.getName());
 				parameters.put("ds", ds);
@@ -111,8 +112,8 @@ public class Experimento_2_2_GA implements Runnable {
 				
 				
 				ReportManager.saveReport("/otimizacao_grafico.jrxml", parameters,
-				"experimento_2_2_GA_"+nome+".pdf");
-				it++;
+				"experimento_2_2_GA_"+nome+it+".pdf");
+				
 			}
 
 		}

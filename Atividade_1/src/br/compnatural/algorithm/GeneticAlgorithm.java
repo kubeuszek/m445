@@ -49,9 +49,11 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 	private ReportGraphInfo getReportGraphInfo(List<State> population, int generation, MathFunction function){
 		double higher = -1;
 		double sum = 0;
+		int i = 0;
 		for (State state : population) {
-			if(higher == -1 || higher < state.getValue()){
+			if(i == 0 || higher < state.getValue()){
 				higher = state.getValue();
+				i++;
 			}
 			sum += state.getValue();
 		}
@@ -59,6 +61,7 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 		if(!function.hasMaximum()){
 			
 			higher =  ((new BigDecimal(higher)).negate().doubleValue());
+			sum =  ((new BigDecimal(sum)).negate().doubleValue());
 		}
 		return new ReportGraphInfo(sum/population.size(), higher, generation);
 	}
