@@ -93,7 +93,7 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 		
 		apagar: while (generation < lenGeneration) {
 			generation++;
-			//log.info("nova geracao "+generation);
+			log.info("nova geracao "+generation);
 			
 			/**
 			 * Selection
@@ -201,17 +201,19 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 	public static class RoulleteWheel{
 		List<State> roullete;
 		int worst = 0;
+		int sum = 0;
 		RoulleteWheel(List<State> population){
 			for (State state : population) {
 				int lMax = state.getValue().intValue();
+				sum += lMax;
 				if(worst > lMax){
 					worst = lMax;
 				}
 			}
 			
 			worst =  1+ Math.abs(worst);
-			
-			roullete = new LinkedList<State>();
+			sum = 1+ Math.abs(sum);
+			roullete = new ArrayList<State>(sum);
 			for (State state : population) {
 				int lMax = state.getValue().intValue() + worst;
 				for (int i = 0; i < lMax; i++) {
