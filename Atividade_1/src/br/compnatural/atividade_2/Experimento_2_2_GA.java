@@ -104,7 +104,7 @@ public class Experimento_2_2_GA implements Runnable {
 				}
 				it++;
 				Map parameters = new HashMap();
-				parameters.put("nome", experiment.getName());
+				parameters.put("nome", nome);
 				parameters.put("ds", ds);
 				
 				avg(graphInfo, 10);

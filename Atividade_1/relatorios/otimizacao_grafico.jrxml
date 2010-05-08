@@ -40,6 +40,21 @@
 	<variable name="media_melhor_valor" class="java.lang.Double" resetType="Group" resetGroup="iteraction" calculation="Average">
 		<variableExpression><![CDATA[$F{bestSoluctionSoFar}]]></variableExpression>
 	</variable>
+	<variable name="desvio_final" class="java.lang.Double" resetType="Group" resetGroup="iteraction" calculation="StandardDeviation">
+		<variableExpression><![CDATA[$F{finalAverage}]]></variableExpression>
+	</variable>
+	<variable name="desvio_razao" class="java.lang.Double" resetType="Group" resetGroup="iteraction" calculation="StandardDeviation">
+		<variableExpression><![CDATA[$V{razao}]]></variableExpression>
+	</variable>
+	<variable name="media_final" class="java.lang.Double" resetType="Group" resetGroup="iteraction" calculation="Average">
+		<variableExpression><![CDATA[$F{finalAverage}]]></variableExpression>
+	</variable>
+	<variable name="media_razao" class="java.lang.Double" resetType="Group" resetGroup="iteraction" calculation="Average">
+		<variableExpression><![CDATA[$V{razao}]]></variableExpression>
+	</variable>
+	<variable name="razao" class="java.lang.Double">
+		<variableExpression><![CDATA[($F{bestSoluctionSoFar}/$F{finalAverage})]]></variableExpression>
+	</variable>
 	<group name="iteraction">
 		<groupExpression><![CDATA[$F{totalIteraction}]]></groupExpression>
 		<groupHeader>
@@ -86,71 +101,75 @@
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{algorithm.optimizationAlgorithm.name}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="251" y="1" width="100" height="20"/>
+					<reportElement x="251" y="1" width="180" height="20"/>
 					<textElement/>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{function.name}]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement x="459" y="24" width="94" height="19"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Razão]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="359" y="24" width="94" height="19"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Popula Final]]></text>
+				</staticText>
 			</band>
 		</groupHeader>
 		<groupFooter>
 			<band height="275">
 				<rectangle>
-					<reportElement x="0" y="1" width="555" height="44" forecolor="#FFFFFF" backcolor="#BDB4B4"/>
+					<reportElement x="1" y="1" width="555" height="44" forecolor="#FFFFFF" backcolor="#BDB4B4"/>
 				</rectangle>
 				<textField>
-					<reportElement x="322" y="2" width="100" height="20"/>
+					<reportElement x="254" y="2" width="100" height="20" forecolor="#CC0000"/>
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.Long"><![CDATA[$V{desvio_tempo}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0.000000;-###0.000000">
-					<reportElement x="2" y="2" width="100" height="20"/>
+					<reportElement x="2" y="2" width="100" height="20" forecolor="#CC0000"/>
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.Double"><![CDATA[$V{desvio_pri_iter}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0.000000;-###0.000000">
-					<reportElement x="115" y="2" width="100" height="20"/>
+					<reportElement x="115" y="2" width="100" height="20" forecolor="#CC0000"/>
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.Double"><![CDATA[$V{desvio_melhor_valor}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="321" y="25" width="100" height="20"/>
+					<reportElement x="253" y="25" width="100" height="20" forecolor="#006699"/>
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.Long"><![CDATA[$V{media_tempo}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0.000000;-###0.000000">
-					<reportElement x="114" y="25" width="100" height="20"/>
+					<reportElement x="114" y="25" width="100" height="20" forecolor="#006699"/>
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.Double"><![CDATA[$V{media_melhor_valor}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0.000000;-###0.000000">
-					<reportElement x="1" y="25" width="100" height="20"/>
+					<reportElement x="1" y="25" width="100" height="20" forecolor="#006699"/>
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.Double"><![CDATA[$V{media_pri_iter}]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement x="435" y="5" width="100" height="20"/>
-					<textElement/>
-					<text><![CDATA[Desvio]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="435" y="22" width="100" height="20"/>
-					<textElement/>
-					<text><![CDATA[Média]]></text>
-				</staticText>
 				<textField>
-					<reportElement x="216" y="22" width="100" height="20"/>
+					<reportElement x="216" y="22" width="35" height="20" forecolor="#006699"/>
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
@@ -161,6 +180,34 @@
 					<dataSourceExpression><![CDATA[$F{reportGraphInfo}]]></dataSourceExpression>
 					<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "grafico.jasper"]]></subreportExpression>
 				</subreport>
+				<textField pattern="###0.0000;-###0.0000">
+					<reportElement x="457" y="25" width="95" height="20" forecolor="#006699"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{media_razao}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.0000;-###0.0000">
+					<reportElement x="458" y="2" width="95" height="20" forecolor="#CC0000"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{desvio_razao}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.0000">
+					<reportElement x="359" y="25" width="95" height="20" forecolor="#006699"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{media_final}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.0000;-###0.0000">
+					<reportElement x="360" y="2" width="94" height="20" forecolor="#CC0000"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{desvio_final}]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupFooter>
 	</group>
@@ -183,7 +230,7 @@ UNIVERSIDADE DE FORTALEZA
 Mestrado em Informática Aplicada]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="286" y="8" width="256" height="67"/>
+				<reportElement x="335" y="8" width="218" height="67"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Disciplina: Computação Natural (M993)
 Professor: André Coelho
@@ -192,7 +239,7 @@ Turma 11
 UNIFOR – Universidade de Fortaleza]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="70" y="59" width="192" height="20"/>
+				<reportElement x="3" y="59" width="321" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{nome}]]></textFieldExpression>
 			</textField>
@@ -229,12 +276,12 @@ UNIFOR – Universidade de Fortaleza]]></text>
 			<textField pattern="###0.000000;-###0.000000">
 				<reportElement x="360" y="2" width="95" height="20"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.Double"><![CDATA[$F{initialAverage}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{finalAverage}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.000000;-###0.000000">
 				<reportElement x="458" y="2" width="95" height="20"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.Double"><![CDATA[$F{finalAverage}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{razao}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

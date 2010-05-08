@@ -162,7 +162,12 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 		
 		report.setFirstBestSoluctionIteraction(bestGeneration);
 		
-		report.setFinalAverage(specification.getAverage(population));
+		double avg = specification.getAverage(population);
+		if(!function.hasMaximum()){
+			avg = new BigDecimal(avg).negate().doubleValue();
+		}
+		
+		report.setFinalAverage(avg);
 		
 		return best;
 	}

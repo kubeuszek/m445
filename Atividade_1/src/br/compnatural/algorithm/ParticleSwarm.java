@@ -171,8 +171,14 @@ public class ParticleSwarm extends OptimizationAlgorithm {
 		staPopulation = new ArrayList<State>(population.size());
 		for (Particle particle : population) {
 			staPopulation.add(particle.state);
+		}		
+		
+		double avg = specification.getAverage(staPopulation);
+		if(!function.hasMaximum()){
+			avg = new BigDecimal(avg).negate().doubleValue();
 		}
-		report.setFinalAverage(specification.getAverage(staPopulation));
+		
+		report.setFinalAverage(avg);
 		
 		return best;
 		

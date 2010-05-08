@@ -123,7 +123,7 @@ public class Experimento_2_2 implements Runnable {
 				
 				++it;
 				Map parameters = new HashMap();
-				parameters.put("nome", experiment.getName());
+				parameters.put("nome", nome);
 				parameters.put("ds", ds);
 				
 				avg(graphInfo, 10);
