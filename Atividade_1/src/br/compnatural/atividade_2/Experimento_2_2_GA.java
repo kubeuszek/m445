@@ -92,7 +92,7 @@ public class Experimento_2_2_GA implements Runnable {
 			for (MathFunction mathFunction : algorithm.getFunctionUnid()) {
 				it++;
 
-				if (it <= ini && it >= fim) {
+				if (it >= ini && it <= fim) {
 
 					List<ReportUnit> ds = new ArrayList<ReportUnit>(10);
 
