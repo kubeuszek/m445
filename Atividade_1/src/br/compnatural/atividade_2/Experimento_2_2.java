@@ -23,7 +23,7 @@ public class Experimento_2_2 implements Runnable {
 	private Experiment experiment = new Experiment(
 			"Segunda questao / atividade #2");
 
-	private final static int MAX_IT = 2000;
+	private final static int MAX_IT = 20000;
 	
 	public Experimento_2_2() {
 		List<MathFunction> functions = new ArrayList<MathFunction>();

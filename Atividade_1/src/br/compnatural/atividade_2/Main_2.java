@@ -9,7 +9,7 @@ public class Main_2 {
 			Experimento_2_2 teste = new Experimento_2_2();
 			teste.run();
 		}else if("3".equals(args[0])){
-			Experimento_2_2_GA teste = new Experimento_2_2_GA();
+			Experimento_2_2_GA teste = new Experimento_2_2_GA(new Integer(args[1]), new Integer(args[2]));
 			teste.run();
 		}
 	}
