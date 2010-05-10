@@ -20,7 +20,7 @@ import br.compnatural.specification.RealSpecification;
 
 public class Experimento_5 implements Runnable {
 
-	private Experiment experiment = new Experiment("Quinta questão");
+	private Experiment experiment = new Experiment("Quinta questï¿½o");
 
 	public Experimento_5() {
 
@@ -103,6 +103,7 @@ public class Experimento_5 implements Runnable {
 			specification = new RealSpecification();
 			specification.addCoordinate("x", 0, 1);
 		}
+		specification.pm = 1f;
 
 		return specification;
 	}

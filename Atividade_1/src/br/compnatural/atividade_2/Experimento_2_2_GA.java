@@ -176,9 +176,7 @@ public class Experimento_2_2_GA implements Runnable {
 		if (algorithm.getOptimizationAlgorithm() instanceof GeneticAlgorithm) {
 			GeneticAlgorithm lAlgorithmn = (GeneticAlgorithm) algorithm
 					.getOptimizationAlgorithm();
-			specification = new RealSpecification(
-					!lAlgorithmn.subsDeterministc,
-					!lAlgorithmn.subsDeterministc);
+			specification = new RealSpecification(lAlgorithmn.subsDeterministc, lAlgorithmn.subsDeterministc);
 		}
 
 		if (mathFunction instanceof FunctionGriewank) {
