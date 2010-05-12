@@ -252,17 +252,20 @@ public class ParticleSwarm extends OptimizationAlgorithm {
 			int lIndex = index -1;
 			
 			
-			if(lIndex >= 0){
-				if(population.get(lIndex).thisBest.getValue() > best.getValue()){
-					best = population.get(lIndex).thisBest;
-				}
+			if(lIndex < 0){
+				lIndex = population.size()-1;
+			}
+			
+			if(population.get(lIndex).thisBest.getValue() > best.getValue()){
+				best = population.get(lIndex).thisBest;
 			}
 			
 			lIndex = index +1;
-			if(lIndex < population.size()){
-				if(population.get(lIndex).thisBest.getValue() > best.getValue()){
-					best = population.get(lIndex).thisBest;
-				}
+			if(lIndex >= population.size()){
+				lIndex = 0;
+			}
+			if(population.get(lIndex).thisBest.getValue() > best.getValue()){
+				best = population.get(lIndex).thisBest;
 			}
 		}else{
 			if(index == 0){

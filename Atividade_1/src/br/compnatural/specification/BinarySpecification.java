@@ -44,23 +44,23 @@ public class BinarySpecification extends Specification {
 
 	@Override
 	public State perturb(State pState) {
-		if (random.nextFloat() <= pm) {
-			BinaryCoordinate coordinate = ((BinaryCoordinate) pState
-					.getCoordinate().get(0));
-			State s1 = initialize();
-			for (int i = 0; i < coordinate.length; i++) {
+		BinaryCoordinate coordinate = ((BinaryCoordinate) pState
+				.getCoordinate().get(0));
+		State s1 = initialize();
+		
+		for (int i = 0; i < coordinate.length; i++) {
+			if (random.nextFloat() <= pm) {
+				int indice = random.nextInt(coordinate.length);
+				((BinaryCoordinate) s1.getCoordinate().get(0)).getValue()[indice] = !coordinate
+						.getValue()[indice];
+				log.info("Aconteceu uma mutacao no indice " + indice);
+			} else {
 				((BinaryCoordinate) s1.getCoordinate().get(0)).getValue()[i] = coordinate
 						.getValue()[i];
 			}
-
-			int indice = random.nextInt(coordinate.length);
-			((BinaryCoordinate) s1.getCoordinate().get(0)).getValue()[indice] = !coordinate
-					.getValue()[indice];
-			log.info("Aconteceu uma mutacao no indice "+indice);
-			return s1;
-		} else {
-			return pState;
 		}
+		return s1;
+
 	}
 
 	@Override
