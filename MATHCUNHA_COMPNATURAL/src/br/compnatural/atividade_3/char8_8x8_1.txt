@@ -1,0 +1,14 @@
+// Fundamentals of Natural Computing: Basic Concepts, Algorithms, and Applications
+// Author: Leandro Nunes de Castro, (c) CRC Press LLC, 2006
+
+// Arquivo de saída com as classes: cada coluna representa o vetor de saída da rede associada a um padrão
+// codificação bipolar da saída
+1	-1	-1	-1	-1	-1	-1	-1
+-1	1	-1	-1	-1	-1	-1	-1
+-1	-1	1	-1	-1	-1	-1	-1
+-1	-1	-1	1	-1	-1	-1	-1
+-1	-1	-1	-1	1	-1	-1	-1
+-1	-1	-1	-1	-1	1	-1	-1
+-1	-1	-1	-1	-1	-1	1	-1
+-1	-1	-1	-1	-1	-1	-1	1
+

@@ -1,8 +1,11 @@
 package br.compnatural.rna.network;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import Jama.Matrix;
 import br.compnatural.rna.Layer;
@@ -16,31 +19,49 @@ public class SinglePerceptron {
 	private double maxWeight;
 	private Layer layer;
 	
+
+	private int lenNeuron;
 	
-	public SinglePerceptron(Layer layer, double minWeight, double maxWeight){
+	
+	public SinglePerceptron(int neuron, double minWeight, double maxWeight){
 		this.maxWeight = maxWeight;
 		this.minWeight = minWeight;
-		this.layer = layer;
+		lenNeuron = neuron;
 	}
 	
-	public void perceptron(int max_it, double alfa, List<Pattern> patterns){
-		SinglePerceptron singlePerceptron = getSinglePerceptronSinalBipolar(this.layer.getNeurons().size(), minWeight, maxWeight);
-		
+	public void perceptron(int max_it, double alfa, Pattern pattern){
+		SinglePerceptron singlePerceptron = getSinglePerceptronSinalBipolar(pattern.getD().length, minWeight, maxWeight);
+		Random random = new Random(System.currentTimeMillis());
 		for (int i = 0; i < max_it; i++) {
 			double[] y;
-			for (Pattern pattern : patterns) {
-				y = singlePerceptron.layer.run(pattern.getX());
+			
+			int j = 0;
+			Set<Integer> indexes = new LinkedHashSet<Integer>(pattern.getD().length);
+			
+			
+			while ( indexes.size() < pattern.getD().length ){
 				
-				Matrix yMtr = new Matrix(y, y.length);
-				Matrix dMtr = new Matrix(pattern.getD(), pattern.getD().length);
+				int ant = indexes.size();
+				j = random.nextInt(pattern.getD().length);
+				indexes.add(j);
+				if(ant == indexes.size()){
+					continue;
+				}
+				
+				Matrix yMtr = new Matrix(singlePerceptron.layer.run(pattern.getX(), j));
+				
+				 
+				Matrix dMtr = pattern.getDMatrix()[j];
 				
 				Matrix eMtr = dMtr.minus(yMtr);
 				
 				eMtr = eMtr.times(alfa);
 				
-				Matrix deltaW = eMtr.times(getX(pattern.getX()));
+				Matrix deltaW = eMtr.times((pattern.getXMatrix()[j].transpose()));
+				Matrix deltab = eMtr; 				
 				
-				//TODO - bias e W
+				layer.addDeltaB(deltab);
+				layer.addDeltaW(deltaW);
 			}
 		}
 		
@@ -48,9 +69,9 @@ public class SinglePerceptron {
 	}
 	
 	public static Matrix getX(double[] x){
-		double[][] X = new double[x.length][x.length];
+		double[][] X = new double[x.length][];
 		for (int i = 0; i < x.length; i++) {
-			X[i] = x;
+			X[i][0] = x[i];
 		}
 		
 		return new Matrix(X);
@@ -58,7 +79,7 @@ public class SinglePerceptron {
 	
 	public static SinglePerceptron getSinglePerceptronSinalBipolar (int numNeurons, double minWeight, double maxWeight){
 		List<Neuron> neurons = new ArrayList<Neuron>(numNeurons);
-		Layer layer = new Layer(neurons);
+		Layer layer = new Layer(neurons, minWeight, maxWeight);
 		Random lRandom = new Random(System.currentTimeMillis());
 		
 		for (int i = 0; i < numNeurons; i++) {
@@ -70,7 +91,9 @@ public class SinglePerceptron {
 			neurons.add(new Neuron(weigth, randomValueInRange(lRandom, minWeight, maxWeight), new SinalBipolar()));
 		}
 		
-		return new SinglePerceptron(layer, minWeight, maxWeight);		
+		SinglePerceptron retorno = new SinglePerceptron(numNeurons, minWeight, maxWeight);
+		retorno.setLayer(layer);
+		return retorno;
 	}
 	
 	public static double randomValueInRange(Random random, double min, double max){
@@ -80,5 +103,9 @@ public class SinglePerceptron {
 		value = (random.nextDouble() * range) + min;
 
 		return value;
+	}
+	
+	public void setLayer(Layer layer) {
+		this.layer = layer;
 	}
 }
