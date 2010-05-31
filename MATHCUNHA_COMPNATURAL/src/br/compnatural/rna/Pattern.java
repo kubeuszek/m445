@@ -34,25 +34,25 @@ public class Pattern {
 
 	public void buildMatrix() {
 		double[] value;
-		X = new Matrix[x[0].length];
+		X = new Matrix[x.length];
 
-		for (int i = 0; i < x[0].length; i++) {
-			value = new double[x.length];
-			for (int j = 0; j < x.length; j++) {
-				value[j] = x[j][i];
+		for (int i = 0; i < x.length; i++) {
+			value = new double[x[0].length];
+			for (int j = 0; j < x[0].length; j++) {
+				value[j] = x[i][j];
 			}
-			X[i] = new Matrix(value, x.length);
+			X[i] = new Matrix(value, value.length);
 		}
 		
 		
-		D = new Matrix[d[0].length];
+		D = new Matrix[d.length];
 
-		for (int i = 0; i < d[0].length; i++) {
-			value = new double[d.length];
-			for (int j = 0; j < d.length; j++) {
-				value[j] = d[j][i];
+		for (int i = 0; i < d.length; i++) {
+			value = new double[d[0].length];
+			for (int j = 0; j < d[0].length; j++) {
+				value[j] = d[i][j];
 			}
-			D[i] = new Matrix(value, d.length);
+			D[i] = new Matrix(value, value.length);
 		}
 	}
 }

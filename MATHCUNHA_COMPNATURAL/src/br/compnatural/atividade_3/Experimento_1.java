@@ -75,7 +75,23 @@ public class Experimento_1 {
 							"/br/compnatural/atividade_3/char8_8x8_1.txt")
 							.toURI()));
 			SinglePerceptron single = new SinglePerceptron(8, -5d, 5d);
-			single.perceptron(10, 0.1, pat);
+			single.perceptron(100, 0.1, pat);
+			
+			double[][] retorno = single.run(pat, 0);
+			
+			for (double[] ds : retorno) {
+				for (int i = 0; i < ds.length; i++) {
+					System.out.println(ds[i]);
+				}
+			}
+			System.out.println(" outro ");
+			retorno = single.run(pat, 6);
+			
+			for (double[] ds : retorno) {
+				for (int i = 0; i < ds.length; i++) {
+					System.out.println(ds[i]);
+				}
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (URISyntaxException e) {

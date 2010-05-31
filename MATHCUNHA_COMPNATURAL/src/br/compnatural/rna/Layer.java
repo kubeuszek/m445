@@ -44,17 +44,23 @@ public class Layer {
 	
 	public double[][] run(double[][] x, int index){
 		double retorno[][] = new double[neurons.size()][1];
-		double vector[] = new double[x.length];
+		double vector[] = new double[x[1].length];
 		
 		for (int i = 0; i < vector.length; i++) {
-			vector[i] = x[i][index];
+			vector[i] = x[index][i];
 		}
 		
+		retorno = run(vector);
+		
+		return retorno;
+	}
+
+	private double[][] run(double[] vector) {
 		int i = 0;
+		double retorno[][] = new double[neurons.size()][1];
+		
 		for (Neuron neuron : neurons) {
-			
 			retorno[i++][0] = neuron.eval(vector);
-				
 		}
 		
 		return retorno;
@@ -63,7 +69,7 @@ public class Layer {
 	public void addDeltaB(Matrix deltaB){
 		int i = 0;
 		for (Neuron neuron : neurons) {
-			neuron.setBias(deltaB.get(1, i++));
+			neuron.setBias(deltaB.get(i++, 0));
 		}
 	}
 	
@@ -79,6 +85,7 @@ public class Layer {
 					neuron.getWeights()[i] = minWeight;
 				}
 			}
+			j++;
 		}
 	}
 	
