@@ -75,9 +75,6 @@ public class Experimento_1 {
 					.toURI()), new File(Experimento_1.class.getResource(
 					"/br/compnatural/atividade_3/char8_8x8_1.txt").toURI()));
 
-			SinglePerceptron single = new SinglePerceptron(8, -5d, 5d);
-			single.perceptron(100, 0.1, pCorreto);
-
 			Pattern p5Porcento = loadFile120_8(new File(Experimento_1.class
 					.getResource(
 							"/br/compnatural/atividade_3/char8_12x10_5.txt")
@@ -96,21 +93,38 @@ public class Experimento_1 {
 					.toURI()), new File(Experimento_1.class.getResource(
 					"/br/compnatural/atividade_3/char8_8x8_1.txt").toURI()));
 
-			int number = numberCorrect(pCorreto, single);
-			log.info(number + " de " + pCorreto.getX().length + " sem erro");
+			double[] weights = { 1, -1, 0.05, -0.05 };
+			int[] its = { 10, 100, 500 };
+			double[] alfa = { 0.01, 0.1, 1 };
 
-			number = numberCorrect(p5Porcento, single);
-			log
-					.info(number + " de " + p5Porcento.getX().length
-							+ " 5% de erro");
+			for (int i = 0; i < weights.length; i += 2) {
+				for (int it : its) {
+					for (double d : alfa) {
+						log.info("Inicio ["+weights[i + 1]+","+ weights[i]+"] - alfa ("+d+") - iteracao ("+it+")");
+						SinglePerceptron single = new SinglePerceptron(8,
+								weights[i + 1], weights[i]);
+						single.perceptron(it, d, pCorreto);
 
-			number = numberCorrect(p10Porcento, single);
-			log.info(number + " de " + p10Porcento.getX().length
-					+ " 10% de erro");
+						int number = eval(pCorreto, single);
+						log.info(number + " de " + pCorreto.getX().length
+								+ " sem erro");
 
-			number = numberCorrect(p20Porcento, single);
-			log.info(number + " de " + p20Porcento.getX().length
-					+ " 20% de erro");
+						number = eval(p5Porcento, single);
+						log.info(number + " de " + p5Porcento.getX().length
+								+ " 5% de erro");
+
+						number = eval(p10Porcento, single);
+						log.info(number + " de " + p10Porcento.getX().length
+								+ " 10% de erro");
+
+						number = eval(p20Porcento, single);
+						log.info(number + " de " + p20Porcento.getX().length
+								+ " 20% de erro");
+						
+						log.info("Fim");
+					}
+				}
+			}
 
 		} catch (FileNotFoundException e) {
 			log.log(Level.SEVERE, "Arquivo nao encontrado", e);
@@ -122,25 +136,50 @@ public class Experimento_1 {
 
 	}
 
-	private int numberCorrect(Pattern pattern, SinglePerceptron single) {
+	private int eval(Pattern pattern, SinglePerceptron single) {
 		double[][] retorno;
 		int total = pattern.getX().length;
+		int ant = 0;
 		for (int i = 0; i < pattern.getX().length; i++) {
 			retorno = single.run(pattern, i);
-			total: for (double[] ds : retorno) {
-				for (int j = 0; j < ds.length; j++) {
-					if (i == j && ds[j] != 1) {
-						total--;
-						break total;
-					} else if (i != j && ds[j] == -1) {
-						total--;
-						break total;
-					}
+
+			ant = total;
+
+			for (int j = 0; j < retorno.length; j++) {
+				double value = retorno[j][0];
+				if (j == i && value != 1) {
+					total--;
+
+					break;
 				}
+
+				else if (j != i && value != -1) {
+					total--;
+
+					break;
+				}
+
 			}
+
+			if (ant == total) {
+				log.fine("Encontrou o caracter " + i + " -> "
+						+ toString(retorno));
+			}
+
 		}
 
 		return total;
+	}
+
+	public String toString(double[][] value) {
+		String ret = "";
+		for (double[] ds : value) {
+			for (double d : ds) {
+				ret += " " + d;
+			}
+		}
+
+		return ret;
 	}
 
 	public static void main(String args[]) {

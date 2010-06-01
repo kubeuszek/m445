@@ -1,10 +1,13 @@
 package br.compnatural.rna.funtion;
 
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class SinalBipolar implements RnaFunction {
 	Logger log = Logger.getLogger(SinalBipolar.class.getName());
+	
+	Random random = new Random(System.currentTimeMillis());
 
 	@Override
 	public double eval(double v) {
@@ -13,8 +16,13 @@ public class SinalBipolar implements RnaFunction {
 		} else if (v > 0) {
 			return 1;
 		} else {
-			log.log(Level.SEVERE, "Confirmar se isso vai ser possívell");
-			return 0;
+			log.log(Level.SEVERE, "Confirmar se isso vai ser possível");
+			if(random.nextBoolean()){
+				return -1;
+			}else{
+				return 1;
+			}
+			
 		}
 	}
 

@@ -64,7 +64,7 @@ public class SinglePerceptron {
 				singlePerceptron.layer.addDeltaW(deltaW);
 			}
 			
-			log.info(indexes.toString());
+			log.fine(indexes.toString());
 		}
 		
 		this.layer = singlePerceptron.layer;
