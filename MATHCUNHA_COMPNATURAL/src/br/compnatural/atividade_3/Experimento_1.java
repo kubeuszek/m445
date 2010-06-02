@@ -1,21 +1,25 @@
 package br.compnatural.atividade_3;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import br.compnatural.rna.Pattern;
+import br.compnatural.rna.RnaResult;
 import br.compnatural.rna.network.SinglePerceptron;
 
 public class Experimento_1 {
 
 	Logger log = Logger.getLogger(Experimento_1.class.getName());
 
-	public Pattern loadFile120_8(File filePattern, File fileOut)
+	public Pattern loadFile120_8(InputStream filePattern, InputStream fileOut)
 			throws IOException {
 
 		int x = 120;
@@ -25,9 +29,10 @@ public class Experimento_1 {
 		retorno.setX(new double[d][x]);
 		retorno.setD(new double[d][d]);
 
-		BufferedReader readerPattern = new BufferedReader(new FileReader(
-				filePattern));
-		BufferedReader readerDesi = new BufferedReader(new FileReader(fileOut));
+		BufferedReader readerPattern = new BufferedReader(
+				new InputStreamReader(filePattern));
+		BufferedReader readerDesi = new BufferedReader(new InputStreamReader(
+				fileOut));
 
 		for (int i = 0; i < 5; i++) {
 			readerPattern.readLine();
@@ -70,70 +75,94 @@ public class Experimento_1 {
 
 	public void run() {
 		try {
-			Pattern pCorreto = loadFile120_8(new File(Experimento_1.class
-					.getResource("/br/compnatural/atividade_3/char8_12x10.txt")
-					.toURI()), new File(Experimento_1.class.getResource(
-					"/br/compnatural/atividade_3/char8_8x8_1.txt").toURI()));
+			Pattern pCorreto = loadFile120_8(
+					Experimento_1.class
+							.getResourceAsStream("/br/compnatural/atividade_3/char8_12x10.txt"),
+					Experimento_1.class
+							.getResourceAsStream("/br/compnatural/atividade_3/char8_8x8_1.txt"));
 
-			Pattern p5Porcento = loadFile120_8(new File(Experimento_1.class
-					.getResource(
-							"/br/compnatural/atividade_3/char8_12x10_5.txt")
-					.toURI()), new File(Experimento_1.class.getResource(
-					"/br/compnatural/atividade_3/char8_8x8_1.txt").toURI()));
+			Pattern p5Porcento = loadFile120_8(
+					Experimento_1.class
+							.getResourceAsStream("/br/compnatural/atividade_3/char8_12x10_5.txt"),
+					Experimento_1.class
+							.getResourceAsStream("/br/compnatural/atividade_3/char8_8x8_1.txt"));
 
-			Pattern p10Porcento = loadFile120_8(new File(Experimento_1.class
-					.getResource(
-							"/br/compnatural/atividade_3/char8_12x10_10.txt")
-					.toURI()), new File(Experimento_1.class.getResource(
-					"/br/compnatural/atividade_3/char8_8x8_1.txt").toURI()));
+			Pattern p10Porcento = loadFile120_8(
+					Experimento_1.class
+							.getResourceAsStream("/br/compnatural/atividade_3/char8_12x10_10.txt"),
+					Experimento_1.class
+							.getResourceAsStream("/br/compnatural/atividade_3/char8_8x8_1.txt"));
 
-			Pattern p20Porcento = loadFile120_8(new File(Experimento_1.class
-					.getResource(
-							"/br/compnatural/atividade_3/char8_12x10_20.txt")
-					.toURI()), new File(Experimento_1.class.getResource(
-					"/br/compnatural/atividade_3/char8_8x8_1.txt").toURI()));
+			Pattern p20Porcento = loadFile120_8(
+					Experimento_1.class
+							.getResourceAsStream("/br/compnatural/atividade_3/char8_12x10_20.txt"),
+					Experimento_1.class
+							.getResourceAsStream("/br/compnatural/atividade_3/char8_8x8_1.txt"));
 
 			double[] weights = { 1, -1, 0.05, -0.05 };
 			int[] its = { 10, 100, 500 };
 			double[] alfa = { 0.01, 0.1, 1 };
+			List<RnaResult> results = new ArrayList<RnaResult>(20);
 
 			for (int i = 0; i < weights.length; i += 2) {
 				for (int it : its) {
 					for (double d : alfa) {
-						log.info("Inicio ["+weights[i + 1]+","+ weights[i]+"] - alfa ("+d+") - iteracao ("+it+")");
+						log.fine("Inicio [" + weights[i + 1] + "," + weights[i]
+								+ "] - alfa (" + d + ") - iteracao (" + it
+								+ ")");
 						SinglePerceptron single = new SinglePerceptron(8,
 								weights[i + 1], weights[i]);
 						single.perceptron(it, d, pCorreto);
 
 						int number = eval(pCorreto, single);
-						log.info(number + " de " + pCorreto.getX().length
+						log.fine(number + " de " + pCorreto.getX().length
 								+ " sem erro");
+						results.add(new RnaResult(weights[i + 1], weights[i],
+								it, d, number, pCorreto.getX().length, 0));
 
 						number = eval(p5Porcento, single);
-						log.info(number + " de " + p5Porcento.getX().length
+						log.fine(number + " de " + p5Porcento.getX().length
 								+ " 5% de erro");
+						results.add(new RnaResult(weights[i + 1], weights[i],
+								it, d, number, pCorreto.getX().length, 5));
 
 						number = eval(p10Porcento, single);
-						log.info(number + " de " + p10Porcento.getX().length
+						log.fine(number + " de " + p10Porcento.getX().length
 								+ " 10% de erro");
+						results.add(new RnaResult(weights[i + 1], weights[i],
+								it, d, number, pCorreto.getX().length, 10));
 
 						number = eval(p20Porcento, single);
-						log.info(number + " de " + p20Porcento.getX().length
+						log.fine(number + " de " + p20Porcento.getX().length
 								+ " 20% de erro");
-						
-						log.info("Fim");
+						results.add(new RnaResult(weights[i + 1], weights[i],
+								it, d, number, pCorreto.getX().length, 20));
+
+						log.fine("Fim");
 					}
 				}
 			}
+
+			Collections.sort(results, new Comparator<RnaResult>() {
+
+				@Override
+				public int compare(RnaResult o1, RnaResult o2) {
+
+					return o2.getMatchs() - o1.getMatchs();
+				}
+			});
+			String result = "";
+			for (RnaResult rnaResult : results) {
+				result += rnaResult.toString();
+			}
+
+			log.info(result);
 
 		} catch (FileNotFoundException e) {
 			log.log(Level.SEVERE, "Arquivo nao encontrado", e);
 		} catch (IOException e) {
 			log.log(Level.SEVERE, "Erro ao ler o arquivo", e);
-		} catch (URISyntaxException e) {
-			log.log(Level.SEVERE, "URI mal formada", e);
 		}
-
 	}
 
 	private int eval(Pattern pattern, SinglePerceptron single) {
@@ -149,23 +178,19 @@ public class Experimento_1 {
 				double value = retorno[j][0];
 				if (j == i && value != 1) {
 					total--;
-
 					break;
 				}
 
 				else if (j != i && value != -1) {
 					total--;
-
 					break;
 				}
-
 			}
 
 			if (ant == total) {
 				log.fine("Encontrou o caracter " + i + " -> "
 						+ toString(retorno));
 			}
-
 		}
 
 		return total;
