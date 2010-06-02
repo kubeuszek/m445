@@ -75,29 +75,39 @@ public class Experimento_1 {
 
 	public void run() {
 		try {
+			
+			List<Pattern> patterns = new ArrayList<Pattern>(4);
+			
 			Pattern pCorreto = loadFile120_8(
 					Experimento_1.class
 							.getResourceAsStream("/br/compnatural/atividade_3/char8_12x10.txt"),
 					Experimento_1.class
 							.getResourceAsStream("/br/compnatural/atividade_3/char8_8x8_1.txt"));
+			
 
 			Pattern p5Porcento = loadFile120_8(
 					Experimento_1.class
 							.getResourceAsStream("/br/compnatural/atividade_3/char8_12x10_5.txt"),
 					Experimento_1.class
 							.getResourceAsStream("/br/compnatural/atividade_3/char8_8x8_1.txt"));
+			patterns.add(p5Porcento);
+			p5Porcento.erro = 5;
 
 			Pattern p10Porcento = loadFile120_8(
 					Experimento_1.class
 							.getResourceAsStream("/br/compnatural/atividade_3/char8_12x10_10.txt"),
 					Experimento_1.class
 							.getResourceAsStream("/br/compnatural/atividade_3/char8_8x8_1.txt"));
+			patterns.add(p10Porcento);
+			p10Porcento.erro = 10;
 
 			Pattern p20Porcento = loadFile120_8(
 					Experimento_1.class
 							.getResourceAsStream("/br/compnatural/atividade_3/char8_12x10_20.txt"),
 					Experimento_1.class
 							.getResourceAsStream("/br/compnatural/atividade_3/char8_8x8_1.txt"));
+			patterns.add(p20Porcento);
+			p20Porcento.erro = 20;
 
 			double[] weights = { 1, -1, 0.05, -0.05 };
 			int[] its = { 10, 100, 500 };
@@ -107,6 +117,7 @@ public class Experimento_1 {
 			for (int i = 0; i < weights.length; i += 2) {
 				for (int it : its) {
 					for (double d : alfa) {
+						
 						log.fine("Inicio [" + weights[i + 1] + "," + weights[i]
 								+ "] - alfa (" + d + ") - iteracao (" + it
 								+ ")");
@@ -120,23 +131,13 @@ public class Experimento_1 {
 						results.add(new RnaResult(weights[i + 1], weights[i],
 								it, d, number, pCorreto.getX().length, 0));
 
-						number = eval(p5Porcento, single);
-						log.fine(number + " de " + p5Porcento.getX().length
-								+ " 5% de erro");
-						results.add(new RnaResult(weights[i + 1], weights[i],
-								it, d, number, pCorreto.getX().length, 5));
-
-						number = eval(p10Porcento, single);
-						log.fine(number + " de " + p10Porcento.getX().length
-								+ " 10% de erro");
-						results.add(new RnaResult(weights[i + 1], weights[i],
-								it, d, number, pCorreto.getX().length, 10));
-
-						number = eval(p20Porcento, single);
-						log.fine(number + " de " + p20Porcento.getX().length
-								+ " 20% de erro");
-						results.add(new RnaResult(weights[i + 1], weights[i],
-								it, d, number, pCorreto.getX().length, 20));
+						for (Pattern pattern : patterns) {
+							number = eval(pattern, single);
+							log.fine(number + " de " + pCorreto.getX().length
+									+ " sem erro");
+							results.add(new RnaResult(weights[i + 1], weights[i],
+									it, d, number, pCorreto.getX().length, pattern.erro));
+						}
 
 						log.fine("Fim");
 					}

@@ -83,7 +83,8 @@ public class RnaResult {
 	public String toString(){
 		
 		Formatter format = new Formatter() ;
-		format.format("Peso [%1.2f,%1.2f], alfa=%1.2f, iteracoes=%d, erro=%d. %d acertos %n", weight_ini, weight_fim, alfa, it, error, matches);
+		//format.format("Peso [%1.2f,%1.2f], alfa=%1.2f, iteracoes=%d, erro=%d. %d acertos %n", weight_ini, weight_fim, alfa, it, error, matches);
+		format.format("[%1.2f,%1.2f] %1.2f %d %d %d %n", weight_ini, weight_fim, alfa, it, error, matches);
 		
 		return format.toString();
 	}

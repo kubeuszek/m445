@@ -3,6 +3,7 @@ package br.compnatural.rna;
 import Jama.Matrix;
 
 public class Pattern {
+	public int erro;
 	private double[][] x;
 	private double[][] d;
 	private Matrix[] X;

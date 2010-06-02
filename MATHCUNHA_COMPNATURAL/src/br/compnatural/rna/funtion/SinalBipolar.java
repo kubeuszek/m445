@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 public class SinalBipolar implements RnaFunction {
 	Logger log = Logger.getLogger(SinalBipolar.class.getName());
 	
-	Random random = new Random(System.currentTimeMillis());
+	static final Random random = new Random(System.currentTimeMillis());
 
 	@Override
 	public double eval(double v) {
