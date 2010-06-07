@@ -12,7 +12,7 @@ import Jama.Matrix;
 import br.compnatural.rna.Layer;
 import br.compnatural.rna.Neuron;
 import br.compnatural.rna.Pattern;
-import br.compnatural.rna.funtion.SinalBipolar;
+import br.compnatural.rna.funtion.ThresholdBipolar;
 
 public class SinglePerceptron {
 	
@@ -99,7 +99,7 @@ public class SinglePerceptron {
 			for (int j = 0; j < weights; j++) {
 				weigth[j] = randomValueInRange(lRandom, minWeight, maxWeight); 
 			}
-			neurons.add(new Neuron(weigth, randomValueInRange(lRandom, minWeight, maxWeight), new SinalBipolar()));
+			neurons.add(new Neuron(weigth, randomValueInRange(lRandom, minWeight, maxWeight), new ThresholdBipolar()));
 		}
 		
 		SinglePerceptron retorno = new SinglePerceptron(numNeurons, minWeight, maxWeight);
