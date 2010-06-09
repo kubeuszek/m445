@@ -6,6 +6,7 @@ public class Neuron {
 	private double[] weights;
 	private double bias;
 	private RnaFunction function;
+	private double u;
 	
 	public Neuron(double[] weights, double bias, RnaFunction function){
 		this.function = function;
@@ -43,8 +44,12 @@ public class Neuron {
 		for (int i = 0; i < weights.length; i++) {
 			sum += (weights[i] * x[i]);
 		}
-		
+		u = sum;
 		return sum;
+	}
+	
+	public double getU(){
+		return u;
 	}
 	
 	public double eval(double[] x){
