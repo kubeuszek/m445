@@ -22,7 +22,7 @@ public class Experimento_2_2_GA implements Runnable {
 	private Experiment experiment = new Experiment(
 			"Segunda questao / atividade #2");
 
-	private final static int MAX_IT = 20000;
+	private final static int MAX_IT = 2000;
 
 	public final int ini;
 	public final int fim;

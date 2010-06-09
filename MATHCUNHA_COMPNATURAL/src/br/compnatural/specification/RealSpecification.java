@@ -100,14 +100,9 @@ public class RealSpecification extends Specification {
 
 		return true;
 	}
-
-	public State perturb(State pState) {
-
-		if (pm != null && random2.nextFloat() <= pm.floatValue()) {
-
-			int index = 0;
-
-			index = random2.nextInt(pState.getCoordinate().size());
+	
+	public State perturb(State pState, Integer index) {
+		if (pm != null && random2.nextFloat() <= pm.floatValue()) {			
 
 			State retorno = new State(pState, Boolean.FALSE);
 			RealCoordinate coordinate = (RealCoordinate) retorno
@@ -163,7 +158,13 @@ public class RealSpecification extends Specification {
 		} else {
 			return pState;
 		}
+	}
 
+	public State perturb(State pState) {
+		int index = 0;
+
+		index = random2.nextInt(pState.getCoordinate().size());
+		return this.perturb(pState, index);
 	}
 
 	@Override

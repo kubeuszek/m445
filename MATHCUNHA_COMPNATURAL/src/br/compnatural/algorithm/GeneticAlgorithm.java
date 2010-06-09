@@ -12,6 +12,7 @@ import br.compnatural.State;
 import br.compnatural.experiment.report.ReportGraphInfo;
 import br.compnatural.experiment.report.ReportUnit;
 import br.compnatural.function.MathFunction;
+import br.compnatural.specification.RealSpecification;
 import br.compnatural.specification.Specification;
 
 public class GeneticAlgorithm extends OptimizationAlgorithm {
@@ -115,7 +116,17 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 			 * Mutation
 			 */
 			for (int i = 0; i < population.size(); i++) {
-				population.set(i, specification.perturb(population.get(i)));
+				State localState = population.get(i);
+				
+				if(specification instanceof RealSpecification){
+					for (int j = 0; j < localState.getCoordinate().size(); j++) {
+						localState = ((RealSpecification)specification).perturb(localState, j);
+					}
+				}else{
+					localState = specification.perturb(localState);
+				}
+				
+				population.set(i, localState);
 				population.get(i).setValue (function.eval(population.get(i)));
 			}
 			

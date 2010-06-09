@@ -12,6 +12,7 @@ import Jama.Matrix;
 import br.compnatural.rna.Layer;
 import br.compnatural.rna.Neuron;
 import br.compnatural.rna.Pattern;
+import br.compnatural.rna.Util;
 import br.compnatural.rna.funtion.ThresholdBipolar;
 
 public class SinglePerceptron {
@@ -108,12 +109,7 @@ public class SinglePerceptron {
 	}
 	
 	public static double randomValueInRange(Random random, double min, double max){
-		double value;
-		double range = Math.abs(max - min);
-
-		value = (random.nextDouble() * range) + min;
-
-		return value;
+		return Util.randomValueInRange(random, min, max);
 	}
 	
 	public void setLayer(Layer layer) {
