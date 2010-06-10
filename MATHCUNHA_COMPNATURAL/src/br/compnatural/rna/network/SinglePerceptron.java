@@ -1,7 +1,6 @@
 package br.compnatural.rna.network;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
@@ -20,23 +19,18 @@ public class SinglePerceptron {
 	private double minWeight;
 	private double maxWeight;
 	private Layer layer;
-	protected Logger log = Logger.getLogger(SinglePerceptron.class.getName()); 
-
-	private int lenNeuron;
+	protected Logger log = Logger.getLogger(SinglePerceptron.class.getName());
 	
 	
 	public SinglePerceptron(int neuron, double minWeight, double maxWeight){
 		this.maxWeight = maxWeight;
 		this.minWeight = minWeight;
-		lenNeuron = neuron;
 	}
 	
 	public void perceptron(int max_it, double alfa, Pattern pattern){
 		SinglePerceptron singlePerceptron = getSinglePerceptronSinalBipolar(pattern.getD().length, pattern.getX()[0].length, minWeight, maxWeight);
 		Random random = new Random(System.currentTimeMillis());
 		for (int i = 0; i < max_it; i++) {
-			double[] y;
-			
 			int index = 0;
 			Set<Integer> indexes = new LinkedHashSet<Integer>(pattern.getD().length);
 			

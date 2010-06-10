@@ -29,6 +29,7 @@ public class MultilayerPerceptron {
 		this.minWeight = minWeight;
 	}
 
+	@SuppressWarnings("unchecked")
 	private static void mountLayer(List<Neuron> neurons, int weights,
 			Random random, double minWeight, double maxWeight,
 			Class functionClass) {
@@ -76,7 +77,6 @@ public class MultilayerPerceptron {
 		Random random = new Random(System.currentTimeMillis());
 
 		for (int i = 0; i < max_it; i++) {
-			double[] y;
 
 			int index = 0;
 			Set<Integer> indexes = new LinkedHashSet<Integer>(

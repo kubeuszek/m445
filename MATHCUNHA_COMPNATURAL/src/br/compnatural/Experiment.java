@@ -3,8 +3,6 @@ package br.compnatural;
 import java.util.List;
 
 import br.compnatural.algorithm.OptimizationAlgorithm;
-import br.compnatural.experiment.report.ReportUnit;
-import br.compnatural.function.FunctionUnid;
 import br.compnatural.function.MathFunction;
 
 public class Experiment {

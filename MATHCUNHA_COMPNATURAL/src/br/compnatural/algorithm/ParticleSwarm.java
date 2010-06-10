@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Random;
 
 import br.compnatural.State;
-import br.compnatural.coordinate.Coordinate;
 import br.compnatural.coordinate.RealCoordinate;
 import br.compnatural.experiment.report.ReportGraphInfo;
 import br.compnatural.experiment.report.ReportUnit;

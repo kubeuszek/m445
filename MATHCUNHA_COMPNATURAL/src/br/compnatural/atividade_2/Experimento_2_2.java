@@ -14,7 +14,6 @@ import br.compnatural.experiment.report.ReportManager;
 import br.compnatural.experiment.report.ReportUnit;
 import br.compnatural.function.FunctionGriewank;
 import br.compnatural.function.FunctionRosenbrock;
-import br.compnatural.function.FunctionSumPow;
 import br.compnatural.function.FunctionUnid;
 import br.compnatural.function.MathFunction;
 import br.compnatural.specification.RealSpecification;

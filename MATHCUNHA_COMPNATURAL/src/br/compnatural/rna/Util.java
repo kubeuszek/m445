@@ -18,6 +18,7 @@ public class Util {
 		return value;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static Object createObject(String className) {
 		Object object = null;
 		try {

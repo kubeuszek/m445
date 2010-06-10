@@ -7,8 +7,6 @@ import java.util.Map;
 
 import br.compnatural.Experiment;
 import br.compnatural.State;
-import br.compnatural.algorithm.HillClimbing;
-import br.compnatural.algorithm.HillClimbingIterated;
 import br.compnatural.algorithm.SimulatedAnnealing;
 import br.compnatural.experiment.report.ReportManager;
 import br.compnatural.experiment.report.ReportUnit;
