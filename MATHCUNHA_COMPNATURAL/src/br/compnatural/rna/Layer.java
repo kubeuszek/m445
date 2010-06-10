@@ -69,7 +69,7 @@ public class Layer {
 	public void addDeltaB(Matrix deltaB){
 		int i = 0;
 		for (Neuron neuron : neurons) {
-			neuron.setBias(deltaB.get(i++, 0));
+			neuron.setBias(deltaB.get(i++, 0) + neuron.getBias());
 		}
 	}
 	
@@ -87,6 +87,44 @@ public class Layer {
 			}
 			j++;
 		}
+	}
+	
+	public void setB(Matrix deltaB){
+		int i = 0;
+		for (Neuron neuron : neurons) {
+			neuron.setBias(deltaB.get(i++, 0));
+		}
+	}
+	
+	public void setW(Matrix deltaW){
+		int j = 0 ;
+		for (Neuron neuron : neurons) {
+			for (int i = 0; i < neuron.getWeights().length; i++) {
+				neuron.getWeights()[i] = deltaW.get(j, i);
+				
+				/*if(neuron.getWeights()[i] > maxWeight){
+					neuron.getWeights()[i] = maxWeight;
+				}else if(neuron.getWeights()[i] < minWeight){
+					neuron.getWeights()[i] = minWeight;
+				}*/
+			}
+			j++;
+		}
+	}
+	
+
+	public Matrix getB(){
+		Matrix retorno = null;
+		double[][] value = null;
+		int i =0;
+		for (Neuron neuron : neurons) {
+			if(value == null){
+				value = new double[1][neurons.size()];
+			}
+			value[0][i] = neuron.getBias();
+		}
+		retorno = new Matrix(value);
+		return retorno;
 	}
 	
 	public Matrix getW(){

@@ -23,17 +23,16 @@ public class MultilayerPerceptron {
 	private Layer hiddenLayer;
 	protected Logger log = Logger.getLogger(MultilayerPerceptron.class.getName());
 
-	public MultilayerPerceptron(int lenInNeuron, double minWeight,
-			double maxWeight) {
+	public MultilayerPerceptron(double minWeight, double maxWeight) {
 		this.maxWeight = maxWeight;
 		this.minWeight = minWeight;
 	}
 
 	@SuppressWarnings("unchecked")
-	private static void mountLayer(List<Neuron> neurons, int weights,
+	private static void mountLayer(int lenNeuron, List<Neuron> neurons, int weights,
 			Random random, double minWeight, double maxWeight,
 			Class functionClass) {
-		for (int i = 0; i < neurons.size(); i++) {
+		for (int i = 0; i < lenNeuron; i++) {
 			double[] weigth = new double[weights];
 
 			for (int j = 0; j < weights; j++) {
@@ -53,16 +52,15 @@ public class MultilayerPerceptron {
 		List<Neuron> neurons = new ArrayList<Neuron>(numNeuronsHidden);
 		Layer layer = new Layer(neurons, minWeight, maxWeight);
 		Random lRandom = new Random(System.currentTimeMillis());
-		MultilayerPerceptron retorno = new MultilayerPerceptron(weights,
-				minWeight, maxWeight);
+		MultilayerPerceptron retorno = new MultilayerPerceptron(minWeight, maxWeight);
 
-		mountLayer(neurons, weights, lRandom, minWeight, maxWeight,
+		mountLayer(numNeuronsHidden, neurons, weights, lRandom, minWeight, maxWeight,
 				TangenteHiperbolica.class);
 		retorno.setHiddenLayer(layer);
 
 		neurons = new ArrayList<Neuron>(numNeuronsOut);
 		layer = new Layer(neurons, minWeight, maxWeight);
-		mountLayer(neurons, numNeuronsHidden, lRandom, minWeight, maxWeight,
+		mountLayer(numNeuronsOut, neurons, numNeuronsHidden, lRandom, minWeight, maxWeight,
 				TangenteHiperbolica.class);
 		retorno.setOutLayer(layer);
 
@@ -92,17 +90,34 @@ public class MultilayerPerceptron {
 				}
 				
 				Matrix yMtrHidden = new Matrix(lMultilayerPerceptron.getHiddenLayer().run(pattern.getX()[index]));
-				Matrix yMtrOut = new Matrix(lMultilayerPerceptron.getOutLayer().run(yMtrHidden.getArray()[0]));
+				Matrix yMtrOut = new Matrix(lMultilayerPerceptron.getOutLayer().run(yMtrHidden.getColumnPackedCopy()));
 				
+				Matrix wHidden = lMultilayerPerceptron.getHiddenLayer().getW();
+				Matrix wOut = lMultilayerPerceptron.getOutLayer().getW();
 				
-				Matrix sensitivityOut = getF(lMultilayerPerceptron.getOutLayer()).times(-2);
 				Matrix dMtr = pattern.getDMatrix()[index];
 				
+				Matrix sensitivityOut = getF(lMultilayerPerceptron.getOutLayer()).times(-2);				
 				sensitivityOut = sensitivityOut.times((dMtr.minus(yMtrOut)));
 				
-				Matrix sensitivityIn = getF(lMultilayerPerceptron.getHiddenLayer()).times(lMultilayerPerceptron.getHiddenLayer().getW().transpose()).times(sensitivityOut);
+				Matrix sensitivityHidden = getF(lMultilayerPerceptron.getHiddenLayer()).times(wHidden.transpose()).times(sensitivityOut);
 				
 				//Update weights and bias
+				sensitivityHidden 	= sensitivityHidden.times(alfa);
+				sensitivityOut 		= sensitivityOut.times(alfa);
+				
+				wHidden = wHidden.minus(sensitivityHidden.times(pattern.getXMatrix()[index].transpose()));
+				wOut = wOut.minus(sensitivityOut.times(yMtrHidden.transpose()));
+				
+				lMultilayerPerceptron.getHiddenLayer().setW(wHidden);
+				lMultilayerPerceptron.getOutLayer().setW(wOut);
+				
+				Matrix bHidden = lMultilayerPerceptron.getHiddenLayer().getB();
+				Matrix bOut = lMultilayerPerceptron.getOutLayer().getB();
+				
+				lMultilayerPerceptron.getHiddenLayer().setB(bHidden);
+				lMultilayerPerceptron.getOutLayer().setB(bOut);
+				
 			}
 			
 			log.fine(indexes.toString());
@@ -110,6 +125,11 @@ public class MultilayerPerceptron {
 
 		this.setHiddenLayer(lMultilayerPerceptron.getHiddenLayer());
 		this.setOutLayer(lMultilayerPerceptron.getOutLayer());
+	}
+	
+	public double[][] run(Pattern pattern, int index){
+		Matrix yMtrHidden = new Matrix(this.getHiddenLayer().run(pattern.getX()[index]));
+		return this.getOutLayer().run(yMtrHidden.getArray()[0]);
 	}
 
 	public Matrix getF(Layer layer) {
