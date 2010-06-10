@@ -100,7 +100,10 @@ public class SinglePerceptron {
 			for (int j = 0; j < weights; j++) {
 				weigth[j] = randomValueInRange(lRandom, minWeight, maxWeight); 
 			}
-			neurons.add(new Neuron(weigth, randomValueInRange(lRandom, minWeight, maxWeight), new ThresholdBipolar()));
+			
+			Neuron neuron = new Neuron(weigth, randomValueInRange(lRandom, minWeight, maxWeight), new ThresholdBipolar());
+			neuron.setBias(randomValueInRange(lRandom, minWeight, maxWeight));
+			neurons.add(neuron);
 		}
 		
 		SinglePerceptron retorno = new SinglePerceptron(numNeurons, minWeight, maxWeight);

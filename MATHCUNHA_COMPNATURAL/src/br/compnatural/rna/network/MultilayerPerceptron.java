@@ -38,9 +38,11 @@ public class MultilayerPerceptron {
 			for (int j = 0; j < weights; j++) {
 				weigth[j] = randomValueInRange(random, minWeight, maxWeight);
 			}
-			neurons.add(new Neuron(weigth, randomValueInRange(random,
+			Neuron neuron = new Neuron(weigth, randomValueInRange(random,
 					minWeight, maxWeight), (RnaFunction) Util
-					.createObject(functionClass.getName())));
+					.createObject(functionClass.getName()));
+			neuron.setBias(randomValueInRange(random, minWeight, maxWeight));
+			neurons.add(neuron);
 		}
 	}
 
@@ -89,9 +91,18 @@ public class MultilayerPerceptron {
 					continue;
 				}
 				
+				Matrix yMtrHidden = new Matrix(lMultilayerPerceptron.getHiddenLayer().run(pattern.getX()[index]));
+				Matrix yMtrOut = new Matrix(lMultilayerPerceptron.getOutLayer().run(yMtrHidden.getArray()[0]));
 				
 				
+				Matrix sensitivityOut = getF(lMultilayerPerceptron.getOutLayer()).times(-2);
+				Matrix dMtr = pattern.getDMatrix()[index];
 				
+				sensitivityOut = sensitivityOut.times((dMtr.minus(yMtrOut)));
+				
+				Matrix sensitivityIn = getF(lMultilayerPerceptron.getHiddenLayer()).times(lMultilayerPerceptron.getHiddenLayer().getW().transpose()).times(sensitivityOut);
+				
+				//Update weights and bias
 			}
 			
 			log.fine(indexes.toString());

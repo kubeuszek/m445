@@ -55,7 +55,7 @@ public class Layer {
 		return retorno;
 	}
 
-	private double[][] run(double[] vector) {
+	public double[][] run(double[] vector) {
 		int i = 0;
 		double retorno[][] = new double[neurons.size()][1];
 		
@@ -79,11 +79,11 @@ public class Layer {
 			for (int i = 0; i < neuron.getWeights().length; i++) {
 				neuron.getWeights()[i] = neuron.getWeights()[i] + deltaW.get(j, i);
 				
-				if(neuron.getWeights()[i] > maxWeight){
+				/*if(neuron.getWeights()[i] > maxWeight){
 					neuron.getWeights()[i] = maxWeight;
 				}else if(neuron.getWeights()[i] < minWeight){
 					neuron.getWeights()[i] = minWeight;
-				}
+				}*/
 			}
 			j++;
 		}
