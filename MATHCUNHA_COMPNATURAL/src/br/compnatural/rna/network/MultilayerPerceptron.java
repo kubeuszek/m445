@@ -94,8 +94,9 @@ public class MultilayerPerceptron {
 				
 				Matrix dMtr = pattern.getDMatrix()[index];
 				
-				Matrix sensitivityOut = getF(lMultilayerPerceptron.getOutLayer()).times(-2);				
-				sensitivityOut = sensitivityOut.times((dMtr.minus(yMtrOut)));
+				Matrix sensitivityOut = getF(lMultilayerPerceptron.getOutLayer()).times(-2);
+				Matrix eMtr = dMtr.minus(yMtrOut);
+				sensitivityOut = sensitivityOut.times(eMtr);
 				
 				Matrix sensitivityHidden = getF(lMultilayerPerceptron.getHiddenLayer()).times(lMultilayerPerceptron.getOutLayer().getW().transpose());
 				sensitivityHidden = sensitivityHidden.times(sensitivityOut);
