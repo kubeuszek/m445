@@ -92,32 +92,23 @@ public class MultilayerPerceptron {
 				Matrix yMtrHidden = new Matrix(lMultilayerPerceptron.getHiddenLayer().run(pattern.getX()[index]));
 				Matrix yMtrOut = new Matrix(lMultilayerPerceptron.getOutLayer().run(yMtrHidden.getColumnPackedCopy()));
 				
-				Matrix wHidden = lMultilayerPerceptron.getHiddenLayer().getW();
-				Matrix wOut = lMultilayerPerceptron.getOutLayer().getW();
-				
 				Matrix dMtr = pattern.getDMatrix()[index];
 				
 				Matrix sensitivityOut = getF(lMultilayerPerceptron.getOutLayer()).times(-2);				
 				sensitivityOut = sensitivityOut.times((dMtr.minus(yMtrOut)));
 				
-				Matrix sensitivityHidden = getF(lMultilayerPerceptron.getHiddenLayer()).times(wHidden.transpose()).times(sensitivityOut);
+				Matrix sensitivityHidden = getF(lMultilayerPerceptron.getHiddenLayer()).times(lMultilayerPerceptron.getOutLayer().getW().transpose());
+				sensitivityHidden = sensitivityHidden.times(sensitivityOut);
 				
 				//Update weights and bias
 				sensitivityHidden 	= sensitivityHidden.times(alfa);
 				sensitivityOut 		= sensitivityOut.times(alfa);
 				
-				wHidden = wHidden.minus(sensitivityHidden.times(pattern.getXMatrix()[index].transpose()));
-				wOut = wOut.minus(sensitivityOut.times(yMtrHidden.transpose()));
+				lMultilayerPerceptron.getHiddenLayer().minusDeltaW(sensitivityHidden.times(pattern.getXMatrix()[index].transpose()));
+				lMultilayerPerceptron.getOutLayer().minusDeltaW(sensitivityOut.times(yMtrHidden.transpose()));
 				
-				lMultilayerPerceptron.getHiddenLayer().setW(wHidden);
-				lMultilayerPerceptron.getOutLayer().setW(wOut);
-				
-				Matrix bHidden = lMultilayerPerceptron.getHiddenLayer().getB();
-				Matrix bOut = lMultilayerPerceptron.getOutLayer().getB();
-				
-				lMultilayerPerceptron.getHiddenLayer().setB(bHidden);
-				lMultilayerPerceptron.getOutLayer().setB(bOut);
-				
+				lMultilayerPerceptron.getHiddenLayer().minusDeltaB(sensitivityHidden);
+				lMultilayerPerceptron.getOutLayer().minusDeltaB(sensitivityOut);
 			}
 			
 			log.fine(indexes.toString());
@@ -129,7 +120,7 @@ public class MultilayerPerceptron {
 	
 	public double[][] run(Pattern pattern, int index){
 		Matrix yMtrHidden = new Matrix(this.getHiddenLayer().run(pattern.getX()[index]));
-		return this.getOutLayer().run(yMtrHidden.getArray()[0]);
+		return this.getOutLayer().run(yMtrHidden.getColumnPackedCopy());
 	}
 
 	public Matrix getF(Layer layer) {
