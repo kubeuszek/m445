@@ -67,18 +67,17 @@ public class MultilayerPerceptronNew {
 				int m = Y.length -1;
 				Matrix dMtr = pattern.getDMatrix()[index];
 				Matrix eMtr = dMtr.minus(Y[m]);
-				sensitivity[m] = getF(lMultilayerPerceptron.getLayers().get(m)).times(-2);
-				sensitivity[m] = sensitivity[m].times(eMtr);
+				sensitivity[m] = getF(lMultilayerPerceptron.getLayers().get(m)).times(eMtr).times(-2d);
+				//sensitivity[m] = sensitivity[m].times(eMtr);
 				
 				for (int j = m-1; j > 0; j--) {
-					sensitivity[j] = getF(lMultilayerPerceptron.getLayers().get(j)).times(lMultilayerPerceptron.getLayers().get(j+1).getW().transpose());
-					sensitivity[j] = sensitivity[j].times(sensitivity[j+1]);
+					sensitivity[j] = getF(lMultilayerPerceptron.getLayers().get(j)).times(lMultilayerPerceptron.getLayers().get(j+1).getW().transpose()).times(sensitivity[j+1]);
 				}
 				
 				for (int j = 1; j < sensitivity.length; j++) {
 					Layer layer = lMultilayerPerceptron.getLayers().get(j);
-					layer.minusDeltaW(sensitivity[j].times(alfa).times(Y[j-1].transpose()));
-					layer.minusDeltaB(sensitivity[j].times(alfa));
+					layer.addDeltaW(sensitivity[j].times(Y[j-1].transpose()).times(-1d*alfa));
+					layer.addDeltaB(sensitivity[j].times(-1d*alfa));
 				}
 				
 				erro += eMtr.transpose().times(eMtr).getArray()[0][0];
@@ -100,7 +99,16 @@ public class MultilayerPerceptronNew {
 			Y[j] = new Matrix(layer.run(Y[j-1].getColumnPackedCopy())); 
 		}
 		
-		return Y[Y.length-1].getArray();
+		double retorno[][] = Y[Y.length-1].getArray();
+		for (int j2 = 0; j2 < retorno.length; j2++) {
+			if (retorno[j2][0] <= 0.0) {
+				retorno[j2][0] = -1.0;
+			} else if (retorno[j2][0] > 0.0) {
+				retorno[j2][0] = 1.0;
+			}
+		}
+		
+		return retorno;
 	}
 	
 	public Matrix getF(Layer layer) {
@@ -154,7 +162,7 @@ public class MultilayerPerceptronNew {
 			Neuron neuron = new Neuron(weigth, randomValueInRange(random,
 					minWeight, maxWeight), (RnaFunction) Util
 					.createObject(functionClass.getName()));
-			neuron.setBias(randomValueInRange(random, minWeight, maxWeight));
+			
 			neurons.add(neuron);
 		}
 	}

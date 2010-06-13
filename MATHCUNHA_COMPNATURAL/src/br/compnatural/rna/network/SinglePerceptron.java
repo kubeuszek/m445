@@ -96,7 +96,7 @@ public class SinglePerceptron {
 			}
 			
 			Neuron neuron = new Neuron(weigth, randomValueInRange(lRandom, minWeight, maxWeight), new ThresholdBipolar());
-			neuron.setBias(randomValueInRange(lRandom, minWeight, maxWeight));
+			
 			neurons.add(neuron);
 		}
 		
