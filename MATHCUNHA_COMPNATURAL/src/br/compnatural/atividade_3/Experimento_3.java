@@ -108,8 +108,8 @@ public class Experimento_3 {
 			patterns.add(p20Porcento);
 			p20Porcento.erro = 20;
 
-			double[] weights = { 1, -1, 0.05, -0.05 };
-			int[] its = { 10, 100, 500 };
+			double[] weights = { 1, -1, 0.05, -0.05, 5d, -5d };
+			int[] its = { 10, 100, 1000 };
 			int[] hiddens = { 5, 20, 35 };
 			double[] alfa = { 0.01, 0.1, 1 };
 			List<RnaResult> results = new ArrayList<RnaResult>(20);
@@ -123,7 +123,7 @@ public class Experimento_3 {
 									+ ") - iteracao (" + it + ") - hidden("+hidden+")");
 							MultilayerPerceptronNew perceptron = new MultilayerPerceptronNew(
 									weights[i + 1], weights[i]);
-							perceptron.backprop(it, 0.1d, d, pCorreto, hidden);
+							perceptron.backprop(it, 0.001d, d, pCorreto, hidden);
 
 							int number = eval(pCorreto, perceptron);
 							log.fine(number + " de " + pCorreto.getX().length
