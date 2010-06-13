@@ -34,12 +34,16 @@ public class MultilayerPerceptronNew {
 				numNeuronsHidden, pattern.getD().length,
 				pattern.getX()[0].length, minWeight, maxWeight);
 		Random random = new Random(System.currentTimeMillis());
-
-		for (int i = 0; i < max_it; i++) {
+		log.fine("inicio treinamento");
+		double erro = 121221;
+		
+		for (int i = 0; i < max_it && min_error< erro ; i++) {
 
 			int index = 0;
 			Set<Integer> indexes = new LinkedHashSet<Integer>(
 					pattern.getD().length);
+			
+			erro = 0;
 
 			while (indexes.size() < pattern.getD().length) {
 
@@ -50,43 +54,49 @@ public class MultilayerPerceptronNew {
 					continue;
 				}
 				
-				Matrix[] Y = new Matrix[lMultilayerPerceptron.getLayers().size()+1];
+				Matrix[] Y = new Matrix[lMultilayerPerceptron.getLayers().size()];
 				Matrix[] sensitivity = new Matrix[lMultilayerPerceptron.getLayers().size()];
 				
 				Y[0] = pattern.getXMatrix()[index];
 				
 				for (int j = 1; j < Y.length; j++) {
-					Layer layer = lMultilayerPerceptron.getLayers().get(j-1);					
+					Layer layer = lMultilayerPerceptron.getLayers().get(j);					
 					Y[j] = new Matrix(layer.run(Y[j-1].getColumnPackedCopy())); 
 				}
 				
+				int m = Y.length -1;
 				Matrix dMtr = pattern.getDMatrix()[index];
-				Matrix eMtr = dMtr.minus(Y[Y.length -1]);
-				sensitivity[sensitivity.length -1] = getF(lMultilayerPerceptron.getLayers().get(sensitivity.length -1)).times(-2);
-				sensitivity[sensitivity.length -1].times(eMtr);
+				Matrix eMtr = dMtr.minus(Y[m]);
+				sensitivity[m] = getF(lMultilayerPerceptron.getLayers().get(m)).times(-2);
+				sensitivity[m] = sensitivity[m].times(eMtr);
 				
-				for (int j = sensitivity.length-2; j >= 0; j--) {
+				for (int j = m-1; j > 0; j--) {
 					sensitivity[j] = getF(lMultilayerPerceptron.getLayers().get(j)).times(lMultilayerPerceptron.getLayers().get(j+1).getW().transpose());
 					sensitivity[j] = sensitivity[j].times(sensitivity[j+1]);
 				}
 				
-				for (int j = 0; j < sensitivity.length; j++) {
+				for (int j = 1; j < sensitivity.length; j++) {
 					Layer layer = lMultilayerPerceptron.getLayers().get(j);
-					layer.minusDeltaW(sensitivity[j].times(alfa).times(Y[j].transpose()));
+					layer.minusDeltaW(sensitivity[j].times(alfa).times(Y[j-1].transpose()));
 					layer.minusDeltaB(sensitivity[j].times(alfa));
 				}
 				
+				erro += eMtr.transpose().times(eMtr).getArray()[0][0];
+				
 			}
+			erro = erro / indexes.size();
+			log.fine(" erro = "+erro);
 			log.fine(indexes.toString());
 		}
-
+		log.fine("fim treinamento");
 		this.setLayers(lMultilayerPerceptron.getLayers());
 	}
 	
 	public double[][] run(Pattern pattern, int index){
-		Matrix[] Y = new Matrix[getLayers().size()+1];
+		Matrix[] Y = new Matrix[getLayers().size()];
+		Y[0] = pattern.getXMatrix()[index];
 		for (int j = 1; j < Y.length; j++) {
-			Layer layer = getLayers().get(j-1);					
+			Layer layer = getLayers().get(j);
 			Y[j] = new Matrix(layer.run(Y[j-1].getColumnPackedCopy())); 
 		}
 		
@@ -109,7 +119,10 @@ public class MultilayerPerceptronNew {
 		Random lRandom = new Random(System.currentTimeMillis());
 		MultilayerPerceptronNew retorno = new MultilayerPerceptronNew(
 				minWeight, maxWeight);
-		retorno.setLayers(new ArrayList<Layer>(2));
+		retorno.setLayers(new ArrayList<Layer>(3));
+		retorno.getLayers().add(
+				new Layer(new ArrayList<Neuron>(numNeuronsHidden), minWeight,
+						maxWeight));
 		retorno.getLayers().add(
 				new Layer(new ArrayList<Neuron>(numNeuronsHidden), minWeight,
 						maxWeight));
@@ -117,11 +130,11 @@ public class MultilayerPerceptronNew {
 				new Layer(new ArrayList<Neuron>(numNeuronsOut), minWeight,
 						maxWeight));
 
-		mountLayer(numNeuronsHidden, retorno.getLayers().get(0).getNeurons(),
+		mountLayer(numNeuronsHidden, retorno.getLayers().get(1).getNeurons(),
 				weights, lRandom, minWeight, maxWeight,
 				TangenteHiperbolica.class);
 
-		mountLayer(numNeuronsOut, retorno.getLayers().get(1).getNeurons(),
+		mountLayer(numNeuronsOut, retorno.getLayers().get(2).getNeurons(),
 				numNeuronsHidden, lRandom, minWeight, maxWeight,
 				TangenteHiperbolica.class);
 

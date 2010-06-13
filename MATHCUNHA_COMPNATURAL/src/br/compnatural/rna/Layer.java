@@ -139,7 +139,11 @@ public class Layer {
 			if (value == null) {
 				value = new double[neurons.size()][neuron.getWeights().length];
 			}
-			value[i++] = neuron.getWeights();
+			
+			for (int j = 0; j < neuron.getWeights().length; j++) {
+				value[i][j] = neuron.getWeights()[j];
+			}
+			i++;
 		}
 		retorno = new Matrix(value);
 		return retorno;
