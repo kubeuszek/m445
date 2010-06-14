@@ -12,13 +12,16 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import Jama.Matrix;
+import br.compnatural.State;
+import br.compnatural.algorithm.GeneticAlgorithm;
+import br.compnatural.experiment.report.ReportUnit;
+import br.compnatural.function.EQMFunction;
 import br.compnatural.rna.Pattern;
 import br.compnatural.rna.RnaResult;
-import br.compnatural.rna.network.MultilayerPerceptron;
 import br.compnatural.rna.network.MultilayerPerceptronNew;
+import br.compnatural.specification.RealSpecification;
 
-public class Experimento_3 {
+public class Experimento_2GA {
 
 	Logger log = Logger.getLogger(Experimento_3.class.getName());
 
@@ -111,46 +114,56 @@ public class Experimento_3 {
 			patterns.add(p20Porcento);
 			p20Porcento.erro = 20;
 
-			double[] weights = { 1, -1, 0.05, -0.05, 5d, -5d };
-			int[] its = { 10, 100, 1000 };
+			State.x = pCorreto;
+
+			double[] weights = { 2, -2 };
+
 			int[] hiddens = { 5, 20, 35 };
-			double[] alfa = { 0.01, 0.1, 1 };
+
 			List<RnaResult> results = new ArrayList<RnaResult>(20);
-			for (int hidden : hiddens) {				
+			for (int hidden : hiddens) {
 				for (int i = 0; i < weights.length; i += 2) {
-										
-					MultilayerPerceptronNew initialPerceptron = MultilayerPerceptronNew.getMultilayerPerceptronTangenteOneHidden(hidden, pCorreto.getD().length,pCorreto.getX()[0].length, weights[i + 1], weights[i], false);
 					
-					for (int it : its) {
-						for (double d : alfa) {
-							MultilayerPerceptronNew perceptron = new MultilayerPerceptronNew(weights[i + 1], weights[i]);
-							
-							log.fine("Inicio [" + weights[i + 1] + ","
-									+ weights[i] + "] - alfa (" + d
-									+ ") - iteracao (" + it + ") - hidden("+hidden+")");
-							
-							perceptron.backprop(it, 0.001d, d, pCorreto, hidden, initialPerceptron);
-
-							int number = eval(pCorreto, perceptron);
-							log.fine(number + " de " + pCorreto.getX().length
-									+ " sem erro");
-							results.add(new RnaResult(weights[i + 1],
-									weights[i], it, d, number,
-									pCorreto.getX().length, 0));
-
-							for (Pattern pattern : patterns) {
-								number = eval(pattern, perceptron);
-								log.fine(number + " de "
-										+ pCorreto.getX().length + " sem erro");
-								results.add(new RnaResult(weights[i + 1],
-										weights[i], it, d, number, pCorreto
-												.getX().length, pattern.erro));
-							}
-
-							log.fine("Fim");
-						}
+					RealSpecification specification = new RealSpecification();
+					EQMFunction function = new EQMFunction(Boolean.TRUE, hidden);
+					MultilayerPerceptronNew perceptron = MultilayerPerceptronNew.getMultilayerPerceptronTangenteOneHidden(hidden, pCorreto.getD().length,pCorreto.getX()[0].length, weights[i + 1], weights[i], true);
+					State state = EQMFunction.buildState(perceptron);
+					
+					for (int j = 0; j < state.getCoordinate().size(); j++) {					
+						specification.addCoordinate("x", weights[i + 1], weights[i]);
 					}
+
+					log.fine("Inicio [" + weights[i + 1] + "," + weights[i]
+							+ "] - hidden(" + hidden + ")");
+
+					GeneticAlgorithm lGenetic = new GeneticAlgorithm(50, 0.75f, 0.1f, Boolean.TRUE);
+					
+					specification.pm = new Float(lGenetic.pm);
+					
+					state = lGenetic.optimize(1000, function,
+							specification, new ReportUnit());
+					
+					
+					perceptron = function.buildPerceptron(state);
+
+					int number = eval(pCorreto, perceptron);
+					log.fine(number + " de " + pCorreto.getX().length
+							+ " sem erro");
+					results.add(new RnaResult(weights[i + 1], weights[i], 0, 0,
+							number, pCorreto.getX().length, 0));
+
+					for (Pattern pattern : patterns) {
+						number = eval(pattern, perceptron);
+						log.fine(number + " de " + pCorreto.getX().length
+								+ " sem erro");
+						results.add(new RnaResult(weights[i + 1], weights[i],
+								0, 0, number, pCorreto.getX().length,
+								pattern.erro));
+					}
+
+					log.fine("Fim");
 				}
+
 			}
 
 			Collections.sort(results, new Comparator<RnaResult>() {
@@ -178,10 +191,10 @@ public class Experimento_3 {
 	private int eval(Pattern pattern, MultilayerPerceptronNew single) {
 		double[][] retorno;
 		int total = 0;
-		
+
 		double max = -2;
 		int index = -1;
-		
+
 		for (int i = 0; i < pattern.getX().length; i++) {
 			retorno = single.run(pattern, i);
 
@@ -190,7 +203,7 @@ public class Experimento_3 {
 
 			for (int j = 0; j < retorno.length; j++) {
 				double value = retorno[j][0];
-				if (value > max){
+				if (value > max) {
 					max = value;
 					index = j;
 				}
@@ -219,7 +232,7 @@ public class Experimento_3 {
 
 	public static void main(String args[]) {
 
-		Experimento_3 exp = new Experimento_3();
+		Experimento_2GA exp = new Experimento_2GA();
 		exp.run();
 	}
 }

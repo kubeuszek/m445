@@ -46,7 +46,7 @@ public class MultilayerPerceptronNew {
 			Pattern pattern, int numNeuronsHidden, MultilayerPerceptronNew initial) {
 		MultilayerPerceptronNew lMultilayerPerceptron = getMultilayerPerceptronTangenteOneHidden(
 				numNeuronsHidden, pattern.getD().length,
-				pattern.getX()[0].length, minWeight, maxWeight);
+				pattern.getX()[0].length, minWeight, maxWeight, initial != null);
 		
 		if(initial != null){
 			initialise(lMultilayerPerceptron.getLayers(), initial.getLayers());
@@ -142,7 +142,7 @@ public class MultilayerPerceptronNew {
 
 	public static MultilayerPerceptronNew getMultilayerPerceptronTangenteOneHidden(
 			int numNeuronsHidden, int numNeuronsOut, int weights,
-			double minWeight, double maxWeight) {
+			double minWeight, double maxWeight, boolean noWeights) {
 		Random lRandom = new Random(System.currentTimeMillis());
 		MultilayerPerceptronNew retorno = new MultilayerPerceptronNew(
 				minWeight, maxWeight);
@@ -159,11 +159,11 @@ public class MultilayerPerceptronNew {
 
 		mountLayer(numNeuronsHidden, retorno.getLayers().get(1).getNeurons(),
 				weights, lRandom, minWeight, maxWeight,
-				TangenteHiperbolica.class);
+				TangenteHiperbolica.class, noWeights);
 
 		mountLayer(numNeuronsOut, retorno.getLayers().get(2).getNeurons(),
 				numNeuronsHidden, lRandom, minWeight, maxWeight,
-				TangenteHiperbolica.class);
+				TangenteHiperbolica.class, noWeights);
 
 		return retorno;
 	}
@@ -171,13 +171,14 @@ public class MultilayerPerceptronNew {
 	@SuppressWarnings("unchecked")
 	private static void mountLayer(int lenNeuron, List<Neuron> neurons,
 			int weights, Random random, double minWeight, double maxWeight,
-			Class functionClass) {
+			Class functionClass, boolean noWeights) {
 		for (int i = 0; i < lenNeuron; i++) {
 			double[] weigth = new double[weights];
-
-			for (int j = 0; j < weights; j++) {
+			
+			for (int j = 0;!noWeights && j < weights; j++) {
 				weigth[j] = randomValueInRange(random, minWeight, maxWeight);
 			}
+			
 			Neuron neuron = new Neuron(weigth, randomValueInRange(random,
 					minWeight, maxWeight), (RnaFunction) Util
 					.createObject(functionClass.getName()));

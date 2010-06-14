@@ -8,13 +8,14 @@ import Jama.Matrix;
 import br.compnatural.coordinate.BinaryCoordinate;
 import br.compnatural.coordinate.Coordinate;
 import br.compnatural.coordinate.RealCoordinate;
+import br.compnatural.rna.Pattern;
 
 public class State implements Comparable<State>{
 	
 	private Double value ;
 	private List<Coordinate> coordinate;
 	private Boolean binary;
-	public Matrix[] x;
+	public static Pattern x;
 	
 	public Double getValue() {
 		return value;
@@ -82,11 +83,11 @@ public class State implements Comparable<State>{
 		
 	}
 	
-	public void setX(Matrix[] x){
+	public void setX(Pattern x){
 		this.x = x;
 	}
 	
-	public Matrix[] getX(){
+	public Pattern getX(){
 		return x;
 	}
 }

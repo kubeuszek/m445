@@ -2,30 +2,42 @@ package br.compnatural.function;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.util.ArrayList;
+import java.util.List;
 
 import Jama.Matrix;
 import br.compnatural.State;
 import br.compnatural.coordinate.Coordinate;
 import br.compnatural.coordinate.RealCoordinate;
+import br.compnatural.rna.Layer;
+import br.compnatural.rna.Neuron;
+import br.compnatural.rna.network.MultilayerPerceptronNew;
 
 public class EQMFunction implements MathFunction {
 	private State g;
 	final Boolean max;
-	
 	public int hiddenNeurons;
-	public int outNeurons;
 
-	public EQMFunction(Boolean max, int hiddenLen, int outLen) {
+	public EQMFunction(Boolean max, int hidden) {
 		this.max = max;
-		this.hiddenNeurons = hiddenLen;
-		this.outNeurons = outLen;
+		this.hiddenNeurons = hidden;
 		g = State.getState();
 		g.setValue(0d);
 	}
 
 	@Override
 	public Double eval(State state) {
-		BigDecimal retorno = sum(state);
+		MultilayerPerceptronNew lMultilayerPerceptronNew  = buildPerceptron(state);
+		BigDecimal retorno = new BigDecimal(0d);
+		
+		for (int i = 0 ; i < state.getX().getD().length; ++i) {
+			Matrix y = new Matrix(lMultilayerPerceptronNew.run(state.getX(), i));
+			Matrix erro = y.minus(state.getX().getDMatrix()[i]);
+			
+			retorno = retorno.add(new BigDecimal(erro.times(erro.transpose()).getArray()[0][0]));
+		}
+		
+		retorno = retorno.divide(new BigDecimal(state.getX().getD().length * state.getX().getD().length, MathContext.DECIMAL128));
 
 		if (max) {
 			retorno = retorno.negate();
@@ -33,36 +45,57 @@ public class EQMFunction implements MathFunction {
 
 		return retorno.doubleValue();
 	}
-
-	private BigDecimal sum(State state) {
-
-		BigDecimal retorno = new BigDecimal(0);
-		Matrix x;
-		for (int i = 0; i < state.getX().length; i++) {
-			x = state.getX()[i];
-			int j = 0;
-			double value;
-			double[] values = x.getColumnPackedCopy();
-			for (j = 0; j < values.length; j++) {
-				//retorno = retorno.ad
+	
+	public static State buildState(MultilayerPerceptronNew multilayerPerceptronNew){
+		
+		List<Coordinate> coordinates = new ArrayList<Coordinate>();
+		int i = 0;
+		
+		for (Layer layer : multilayerPerceptronNew.getLayers()) {
+			if(i == 0){
+				i++;
+				continue;
 			}
-			for (Coordinate coordinate : state.getCoordinate()) {
-				RealCoordinate rCoordinate = (RealCoordinate) coordinate;
-				value = values[j++]; 
+			for (Neuron neuron : layer.getNeurons()) {
+				RealCoordinate coordinate = new RealCoordinate("nBi", multilayerPerceptronNew.getMinWeight(), multilayerPerceptronNew.getMaxWeight());
+				coordinate.setValue(neuron.getBias());
+				coordinates.add(coordinate);
 				
+				
+				for (int j = 0; j < neuron.getWeights().length; j++) {
+					coordinate = new RealCoordinate("nWe", multilayerPerceptronNew.getMinWeight(), multilayerPerceptronNew.getMaxWeight());
+					coordinate.setValue(neuron.getWeights()[j]);
+					coordinates.add(coordinate);
+				}
 			}
 		}
-		
-		return retorno;
-	}
-
-	private BigDecimal sumUnit(RealCoordinate coordinate) {
-		return new BigDecimal(Math.pow(coordinate.getValue(), 2));
+		return new State(coordinates, false);
 	}
 	
-	private BigDecimal multiplyUnit(RealCoordinate coordinate, double value) {
-		return new BigDecimal(coordinate.getValue() * value);
+	public MultilayerPerceptronNew buildPerceptron(State state){
+		MultilayerPerceptronNew lMultilayerPerceptronNew =  MultilayerPerceptronNew.getMultilayerPerceptronTangenteOneHidden(hiddenNeurons, state.getX().getD().length, state.getX().getX()[0].length, -1, 1, true);
+		
+		int i = 0;
+		int index = 0;
+		for (Layer layer : lMultilayerPerceptronNew.getLayers()) {
+			if(i == 0){
+				i++;
+				continue;
+			}
+			for (Neuron neuron : layer.getNeurons()) {
+				
+				neuron.setBias(((RealCoordinate) state.getCoordinate().get(index++)).value);
+				for (int j = 0; j < neuron.getWeights().length; j++) {
+					RealCoordinate coordinate = (RealCoordinate) state.getCoordinate().get(index++);
+					neuron.getWeights()[j] = coordinate.getValue();					
+				}
+			}
+		}
+
+		return lMultilayerPerceptronNew;
 	}
+
+	
 
 	@Override
 	public String getName() {
@@ -78,5 +111,4 @@ public class EQMFunction implements MathFunction {
 	public Boolean hasMaximum() {
 		return Boolean.FALSE;
 	}
-
 }
