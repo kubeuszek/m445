@@ -178,26 +178,25 @@ public class Experimento_3 {
 	private int eval(Pattern pattern, MultilayerPerceptronNew single) {
 		double[][] retorno;
 		int total = pattern.getX().length;
-		int ant = 0;
+		
+		double max = -2;
+		int index = -1;
+		
 		for (int i = 0; i < pattern.getX().length; i++) {
 			retorno = single.run(pattern, i);
 
-			ant = total;
+			max = -2;
+			index = -1;
 
 			for (int j = 0; j < retorno.length; j++) {
 				double value = retorno[j][0];
-				if (j == i && value != 1) {
-					total--;
-					break;
-				}
-
-				else if (j != i && value != -1) {
-					total--;
-					break;
+				if (value > max){
+					max = value;
+					index = j;
 				}
 			}
 
-			if (ant == total) {
+			if (index == i) {
 				log.fine("Encontrou o caracter " + i + " -> "
 						+ toString(retorno));
 			}

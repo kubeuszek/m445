@@ -119,13 +119,13 @@ public class MultilayerPerceptronNew {
 		}
 		
 		double retorno[][] = Y[Y.length-1].getArray();
-		for (int j2 = 0; j2 < retorno.length; j2++) {
-			if (retorno[j2][0] <= 0.0) {
-				retorno[j2][0] = -1.0;
-			} else if (retorno[j2][0] > 0.0) {
-				retorno[j2][0] = 1.0;
-			}
-		}
+//		for (int j2 = 0; j2 < retorno.length; j2++) {
+//			if (retorno[j2][0] <= 0.0) {
+//				retorno[j2][0] = -1.0;
+//			} else if (retorno[j2][0] > 0.0) {
+//				retorno[j2][0] = 1.0;
+//			}
+//		}
 		
 		return retorno;
 	}
