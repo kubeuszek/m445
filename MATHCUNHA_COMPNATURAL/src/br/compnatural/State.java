@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import Jama.Matrix;
 import br.compnatural.coordinate.BinaryCoordinate;
 import br.compnatural.coordinate.Coordinate;
 import br.compnatural.coordinate.RealCoordinate;
@@ -13,6 +14,7 @@ public class State implements Comparable<State>{
 	private Double value ;
 	private List<Coordinate> coordinate;
 	private Boolean binary;
+	public Matrix[] x;
 	
 	public Double getValue() {
 		return value;
@@ -78,5 +80,13 @@ public class State implements Comparable<State>{
 			return o2.compareTo(o1);
 		}
 		
+	}
+	
+	public void setX(Matrix[] x){
+		this.x = x;
+	}
+	
+	public Matrix[] getX(){
+		return x;
 	}
 }
