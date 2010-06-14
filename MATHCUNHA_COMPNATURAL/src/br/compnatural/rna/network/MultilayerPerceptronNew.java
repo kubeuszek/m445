@@ -27,12 +27,31 @@ public class MultilayerPerceptronNew {
 		this.maxWeight = maxWeight;
 		this.minWeight = minWeight;
 	}
+	
+	public static void initialise(List<Layer> currentLayers, List<Layer> initialLayers){
+		int i = 0;
+		for (Layer layerInitial : initialLayers) {
+			if( i == 0){
+				i++;
+				continue;
+			}
+			Layer layer = currentLayers.get(i);
+			layer.setW(layerInitial.getW());
+			layer.setB(layerInitial.getB());
+			i++;
+		}
+	}
 
 	public void backprop(int max_it, double min_error, double alfa,
-			Pattern pattern, int numNeuronsHidden) {
+			Pattern pattern, int numNeuronsHidden, MultilayerPerceptronNew initial) {
 		MultilayerPerceptronNew lMultilayerPerceptron = getMultilayerPerceptronTangenteOneHidden(
 				numNeuronsHidden, pattern.getD().length,
 				pattern.getX()[0].length, minWeight, maxWeight);
+		
+		if(initial != null){
+			initialise(lMultilayerPerceptron.getLayers(), initial.getLayers());
+		}
+		
 		Random random = new Random(System.currentTimeMillis());
 		log.fine("inicio treinamento");
 		double erro = 121221;
@@ -83,7 +102,7 @@ public class MultilayerPerceptronNew {
 				erro += eMtr.transpose().times(eMtr).getArray()[0][0];
 				
 			}
-			erro = erro / indexes.size();
+			erro = erro / indexes.size() * pattern.getD().length;
 			log.fine(" erro = "+erro);
 			log.fine(indexes.toString());
 		}

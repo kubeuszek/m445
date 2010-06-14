@@ -112,7 +112,10 @@ public class Layer {
 		int j = 0;
 		double[][] vector = deltaW.getArray();
 		for (Neuron neuron : neurons) {
-			neuron.setWeights(vector[j]);
+			
+			for (int i = 0; i < neuron.getWeights().length; i++) {
+				neuron.getWeights()[i] = vector[j][i];
+			}
 			j++;
 		}
 	}
@@ -123,9 +126,9 @@ public class Layer {
 		int i = 0;
 		for (Neuron neuron : neurons) {
 			if (value == null) {
-				value = new double[1][neurons.size()];
+				value = new double[neurons.size()][1];
 			}
-			value[0][i++] = neuron.getBias();
+			value[i++][0] = neuron.getBias();
 		}
 		retorno = new Matrix(value);
 		return retorno;

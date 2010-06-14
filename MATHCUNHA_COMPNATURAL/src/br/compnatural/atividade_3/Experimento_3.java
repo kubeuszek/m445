@@ -11,8 +11,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import Jama.Matrix;
 import br.compnatural.rna.Pattern;
 import br.compnatural.rna.RnaResult;
+import br.compnatural.rna.network.MultilayerPerceptron;
 import br.compnatural.rna.network.MultilayerPerceptronNew;
 
 public class Experimento_3 {
@@ -113,17 +116,20 @@ public class Experimento_3 {
 			int[] hiddens = { 5, 20, 35 };
 			double[] alfa = { 0.01, 0.1, 1 };
 			List<RnaResult> results = new ArrayList<RnaResult>(20);
-			for (int hidden : hiddens) {
+			for (int hidden : hiddens) {				
 				for (int i = 0; i < weights.length; i += 2) {
+										
+					MultilayerPerceptronNew initialPerceptron = MultilayerPerceptronNew.getMultilayerPerceptronTangenteOneHidden(hidden, pCorreto.getD().length,pCorreto.getX()[0].length, weights[i + 1], weights[i]);
+					
 					for (int it : its) {
 						for (double d : alfa) {
-
+							MultilayerPerceptronNew perceptron = new MultilayerPerceptronNew(weights[i + 1], weights[i]);
+							
 							log.fine("Inicio [" + weights[i + 1] + ","
 									+ weights[i] + "] - alfa (" + d
 									+ ") - iteracao (" + it + ") - hidden("+hidden+")");
-							MultilayerPerceptronNew perceptron = new MultilayerPerceptronNew(
-									weights[i + 1], weights[i]);
-							perceptron.backprop(it, 0.001d, d, pCorreto, hidden);
+							
+							perceptron.backprop(it, 0.001d, d, pCorreto, hidden, initialPerceptron);
 
 							int number = eval(pCorreto, perceptron);
 							log.fine(number + " de " + pCorreto.getX().length

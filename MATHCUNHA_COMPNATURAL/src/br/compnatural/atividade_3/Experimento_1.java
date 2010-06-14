@@ -115,6 +115,7 @@ public class Experimento_1 {
 			List<RnaResult> results = new ArrayList<RnaResult>(20);
 
 			for (int i = 0; i < weights.length; i += 2) {
+				SinglePerceptron initial = SinglePerceptron.getSinglePerceptronSinalBipolar(pCorreto.getD().length, pCorreto.getX()[0].length, weights[i + 1], weights[i]);
 				for (int it : its) {
 					for (double d : alfa) {
 						
@@ -123,7 +124,7 @@ public class Experimento_1 {
 								+ ")");
 						SinglePerceptron single = new SinglePerceptron(8,
 								weights[i + 1], weights[i]);
-						single.perceptron(it, d, pCorreto);
+						single.perceptron(it, d, pCorreto, initial);
 
 						int number = eval(pCorreto, single);
 						log.fine(number + " de " + pCorreto.getX().length

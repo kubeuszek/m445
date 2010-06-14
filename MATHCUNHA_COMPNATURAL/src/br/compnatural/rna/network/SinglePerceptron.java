@@ -27,9 +27,14 @@ public class SinglePerceptron {
 		this.minWeight = minWeight;
 	}
 	
-	public void perceptron(int max_it, double alfa, Pattern pattern){
+	public void perceptron(int max_it, double alfa, Pattern pattern, SinglePerceptron initial){
 		SinglePerceptron singlePerceptron = getSinglePerceptronSinalBipolar(pattern.getD().length, pattern.getX()[0].length, minWeight, maxWeight);
 		Random random = new Random(System.currentTimeMillis());
+		if(initial != null){
+			singlePerceptron.layer.setW(initial.layer.getW());
+			singlePerceptron.layer.setB(initial.layer.getB());			
+		}
+		
 		for (int i = 0; i < max_it; i++) {
 			int index = 0;
 			Set<Integer> indexes = new LinkedHashSet<Integer>(pattern.getD().length);
