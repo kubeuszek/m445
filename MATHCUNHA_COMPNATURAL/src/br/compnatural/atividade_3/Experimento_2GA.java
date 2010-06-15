@@ -213,7 +213,7 @@ public class Experimento_2GA {
 				log.fine(number + " de " + pCorreto.getX().length
 						+ " sem erro");
 				results.add(new RnaResult(-2.0, 2.0, 0, 0,
-						number, pCorreto.getX().length, 0));
+						number, pCorreto.getX().length, 0, bestState.getValue()));
 
 				for (Pattern pattern : patterns) {
 					number = eval(pattern, perceptron);
@@ -221,7 +221,7 @@ public class Experimento_2GA {
 							+ " sem erro");
 					results.add(new RnaResult(-2.0, 2.0,
 							hidden, 0, number, pCorreto.getX().length,
-							pattern.erro));
+							pattern.erro, bestState.getValue()));
 				}
 				
 				

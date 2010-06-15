@@ -129,14 +129,14 @@ public class Experimento_3 {
 									+ weights[i] + "] - alfa (" + d
 									+ ") - iteracao (" + it + ") - hidden("+hidden+")");
 							
-							perceptron.backprop(it, 0.001d, d, pCorreto, hidden, initialPerceptron);
+							double erro = perceptron.backprop(it, 0.001d, d, pCorreto, hidden, initialPerceptron);
 
 							int number = eval(pCorreto, perceptron);
 							log.fine(number + " de " + pCorreto.getX().length
 									+ " sem erro");
 							results.add(new RnaResult(weights[i + 1],
 									weights[i], it, d, number,
-									pCorreto.getX().length, 0));
+									pCorreto.getX().length, 0, erro));
 
 							for (Pattern pattern : patterns) {
 								number = eval(pattern, perceptron);
@@ -144,7 +144,7 @@ public class Experimento_3 {
 										+ pCorreto.getX().length + " sem erro");
 								results.add(new RnaResult(weights[i + 1],
 										weights[i], it, d, number, pCorreto
-												.getX().length, pattern.erro));
+												.getX().length, pattern.erro, erro));
 							}
 
 							log.fine("Fim");
@@ -166,7 +166,7 @@ public class Experimento_3 {
 				result += rnaResult.toString();
 			}
 
-			log.info(result);
+			log.log(Level.WARNING, result);
 
 		} catch (FileNotFoundException e) {
 			log.log(Level.SEVERE, "Arquivo nao encontrado", e);

@@ -42,7 +42,7 @@ public class MultilayerPerceptron {
 		}
 	}
 
-	public void backprop(int max_it, double min_error, double alfa,
+	public double backprop(int max_it, double min_error, double alfa,
 			Pattern pattern, int numNeuronsHidden, MultilayerPerceptron initial) {
 		MultilayerPerceptron lMultilayerPerceptron = getMultilayerPerceptronTangenteOneHidden(
 				numNeuronsHidden, pattern.getD().length,
@@ -108,6 +108,8 @@ public class MultilayerPerceptron {
 		}
 		log.fine("fim treinamento");
 		this.setLayers(lMultilayerPerceptron.getLayers());
+		
+		return erro;
 	}
 	
 	public double[][] run(Pattern pattern, int index){

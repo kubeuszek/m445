@@ -130,14 +130,14 @@ public class Experimento_1 {
 						log.fine(number + " de " + pCorreto.getX().length
 								+ " sem erro");
 						results.add(new RnaResult(weights[i + 1], weights[i],
-								it, d, number, pCorreto.getX().length, 0));
+								it, d, number, pCorreto.getX().length, 0, 0d));
 
 						for (Pattern pattern : patterns) {
 							number = eval(pattern, single);
 							log.fine(number + " de " + pCorreto.getX().length
 									+ " sem erro");
 							results.add(new RnaResult(weights[i + 1], weights[i],
-									it, d, number, pCorreto.getX().length, pattern.erro));
+									it, d, number, pCorreto.getX().length, pattern.erro, 0d));
 						}
 
 						log.fine("Fim");

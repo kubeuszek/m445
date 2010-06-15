@@ -5,6 +5,7 @@ import java.util.Formatter;
 public class RnaResult {
 	private double weight_ini;
 	private double weight_fim;
+	private double eqm;
 	private int it;
 	private double alfa;
 	private int matches;
@@ -13,7 +14,7 @@ public class RnaResult {
 	
 
 	public RnaResult(double weight_ini, double weight_fim, int it, double alfa,
-			int matchs, int samples, int error) {
+			int matchs, int samples, int error, double eqm) {
 		this.weight_ini = weight_ini;
 		this.weight_fim = weight_fim;
 		this.it = it;
@@ -21,6 +22,7 @@ public class RnaResult {
 		this.matches = matchs;
 		this.samples = samples;
 		this.error = error;
+		this.eqm = eqm;
 	}
 
 	public double getWeight_ini() {
@@ -84,7 +86,7 @@ public class RnaResult {
 		
 		Formatter format = new Formatter() ;
 		//format.format("Peso [%1.2f,%1.2f], alfa=%1.2f, iteracoes=%d, erro=%d. %d acertos %n", weight_ini, weight_fim, alfa, it, error, matches);
-		format.format("[%1.2f,%1.2f] %1.2f %d %d %d %n", weight_ini, weight_fim, alfa, it, error, matches);
+		format.format("[%1.2f,%1.2f] %1.2f %d %d %d %1.4f %n", weight_ini, weight_fim, alfa, it, error, matches, eqm);
 		
 		return format.toString();
 	}

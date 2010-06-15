@@ -8,12 +8,19 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import br.compnatural.Experiment;
 import br.compnatural.State;
+
 import br.compnatural.algorithm.ParticleSwarm;
+import br.compnatural.experiment.report.ReportGraphInfo;
+import br.compnatural.experiment.report.ReportManager;
 import br.compnatural.experiment.report.ReportUnit;
 import br.compnatural.function.EQMFunction;
 import br.compnatural.rna.Pattern;
@@ -23,7 +30,9 @@ import br.compnatural.specification.RealSpecification;
 
 public class Experimento_2PSO {
 
-	Logger log = Logger.getLogger(Experimento_3.class.getName());
+	private static final int GENERATIONS = 1000;
+	Logger log = Logger.getLogger(Experimento_2GA.class.getName());
+	public static final int MAX_IT = 30;
 
 	public Pattern loadFile120_8(InputStream filePattern, InputStream fileOut)
 			throws IOException {
@@ -121,47 +130,83 @@ public class Experimento_2PSO {
 			int[] hiddens = { 5, 10, 25 };
 
 			List<RnaResult> results = new ArrayList<RnaResult>(20);
+
+			ReportUnit reportUnit = null;
+			State bestState = null;
+
 			for (int hidden : hiddens) {
 				for (int i = 0; i < weights.length; i += 2) {
-					
+					List<ReportGraphInfo> graphInfo = new ArrayList<ReportGraphInfo>(
+							GENERATIONS + 1);
+					List<ReportUnit> ds = new ArrayList<ReportUnit>(MAX_IT);
+
+					for (int k = 0; k < GENERATIONS; k++) {
+						graphInfo.add(new ReportGraphInfo(0d, 0d, 0));
+					}
+
 					RealSpecification specification = new RealSpecification();
 					EQMFunction function = new EQMFunction(Boolean.TRUE, hidden);
-					MultilayerPerceptron perceptron = MultilayerPerceptron.getMultilayerPerceptronTangenteOneHidden(hidden, pCorreto.getD().length,pCorreto.getX()[0].length, weights[i + 1], weights[i], true);
+					MultilayerPerceptron perceptron = MultilayerPerceptron
+							.getMultilayerPerceptronTangenteOneHidden(hidden,
+									pCorreto.getD().length,
+									pCorreto.getX()[0].length, weights[i + 1],
+									weights[i], true);
 					State state = EQMFunction.buildState(perceptron);
-					
-					for (int j = 0; j < state.getCoordinate().size(); j++) {					
-						specification.addCoordinate("x", weights[i + 1], weights[i]);
+
+					for (int j = 0; j < state.getCoordinate().size(); j++) {
+						specification.addCoordinate("x", weights[i + 1],
+								weights[i]);
 					}
 
 					log.fine("Inicio [" + weights[i + 1] + "," + weights[i]
 							+ "] - hidden(" + hidden + ")");
 
-					ParticleSwarm algorithm = new ParticleSwarm(50, 0.9, 0.4, 2.05, 2.05, Boolean.FALSE);
-					
-					state = algorithm.optimize(1000, function,
-							specification, new ReportUnit());
-					
-					
-					perceptron = function.buildPerceptron(state);
+					for (int m = 0; i < MAX_IT; i++) {
+						log.info("Nova iteracao "+i);
+						reportUnit = new ReportUnit();
+						ParticleSwarm algorithm = new ParticleSwarm(50, 0.9,
+								0.4, 2.05, 2.05, Boolean.FALSE);
 
-					int number = eval(pCorreto, perceptron);
-					log.fine(number + " de " + pCorreto.getX().length
-							+ " sem erro");
-					results.add(new RnaResult(weights[i + 1], weights[i], 0, 0,
-							number, pCorreto.getX().length, 0));
+						reportUnit
+								.setAlgorithm(new Experiment.AlgorithmWrapper(
+										algorithm, null));
+						reportUnit.setFunction(function);
 
-					for (Pattern pattern : patterns) {
-						number = eval(pattern, perceptron);
-						log.fine(number + " de " + pCorreto.getX().length
-								+ " sem erro");
-						results.add(new RnaResult(weights[i + 1], weights[i],
-								hidden, 0, number, pCorreto.getX().length,
-								pattern.erro));
+						long ini = System.nanoTime();
+
+						state = algorithm.optimize(GENERATIONS, function,
+								specification, new ReportUnit());
+
+						if (bestState != null) {
+							if (bestState.getValue() < state.getValue()) {
+								bestState = state;
+								replace(graphInfo, reportUnit.getReportGraphInfos());
+							}
+						} else {
+							bestState = state;
+							replace(graphInfo, reportUnit.getReportGraphInfos());
+						}
+
+						reportUnit.setTime(System.nanoTime() - ini);
+
+						reportUnit.setTotalIteraction((double) hidden);
+
+						ds.add(reportUnit);
+
+						testPatterns(pCorreto, state, results, patterns, hidden);
+
 					}
+					Map parameters = new HashMap();
+					parameters.put("nome", "Final");
+					parameters.put("ds", ds);
 
+					reportUnit
+							.setReportGraphInfo(new JRBeanCollectionDataSource(
+									graphInfo));
+					ReportManager.saveReport("/otimizacao_grafico.jrxml",
+							parameters, "experimento_2PSO_" + hidden + ".pdf");
 					log.fine("Fim");
 				}
-
 			}
 
 			Collections.sort(results, new Comparator<RnaResult>() {
@@ -183,6 +228,56 @@ public class Experimento_2PSO {
 			log.log(Level.SEVERE, "Arquivo nao encontrado", e);
 		} catch (IOException e) {
 			log.log(Level.SEVERE, "Erro ao ler o arquivo", e);
+		}
+	}
+
+	public void testPatterns(Pattern pCorreto, State state,
+			List<RnaResult> results, List<Pattern> patterns, int hidden) {
+		MultilayerPerceptron perceptron = new EQMFunction(Boolean.FALSE, 1)
+				.buildPerceptron(state);
+
+		int number = eval(pCorreto, perceptron);
+		log.fine(number + " de " + pCorreto.getX().length + " sem erro");
+		results.add(new RnaResult(-2.0, 2.0, 0, 0, number,
+				pCorreto.getX().length, 0, state.getValue()));
+
+		for (Pattern pattern : patterns) {
+			number = eval(pattern, perceptron);
+			log.fine(number + " de " + pCorreto.getX().length + " sem erro");
+			results.add(new RnaResult(-2.0, 2.0, hidden, 0, number, pCorreto
+					.getX().length, pattern.erro, state.getValue()));
+		}
+	}
+
+	private void avg(List<ReportGraphInfo> avgGraphInfo, int it) {
+		for (int i = 0; i < GENERATIONS; i++) {
+			avgGraphInfo.get(i).setAvg_population(
+					avgGraphInfo.get(i).getAvg_population() / it);
+			avgGraphInfo.get(i).setBest_particle(
+					avgGraphInfo.get(i).getBest_particle() / it);
+			avgGraphInfo.get(i).setGeneration(i);
+		}
+	}
+
+	private void sum(List<ReportGraphInfo> avgGraphInfo,
+			List<ReportGraphInfo> graphInfo) {
+		for (int i = 0; i < GENERATIONS; i++) {
+			avgGraphInfo.get(i).setAvg_population(
+					graphInfo.get(i).getAvg_population()
+							+ avgGraphInfo.get(i).getAvg_population());
+			avgGraphInfo.get(i).setBest_particle(
+					graphInfo.get(i).getBest_particle()
+							+ avgGraphInfo.get(i).getBest_particle());
+		}
+	}
+
+	private void replace(List<ReportGraphInfo> avgGraphInfo,
+			List<ReportGraphInfo> graphInfo) {
+		for (int i = 0; i < GENERATIONS; i++) {
+			avgGraphInfo.get(i).setAvg_population(
+					graphInfo.get(i).getAvg_population());
+			avgGraphInfo.get(i).setBest_particle(
+					graphInfo.get(i).getBest_particle());
 		}
 	}
 
