@@ -253,6 +253,7 @@ public class Experimento_2GA {
 	private void replace(List<ReportGraphInfo> avgGraphInfo,
 			List<ReportGraphInfo> graphInfo) {
 		for (int i = 0; i < GENERATIONS; i++) {
+			avgGraphInfo.get(i).setGeneration(graphInfo.get(i).getGeneration());
 			avgGraphInfo.get(i).setAvg_population(graphInfo.get(i).getAvg_population());
 			avgGraphInfo.get(i).setBest_particle(graphInfo.get(i).getBest_particle());
 		}
