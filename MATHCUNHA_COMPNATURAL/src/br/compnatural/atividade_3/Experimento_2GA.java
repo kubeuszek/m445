@@ -179,7 +179,7 @@ public class Experimento_2GA {
 				result += rnaResult.toString();
 			}
 
-			log.warning(result);
+			log.info(result);
 
 		} catch (FileNotFoundException e) {
 			log.log(Level.SEVERE, "Arquivo nao encontrado", e);
