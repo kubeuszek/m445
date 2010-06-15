@@ -15,7 +15,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-
 import br.compnatural.Experiment;
 import br.compnatural.State;
 import br.compnatural.algorithm.GeneticAlgorithm;
@@ -30,9 +29,9 @@ import br.compnatural.specification.RealSpecification;
 
 public class Experimento_2GA {
 
-	private static final int GENERATIONS = 10;
+	private static final int GENERATIONS = 1000;
 	Logger log = Logger.getLogger(Experimento_2GA.class.getName());
-	public static final int MAX_IT = 2;
+	public static final int MAX_IT = 30;
 
 	public Pattern loadFile120_8(InputStream filePattern, InputStream fileOut)
 			throws IOException {
@@ -128,15 +127,21 @@ public class Experimento_2GA {
 			double[] weights = { 2, -2 };
 
 			int[] hiddens = { 5, 10, 25 };
-			List<ReportGraphInfo> graphInfo = new ArrayList<ReportGraphInfo>(
-					 + 1);
+			
 			List<RnaResult> results = new ArrayList<RnaResult>(20);
-			List<ReportUnit> ds = new ArrayList<ReportUnit>(MAX_IT);
+			
+			
 			ReportUnit reportUnit = null;
 			State bestState = null;
 			
 			for (int hidden : hiddens) {
 				for (int i = 0; i < weights.length; i += 2) {
+					List<ReportGraphInfo> graphInfo = new ArrayList<ReportGraphInfo>(GENERATIONS+ 1);
+					List<ReportUnit> ds = new ArrayList<ReportUnit>(MAX_IT);
+					
+					for (int k = 0; k < GENERATIONS; k++) {
+						graphInfo.add(new ReportGraphInfo(0d, 0d, 0));
+					}
 
 					RealSpecification specification = new RealSpecification();
 					EQMFunction function = new EQMFunction(Boolean.TRUE, hidden);
@@ -189,6 +194,16 @@ public class Experimento_2GA {
 						sum(graphInfo, reportUnit.getReportGraphInfos());
 
 					}
+					Map parameters = new HashMap();
+					parameters.put("nome", "FInal");
+					parameters.put("ds", ds);
+					
+					avg(graphInfo, MAX_IT);
+					reportUnit
+							.setReportGraphInfo(new JRBeanCollectionDataSource(
+									graphInfo));
+					ReportManager.saveReport("/otimizacao_grafico.jrxml",
+							parameters, "experimento_2GA_"+hidden+".pdf");
 					log.fine("Fim");
 				}
 				
@@ -209,16 +224,7 @@ public class Experimento_2GA {
 							pattern.erro));
 				}
 				
-				Map parameters = new HashMap();
-				parameters.put("nome", "FInal");
-				parameters.put("ds", ds);
 				
-				avg(graphInfo, MAX_IT);
-				reportUnit
-						.setReportGraphInfo(new JRBeanCollectionDataSource(
-								graphInfo));
-				ReportManager.saveReport("/otimizacao_grafico.jrxml",
-						parameters, "experimento_2GA_.pdf");
 
 			}
 
