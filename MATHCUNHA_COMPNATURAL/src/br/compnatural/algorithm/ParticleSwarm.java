@@ -154,9 +154,9 @@ public class ParticleSwarm extends OptimizationAlgorithm {
 		State best;
 		if(report.getBestSoluctionIteraction() == null){
 			report.setBestSoluctionIteraction(0);
-			best = population.get(0).neigBest;			
+			best = population.get(0).neigBest;
 		}else{
-			best = function.getMax();
+			best = population.get(0).neigBest;
 			report.setBestSoluctionIteraction(1);
 		}
 		

@@ -92,7 +92,7 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 		
 		apagar: while (generation < lenGeneration) {
 			generation++;
-			log.info("nova geracao "+generation);
+			log.fine("nova geracao "+generation);
 			
 			/**
 			 * Selection
@@ -158,7 +158,7 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 			report.setBestSoluctionIteraction(0);
 			best = population.get(0);			
 		}else{
-			best = function.getMax();
+			best = population.get(0);
 			report.setBestSoluctionIteraction(1);
 		}
 		

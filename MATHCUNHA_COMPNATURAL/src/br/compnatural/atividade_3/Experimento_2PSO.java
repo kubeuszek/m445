@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import br.compnatural.State;
-import br.compnatural.algorithm.GeneticAlgorithm;
+import br.compnatural.algorithm.ParticleSwarm;
 import br.compnatural.experiment.report.ReportUnit;
 import br.compnatural.function.EQMFunction;
 import br.compnatural.rna.Pattern;
@@ -21,7 +21,7 @@ import br.compnatural.rna.RnaResult;
 import br.compnatural.rna.network.MultilayerPerceptronNew;
 import br.compnatural.specification.RealSpecification;
 
-public class Experimento_2GA {
+public class Experimento_2PSO {
 
 	Logger log = Logger.getLogger(Experimento_3.class.getName());
 
@@ -136,11 +136,9 @@ public class Experimento_2GA {
 					log.fine("Inicio [" + weights[i + 1] + "," + weights[i]
 							+ "] - hidden(" + hidden + ")");
 
-					GeneticAlgorithm lGenetic = new GeneticAlgorithm(50, 0.75f, 0.1f, Boolean.TRUE);
+					ParticleSwarm algorithm = new ParticleSwarm(50, 0.9, 0.4, 2.05, 2.05, Boolean.FALSE);
 					
-					specification.pm = new Float(lGenetic.pm);
-					
-					state = lGenetic.optimize(1000, function,
+					state = algorithm.optimize(1000, function,
 							specification, new ReportUnit());
 					
 					
@@ -232,7 +230,7 @@ public class Experimento_2GA {
 
 	public static void main(String args[]) {
 
-		Experimento_2GA exp = new Experimento_2GA();
+		Experimento_2PSO exp = new Experimento_2PSO();
 		exp.run();
 	}
 }

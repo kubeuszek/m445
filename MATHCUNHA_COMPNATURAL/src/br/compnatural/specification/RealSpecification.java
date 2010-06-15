@@ -83,7 +83,7 @@ public class RealSpecification extends Specification {
 		double diff = value - coordinate.min;
 		double diff2 = coordinate.max - value;
 
-		log.info(coordinate + " -- " + diff + ", " + diff2 + ", " + value);
+		log.fine(coordinate + " -- " + diff + ", " + diff2 + ", " + value);
 
 		diff *= error;
 		diff2 *= error;
@@ -131,7 +131,7 @@ public class RealSpecification extends Specification {
 						+ coordinate.name, min, max);
 				vizinho.setValue(coordinate.value);
 
-				log.info(vizinho.toString() + " delta " + coordinate.delta);
+				log.fine(vizinho.toString() + " delta " + coordinate.delta);
 
 				double value = initialize(vizinho);
 

@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import Jama.Matrix;
+
 import br.compnatural.rna.Pattern;
 import br.compnatural.rna.RnaResult;
-import br.compnatural.rna.network.MultilayerPerceptron;
+
 import br.compnatural.rna.network.MultilayerPerceptronNew;
 
 public class Experimento_3 {
@@ -113,7 +113,7 @@ public class Experimento_3 {
 
 			double[] weights = { 1, -1, 0.05, -0.05, 5d, -5d };
 			int[] its = { 10, 100, 1000 };
-			int[] hiddens = { 5, 20, 35 };
+			int[] hiddens = { 5, 10, 25 };
 			double[] alfa = { 0.01, 0.1, 1 };
 			List<RnaResult> results = new ArrayList<RnaResult>(20);
 			for (int hidden : hiddens) {				
