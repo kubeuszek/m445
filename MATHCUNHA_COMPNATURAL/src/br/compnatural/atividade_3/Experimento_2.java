@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import br.compnatural.rna.Pattern;
 import br.compnatural.rna.RnaResult;
-import br.compnatural.rna.network.MultilayerPerceptron;
+import br.compnatural.rna.network.TwoLayerPerceptron;
 
 public class Experimento_2 {
 
@@ -121,7 +121,7 @@ public class Experimento_2 {
 							log.fine("Inicio [" + weights[i + 1] + ","
 									+ weights[i] + "] - alfa (" + d
 									+ ") - iteracao (" + it + ") - hidden("+hidden+")");
-							MultilayerPerceptron perceptron = new MultilayerPerceptron(
+							TwoLayerPerceptron perceptron = new TwoLayerPerceptron(
 									weights[i + 1], weights[i]);
 							perceptron.backprop(it, 0.1d, d, pCorreto, hidden);
 
@@ -169,7 +169,7 @@ public class Experimento_2 {
 		}
 	}
 
-	private int eval(Pattern pattern, MultilayerPerceptron single) {
+	private int eval(Pattern pattern, TwoLayerPerceptron single) {
 		double[][] retorno;
 		int total = pattern.getX().length;
 		int ant = 0;

@@ -16,69 +16,53 @@ import br.compnatural.rna.funtion.RnaFunction;
 import br.compnatural.rna.funtion.TangenteHiperbolica;
 
 public class MultilayerPerceptron {
-
 	private double minWeight;
 	private double maxWeight;
-	private Layer outLayer;
-	private Layer hiddenLayer;
-	protected Logger log = Logger.getLogger(MultilayerPerceptron.class.getName());
+	private List<Layer> layers;
+
+	protected Logger log = Logger.getLogger(MultilayerPerceptron.class
+			.getName());
 
 	public MultilayerPerceptron(double minWeight, double maxWeight) {
 		this.maxWeight = maxWeight;
 		this.minWeight = minWeight;
 	}
-
-	@SuppressWarnings("unchecked")
-	private static void mountLayer(int lenNeuron, List<Neuron> neurons, int weights,
-			Random random, double minWeight, double maxWeight,
-			Class functionClass) {
-		for (int i = 0; i < lenNeuron; i++) {
-			double[] weigth = new double[weights];
-
-			for (int j = 0; j < weights; j++) {
-				weigth[j] = randomValueInRange(random, minWeight, maxWeight);
+	
+	public static void initialise(List<Layer> currentLayers, List<Layer> initialLayers){
+		int i = 0;
+		for (Layer layerInitial : initialLayers) {
+			if( i == 0){
+				i++;
+				continue;
 			}
-			Neuron neuron = new Neuron(weigth, randomValueInRange(random,
-					minWeight, maxWeight), (RnaFunction) Util
-					.createObject(functionClass.getName()));
-			neuron.setBias(randomValueInRange(random, minWeight, maxWeight));
-			neurons.add(neuron);
+			Layer layer = currentLayers.get(i);
+			layer.setW(layerInitial.getW());
+			layer.setB(layerInitial.getB());
+			i++;
 		}
 	}
 
-	public static MultilayerPerceptron getMultilayerPerceptronSinalBipolar(
-			int numNeuronsHidden, int numNeuronsOut, int weights,
-			double minWeight, double maxWeight) {
-		List<Neuron> neurons = new ArrayList<Neuron>(numNeuronsHidden);
-		Layer layer = new Layer(neurons, minWeight, maxWeight);
-		Random lRandom = new Random(System.currentTimeMillis());
-		MultilayerPerceptron retorno = new MultilayerPerceptron(minWeight, maxWeight);
-
-		mountLayer(numNeuronsHidden, neurons, weights, lRandom, minWeight, maxWeight,
-				TangenteHiperbolica.class);
-		retorno.setHiddenLayer(layer);
-
-		neurons = new ArrayList<Neuron>(numNeuronsOut);
-		layer = new Layer(neurons, minWeight, maxWeight);
-		mountLayer(numNeuronsOut, neurons, numNeuronsHidden, lRandom, minWeight, maxWeight,
-				TangenteHiperbolica.class);
-		retorno.setOutLayer(layer);
-
-		return retorno;
-	}
-
 	public void backprop(int max_it, double min_error, double alfa,
-			Pattern pattern, int numNeuronsHidden) {
-		MultilayerPerceptron lMultilayerPerceptron = getMultilayerPerceptronSinalBipolar(
+			Pattern pattern, int numNeuronsHidden, MultilayerPerceptron initial) {
+		MultilayerPerceptron lMultilayerPerceptron = getMultilayerPerceptronTangenteOneHidden(
 				numNeuronsHidden, pattern.getD().length,
-				pattern.getX()[0].length, minWeight, maxWeight);
+				pattern.getX()[0].length, minWeight, maxWeight, initial != null);
+		
+		if(initial != null){
+			initialise(lMultilayerPerceptron.getLayers(), initial.getLayers());
+		}
+		
 		Random random = new Random(System.currentTimeMillis());
-
-		for (int i = 0; i < max_it; i++) {
+		log.fine("inicio treinamento");
+		double erro = 121221;
+		
+		for (int i = 0; i < max_it && min_error< erro ; i++) {
 
 			int index = 0;
 			Set<Integer> indexes = new LinkedHashSet<Integer>(
 					pattern.getD().length);
+			
+			erro = 0;
 
 			while (indexes.size() < pattern.getD().length) {
 
@@ -89,41 +73,63 @@ public class MultilayerPerceptron {
 					continue;
 				}
 				
-				Matrix yMtrHidden = new Matrix(lMultilayerPerceptron.getHiddenLayer().run(pattern.getX()[index]));
-				Matrix yMtrOut = new Matrix(lMultilayerPerceptron.getOutLayer().run(yMtrHidden.getColumnPackedCopy()));
+				Matrix[] Y = new Matrix[lMultilayerPerceptron.getLayers().size()];
+				Matrix[] sensitivity = new Matrix[lMultilayerPerceptron.getLayers().size()];
 				
+				Y[0] = pattern.getXMatrix()[index];
+				
+				for (int j = 1; j < Y.length; j++) {
+					Layer layer = lMultilayerPerceptron.getLayers().get(j);					
+					Y[j] = new Matrix(layer.run(Y[j-1].getColumnPackedCopy())); 
+				}
+				
+				int m = Y.length -1;
 				Matrix dMtr = pattern.getDMatrix()[index];
+				Matrix eMtr = dMtr.minus(Y[m]);
+				sensitivity[m] = getF(lMultilayerPerceptron.getLayers().get(m)).times(eMtr).times(-2d);
+				//sensitivity[m] = sensitivity[m].times(eMtr);
 				
-				Matrix sensitivityOut = getF(lMultilayerPerceptron.getOutLayer()).times(-2);
-				Matrix eMtr = dMtr.minus(yMtrOut);
-				sensitivityOut = sensitivityOut.times(eMtr);
+				for (int j = m-1; j > 0; j--) {
+					sensitivity[j] = getF(lMultilayerPerceptron.getLayers().get(j)).times(lMultilayerPerceptron.getLayers().get(j+1).getW().transpose()).times(sensitivity[j+1]);
+				}
 				
-				Matrix sensitivityHidden = getF(lMultilayerPerceptron.getHiddenLayer()).times(lMultilayerPerceptron.getOutLayer().getW().transpose());
-				sensitivityHidden = sensitivityHidden.times(sensitivityOut);
+				for (int j = 1; j < sensitivity.length; j++) {
+					Layer layer = lMultilayerPerceptron.getLayers().get(j);
+					layer.addDeltaW(sensitivity[j].times(Y[j-1].transpose()).times(-1d*alfa));
+					layer.addDeltaB(sensitivity[j].times(-1d*alfa));
+				}
 				
-				//Update weights and bias
-				sensitivityHidden 	= sensitivityHidden.times(alfa);
-				sensitivityOut 		= sensitivityOut.times(alfa);
+				erro += eMtr.transpose().times(eMtr).getArray()[0][0];
 				
-				lMultilayerPerceptron.getHiddenLayer().minusDeltaW(sensitivityHidden.times(pattern.getXMatrix()[index].transpose()));
-				lMultilayerPerceptron.getOutLayer().minusDeltaW(sensitivityOut.times(yMtrHidden.transpose()));
-				
-				lMultilayerPerceptron.getHiddenLayer().minusDeltaB(sensitivityHidden);
-				lMultilayerPerceptron.getOutLayer().minusDeltaB(sensitivityOut);
 			}
-			
+			erro = erro / indexes.size() * pattern.getD().length;
+			log.fine(" erro = "+erro);
 			log.fine(indexes.toString());
 		}
-
-		this.setHiddenLayer(lMultilayerPerceptron.getHiddenLayer());
-		this.setOutLayer(lMultilayerPerceptron.getOutLayer());
+		log.fine("fim treinamento");
+		this.setLayers(lMultilayerPerceptron.getLayers());
 	}
 	
 	public double[][] run(Pattern pattern, int index){
-		Matrix yMtrHidden = new Matrix(this.getHiddenLayer().run(pattern.getX()[index]));
-		return this.getOutLayer().run(yMtrHidden.getColumnPackedCopy());
+		Matrix[] Y = new Matrix[getLayers().size()];
+		Y[0] = pattern.getXMatrix()[index];
+		for (int j = 1; j < Y.length; j++) {
+			Layer layer = getLayers().get(j);
+			Y[j] = new Matrix(layer.run(Y[j-1].getColumnPackedCopy())); 
+		}
+		
+		double retorno[][] = Y[Y.length-1].getArray();
+//		for (int j2 = 0; j2 < retorno.length; j2++) {
+//			if (retorno[j2][0] <= 0.0) {
+//				retorno[j2][0] = -1.0;
+//			} else if (retorno[j2][0] > 0.0) {
+//				retorno[j2][0] = 1.0;
+//			}
+//		}
+		
+		return retorno;
 	}
-
+	
 	public Matrix getF(Layer layer) {
 		double[][] matrix = new double[layer.getNeurons().size()][layer
 				.getNeurons().size()];
@@ -134,24 +140,79 @@ public class MultilayerPerceptron {
 		return new Matrix(matrix);
 	}
 
+	public static MultilayerPerceptron getMultilayerPerceptronTangenteOneHidden(
+			int numNeuronsHidden, int numNeuronsOut, int weights,
+			double minWeight, double maxWeight, boolean noWeights) {
+		Random lRandom = new Random(System.currentTimeMillis());
+		MultilayerPerceptron retorno = new MultilayerPerceptron(
+				minWeight, maxWeight);
+		retorno.setLayers(new ArrayList<Layer>(3));
+		retorno.getLayers().add(
+				new Layer(new ArrayList<Neuron>(numNeuronsHidden), minWeight,
+						maxWeight));
+		retorno.getLayers().add(
+				new Layer(new ArrayList<Neuron>(numNeuronsHidden), minWeight,
+						maxWeight));
+		retorno.getLayers().add(
+				new Layer(new ArrayList<Neuron>(numNeuronsOut), minWeight,
+						maxWeight));
+
+		mountLayer(numNeuronsHidden, retorno.getLayers().get(1).getNeurons(),
+				weights, lRandom, minWeight, maxWeight,
+				TangenteHiperbolica.class, noWeights);
+
+		mountLayer(numNeuronsOut, retorno.getLayers().get(2).getNeurons(),
+				numNeuronsHidden, lRandom, minWeight, maxWeight,
+				TangenteHiperbolica.class, noWeights);
+
+		return retorno;
+	}
+
+	@SuppressWarnings("unchecked")
+	private static void mountLayer(int lenNeuron, List<Neuron> neurons,
+			int weights, Random random, double minWeight, double maxWeight,
+			Class functionClass, boolean noWeights) {
+		for (int i = 0; i < lenNeuron; i++) {
+			double[] weigth = new double[weights];
+			
+			for (int j = 0;!noWeights && j < weights; j++) {
+				weigth[j] = randomValueInRange(random, minWeight, maxWeight);
+			}
+			
+			Neuron neuron = new Neuron(weigth, randomValueInRange(random,
+					minWeight, maxWeight), (RnaFunction) Util
+					.createObject(functionClass.getName()));
+			
+			neurons.add(neuron);
+		}
+	}
+
+	public double getMinWeight() {
+		return minWeight;
+	}
+
+	public void setMinWeight(double minWeight) {
+		this.minWeight = minWeight;
+	}
+
+	public double getMaxWeight() {
+		return maxWeight;
+	}
+
+	public void setMaxWeight(double maxWeight) {
+		this.maxWeight = maxWeight;
+	}
+
+	public List<Layer> getLayers() {
+		return layers;
+	}
+
+	public void setLayers(List<Layer> layers) {
+		this.layers = layers;
+	}
+
 	public static double randomValueInRange(Random random, double min,
 			double max) {
 		return Util.randomValueInRange(random, min, max);
-	}
-
-	public Layer getHiddenLayer() {
-		return hiddenLayer;
-	}
-
-	public void setHiddenLayer(Layer hiddenLayer) {
-		this.hiddenLayer = hiddenLayer;
-	}
-
-	public Layer getOutLayer() {
-		return outLayer;
-	}
-
-	public void setOutLayer(Layer outLayer) {
-		this.outLayer = outLayer;
 	}
 }

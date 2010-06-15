@@ -18,7 +18,7 @@ import br.compnatural.experiment.report.ReportUnit;
 import br.compnatural.function.EQMFunction;
 import br.compnatural.rna.Pattern;
 import br.compnatural.rna.RnaResult;
-import br.compnatural.rna.network.MultilayerPerceptronNew;
+import br.compnatural.rna.network.MultilayerPerceptron;
 import br.compnatural.specification.RealSpecification;
 
 public class Experimento_2PSO {
@@ -126,7 +126,7 @@ public class Experimento_2PSO {
 					
 					RealSpecification specification = new RealSpecification();
 					EQMFunction function = new EQMFunction(Boolean.TRUE, hidden);
-					MultilayerPerceptronNew perceptron = MultilayerPerceptronNew.getMultilayerPerceptronTangenteOneHidden(hidden, pCorreto.getD().length,pCorreto.getX()[0].length, weights[i + 1], weights[i], true);
+					MultilayerPerceptron perceptron = MultilayerPerceptron.getMultilayerPerceptronTangenteOneHidden(hidden, pCorreto.getD().length,pCorreto.getX()[0].length, weights[i + 1], weights[i], true);
 					State state = EQMFunction.buildState(perceptron);
 					
 					for (int j = 0; j < state.getCoordinate().size(); j++) {					
@@ -186,7 +186,7 @@ public class Experimento_2PSO {
 		}
 	}
 
-	private int eval(Pattern pattern, MultilayerPerceptronNew single) {
+	private int eval(Pattern pattern, MultilayerPerceptron single) {
 		double[][] retorno;
 		int total = 0;
 

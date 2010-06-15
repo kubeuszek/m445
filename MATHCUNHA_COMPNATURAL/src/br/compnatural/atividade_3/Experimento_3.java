@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 import br.compnatural.rna.Pattern;
 import br.compnatural.rna.RnaResult;
 
-import br.compnatural.rna.network.MultilayerPerceptronNew;
+import br.compnatural.rna.network.MultilayerPerceptron;
 
 public class Experimento_3 {
 
@@ -119,11 +119,11 @@ public class Experimento_3 {
 			for (int hidden : hiddens) {				
 				for (int i = 0; i < weights.length; i += 2) {
 										
-					MultilayerPerceptronNew initialPerceptron = MultilayerPerceptronNew.getMultilayerPerceptronTangenteOneHidden(hidden, pCorreto.getD().length,pCorreto.getX()[0].length, weights[i + 1], weights[i], false);
+					MultilayerPerceptron initialPerceptron = MultilayerPerceptron.getMultilayerPerceptronTangenteOneHidden(hidden, pCorreto.getD().length,pCorreto.getX()[0].length, weights[i + 1], weights[i], false);
 					
 					for (int it : its) {
 						for (double d : alfa) {
-							MultilayerPerceptronNew perceptron = new MultilayerPerceptronNew(weights[i + 1], weights[i]);
+							MultilayerPerceptron perceptron = new MultilayerPerceptron(weights[i + 1], weights[i]);
 							
 							log.fine("Inicio [" + weights[i + 1] + ","
 									+ weights[i] + "] - alfa (" + d
@@ -175,7 +175,7 @@ public class Experimento_3 {
 		}
 	}
 
-	private int eval(Pattern pattern, MultilayerPerceptronNew single) {
+	private int eval(Pattern pattern, MultilayerPerceptron single) {
 		double[][] retorno;
 		int total = 0;
 		

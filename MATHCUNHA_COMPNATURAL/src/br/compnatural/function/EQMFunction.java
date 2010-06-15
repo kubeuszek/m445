@@ -11,7 +11,7 @@ import br.compnatural.coordinate.Coordinate;
 import br.compnatural.coordinate.RealCoordinate;
 import br.compnatural.rna.Layer;
 import br.compnatural.rna.Neuron;
-import br.compnatural.rna.network.MultilayerPerceptronNew;
+import br.compnatural.rna.network.MultilayerPerceptron;
 
 public class EQMFunction implements MathFunction {
 	private State g;
@@ -27,7 +27,7 @@ public class EQMFunction implements MathFunction {
 
 	@Override
 	public Double eval(State state) {
-		MultilayerPerceptronNew lMultilayerPerceptronNew  = buildPerceptron(state);
+		MultilayerPerceptron lMultilayerPerceptronNew  = buildPerceptron(state);
 		BigDecimal retorno = new BigDecimal(0d);
 		
 		for (int i = 0 ; i < state.getX().getD().length; ++i) {
@@ -46,7 +46,7 @@ public class EQMFunction implements MathFunction {
 		return retorno.doubleValue();
 	}
 	
-	public static State buildState(MultilayerPerceptronNew multilayerPerceptronNew){
+	public static State buildState(MultilayerPerceptron multilayerPerceptronNew){
 		
 		List<Coordinate> coordinates = new ArrayList<Coordinate>();
 		int i = 0;
@@ -72,8 +72,8 @@ public class EQMFunction implements MathFunction {
 		return new State(coordinates, false);
 	}
 	
-	public MultilayerPerceptronNew buildPerceptron(State state){
-		MultilayerPerceptronNew lMultilayerPerceptronNew =  MultilayerPerceptronNew.getMultilayerPerceptronTangenteOneHidden(hiddenNeurons, state.getX().getD().length, state.getX().getX()[0].length, -1, 1, true);
+	public MultilayerPerceptron buildPerceptron(State state){
+		MultilayerPerceptron lMultilayerPerceptronNew =  MultilayerPerceptron.getMultilayerPerceptronTangenteOneHidden(hiddenNeurons, state.getX().getD().length, state.getX().getX()[0].length, -1, 1, true);
 		
 		int i = 0;
 		int index = 0;
