@@ -161,6 +161,7 @@ public class Experimento_2GA {
 							+ "] - hidden(" + hidden + ")");
 
 					for (int m = 0; i < MAX_IT; i++) {
+						log.info("Nova iteracao "+i);
 						reportUnit = new ReportUnit();
 						GeneticAlgorithm lGenetic = new GeneticAlgorithm(50,
 								0.75f, 0.1f, Boolean.TRUE);
@@ -177,12 +178,14 @@ public class Experimento_2GA {
 						state = lGenetic.optimize(GENERATIONS, function,
 								specification, reportUnit);
 						
-						if(bestState != null){
-							if(bestState.getValue() < state.getValue()){
+						if (bestState != null) {
+							if (bestState.getValue() < state.getValue()) {
 								bestState = state;
+								replace(graphInfo, reportUnit.getReportGraphInfos());
 							}
-						}else{
+						} else {
 							bestState = state;
+							replace(graphInfo, reportUnit.getReportGraphInfos());
 						}
 						
 						reportUnit.setTime(System.nanoTime() - ini);
@@ -191,8 +194,7 @@ public class Experimento_2GA {
 
 						ds.add(reportUnit);
 						
-						sum(graphInfo, reportUnit.getReportGraphInfos());
-
+						testPatterns(pCorreto, state, results, patterns, hidden);
 					}
 					Map parameters = new HashMap();
 					parameters.put("nome", "FInal");
@@ -206,26 +208,6 @@ public class Experimento_2GA {
 							parameters, "experimento_2GA_"+hidden+".pdf");
 					log.fine("Fim");
 				}
-				
-				MultilayerPerceptron perceptron = new EQMFunction(Boolean.FALSE, 1).buildPerceptron(bestState);
-
-				int number = eval(pCorreto, perceptron);
-				log.fine(number + " de " + pCorreto.getX().length
-						+ " sem erro");
-				results.add(new RnaResult(-2.0, 2.0, 0, 0,
-						number, pCorreto.getX().length, 0, bestState.getValue()));
-
-				for (Pattern pattern : patterns) {
-					number = eval(pattern, perceptron);
-					log.fine(number + " de " + pCorreto.getX().length
-							+ " sem erro");
-					results.add(new RnaResult(-2.0, 2.0,
-							hidden, 0, number, pCorreto.getX().length,
-							pattern.erro, bestState.getValue()));
-				}
-				
-				
-
 			}
 
 			Collections.sort(results, new Comparator<RnaResult>() {
@@ -247,6 +229,32 @@ public class Experimento_2GA {
 			log.log(Level.SEVERE, "Arquivo nao encontrado", e);
 		} catch (IOException e) {
 			log.log(Level.SEVERE, "Erro ao ler o arquivo", e);
+		}
+	}
+	
+	public void testPatterns(Pattern pCorreto, State state,
+			List<RnaResult> results, List<Pattern> patterns, int hidden) {
+		MultilayerPerceptron perceptron = new EQMFunction(Boolean.FALSE, 1)
+				.buildPerceptron(state);
+
+		int number = eval(pCorreto, perceptron);
+		log.fine(number + " de " + pCorreto.getX().length + " sem erro");
+		results.add(new RnaResult(-2.0, 2.0, hidden, 0, number,
+				pCorreto.getX().length, 0, state.getValue()));
+
+		for (Pattern pattern : patterns) {
+			number = eval(pattern, perceptron);
+			log.fine(number + " de " + pCorreto.getX().length + " sem erro");
+			results.add(new RnaResult(-2.0, 2.0, hidden, 0, number, pCorreto
+					.getX().length, pattern.erro, state.getValue()));
+		}
+	}
+	
+	private void replace(List<ReportGraphInfo> avgGraphInfo,
+			List<ReportGraphInfo> graphInfo) {
+		for (int i = 0; i < GENERATIONS; i++) {
+			avgGraphInfo.get(i).setAvg_population(graphInfo.get(i).getAvg_population());
+			avgGraphInfo.get(i).setBest_particle(graphInfo.get(i).getBest_particle());
 		}
 	}
 	

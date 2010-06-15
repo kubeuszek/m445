@@ -238,7 +238,7 @@ public class Experimento_2PSO {
 
 		int number = eval(pCorreto, perceptron);
 		log.fine(number + " de " + pCorreto.getX().length + " sem erro");
-		results.add(new RnaResult(-2.0, 2.0, 0, 0, number,
+		results.add(new RnaResult(-2.0, 2.0, hidden, 0, number,
 				pCorreto.getX().length, 0, state.getValue()));
 
 		for (Pattern pattern : patterns) {
