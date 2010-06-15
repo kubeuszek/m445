@@ -175,7 +175,7 @@ public class Experimento_2PSO {
 						long ini = System.nanoTime();
 
 						state = algorithm.optimize(GENERATIONS, function,
-								specification, new ReportUnit());
+								specification, reportUnit);
 
 						if (bestState != null) {
 							if (bestState.getValue() < state.getValue()) {
@@ -274,10 +274,8 @@ public class Experimento_2PSO {
 	private void replace(List<ReportGraphInfo> avgGraphInfo,
 			List<ReportGraphInfo> graphInfo) {
 		for (int i = 0; i < GENERATIONS; i++) {
-			avgGraphInfo.get(i).setAvg_population(
-					graphInfo.get(i).getAvg_population());
-			avgGraphInfo.get(i).setBest_particle(
-					graphInfo.get(i).getBest_particle());
+			avgGraphInfo.get(i).setAvg_population(graphInfo.get(i).getAvg_population());
+			avgGraphInfo.get(i).setBest_particle(graphInfo.get(i).getBest_particle());
 		}
 	}
 
