@@ -136,15 +136,14 @@ public class Experimento_3 {
 									+ " sem erro");
 							results.add(new RnaResult(weights[i + 1],
 									weights[i], it, d, number,
-									pCorreto.getX().length, 0, erro));
+									hidden, 0, erro));							
 
 							for (Pattern pattern : patterns) {
 								number = eval(pattern, perceptron);
 								log.fine(number + " de "
 										+ pCorreto.getX().length + " sem erro");
 								results.add(new RnaResult(weights[i + 1],
-										weights[i], it, d, number, pCorreto
-												.getX().length, pattern.erro, erro));
+										weights[i], it, d, number, hidden, pattern.erro, erro));
 							}
 
 							log.fine("Fim");
