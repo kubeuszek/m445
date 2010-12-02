@@ -28,6 +28,8 @@ public class ImprimirRecibo {
 		
 		calendar.add(Calendar.MONTH, -1);
 		
+		parameters.put("REFERENCIA", calendar.getTime());
+		
 		parameters.put("SALARIO", "");
 		
 		parameters.put("ds", salario.getDescontos());
@@ -45,8 +47,8 @@ public class ImprimirRecibo {
 		
 		salario.setDescontos(new ArrayList<Desconto>(args.length));
 		
-		for (int i = 1; i < args.length; i++) {
-			salario.getDescontos().add(new Desconto(new Double(args[i]), salario));
+		for (int i = 1; i < args.length; i+=2) {
+			salario.getDescontos().add(new Desconto(new Double(args[i])/(double)100, args[i+1], salario));
 		}
 		
 		gerarRecibo(1, salario);

@@ -2,13 +2,18 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="recibo_salario" language="groovy" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="6"/>
 	<parameter name="DATA" class="java.util.Date" isForPrompting="false"/>
 	<parameter name="FECHAMENTO" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="SALARIO" class="java.lang.String"/>
+	<parameter name="REFERENCIA" class="java.util.Date"/>
 	<field name="valorPercentual" class="java.lang.Double"/>
 	<field name="valorDesconto" class="java.lang.Double"/>
 	<field name="salario.valorBase" class="java.lang.Double"/>
+	<field name="descricao" class="java.lang.String"/>
+	<variable name="descontos" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{valorDesconto}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -24,7 +29,7 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="82" splitType="Stretch">
+		<band height="91" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="0" width="295" height="27"/>
 				<textElement/>
@@ -46,30 +51,92 @@ Empregada: Maria da Conceição Rodrigues da Silva]]></text>
 				<textElement/>
 				<textFieldExpression class="java.lang.Double"><![CDATA[$F{salario.valorBase}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="2" y="69" width="231" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total do Salário Bruto.................]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" pattern="¤ #,##0.00">
+				<reportElement x="244" y="67" width="210" height="22"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{salario.valorBase}]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMM-yy">
+				<reportElement x="121" y="47" width="68" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{REFERENCIA}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
+	<columnHeader>
+		<band height="23">
+			<staticText>
+				<reportElement x="5" y="0" width="108" height="20"/>
+				<textElement/>
+				<text><![CDATA[Descontos:]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
 	<detail>
-		<band height="103" splitType="Stretch"/>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement x="5" y="4" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{descricao}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00 %">
+				<reportElement x="121" y="4" width="68" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{valorPercentual}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="278" y="4" width="68" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{valorDesconto}]]></textFieldExpression>
+			</textField>
+		</band>
 	</detail>
+	<columnFooter>
+		<band height="27">
+			<staticText>
+				<reportElement x="7" y="3" width="231" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total do Salário Líquido..............]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="251" y="1" width="106" height="22"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{salario.valorBase}-$V{descontos}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
 	<pageFooter>
 		<band height="88" splitType="Stretch">
 			<staticText>
-				<reportElement x="8" y="39" width="53" height="20"/>
+				<reportElement x="8" y="35" width="53" height="20"/>
 				<textElement/>
 				<text><![CDATA[Fortaleza, ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="7" y="65" width="226" height="20"/>
+				<reportElement x="7" y="67" width="226" height="20"/>
 				<textElement/>
 				<text><![CDATA[Maria da Conceição Rodrigues da Silva]]></text>
 			</staticText>
 			<textField pattern="MMMMM dd, yyyy">
-				<reportElement x="69" y="39" width="100" height="20"/>
+				<reportElement x="69" y="35" width="100" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.util.Date"><![CDATA[$P{DATA}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="5" y="64" width="341" height="1"/>
+				<reportElement x="5" y="66" width="341" height="1"/>
 			</line>
 			<textField>
 				<reportElement stretchType="RelativeToBandHeight" x="2" y="2" width="548" height="32"/>
