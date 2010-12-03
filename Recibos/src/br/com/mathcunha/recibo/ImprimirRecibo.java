@@ -19,13 +19,18 @@ public class ImprimirRecibo {
 		
 		GregorianCalendar calendar = (GregorianCalendar) GregorianCalendar.getInstance();
 		calendar.set(Calendar.MONTH, mes);
+		calendar.set(Calendar.DATE, 1);
+		
 		
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		
-		Date dataPagamento = BusinessDayUtil.getNextBusinessDay(calendar.getTime());
+		calendar.add(Calendar.DATE, -1);
 		
+		Date dataPagamento = BusinessDayUtil.getNextBusinessDay(calendar.getTime());
 		parameters.put("DATA", dataPagamento);
 		
+		
+		calendar.add(Calendar.DATE, 1);
 		calendar.add(Calendar.MONTH, -1);
 		
 		parameters.put("REFERENCIA", calendar.getTime());
@@ -35,9 +40,11 @@ public class ImprimirRecibo {
 		parameters.put("ds", salario.getDescontos());
 
 		
-		parameters.put("FECHAMENTO", "Recebi da Sra. Marlene de Alencar Dutra a importância de"+ "VALOR" +", correspondente ao salário líquido do mês "+calendar.get(Calendar.MONTH)+1+" de "+calendar.get(Calendar.YEAR)+".");
+		parameters.put("FECHAMENTO", calendar.get(Calendar.MONTH)+1+" de "+calendar.get(Calendar.YEAR)+".");
 		
-		ReportManager.saveReport("/recibo_salario.jrxml", parameters, "/home/mathcunha/Desktop/recibo"+mes+".pdf");
+		ReportManager.saveReport("/recibo_salario.jrxml", parameters, "/home/mathcunha/Desktop/recibo_"+mes+".pdf");
+		
+		ReportManager.saveReport("/recibo_transporte.jrxml", parameters, "/home/mathcunha/Desktop/recibo_transporte"+mes+".pdf");
 	}
 	
 	public static void main(String[] args){
@@ -45,13 +52,19 @@ public class ImprimirRecibo {
 		
 		salario.setValorBase(new Double(args[0]));
 		
+		salario.setValorTransporte(new Double(args[1]));
+		
+		salario.setMes(new Integer(args[2]));
+		
 		salario.setDescontos(new ArrayList<Desconto>(args.length));
 		
-		for (int i = 1; i < args.length; i+=2) {
+		for (int i = 3; i < args.length; i+=2) {
 			salario.getDescontos().add(new Desconto(new Double(args[i])/(double)100, args[i+1], salario));
 		}
 		
-		gerarRecibo(1, salario);
+		salario.calcValorLiquido();
+		
+		gerarRecibo(salario.getMes(), salario);
 	}
 
 }

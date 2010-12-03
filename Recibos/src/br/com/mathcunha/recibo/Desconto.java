@@ -28,8 +28,13 @@ public class Desconto {
 		this.valorPercentual = valorPercentual;
 	}
 	
+	public Double calcValorDesconto(){
+		valorDesconto = salario.getValorBase()*getValorPercentual();
+		return valorDesconto;
+	}
+	
 	public Double getValorDesconto(){
-		return salario.getValorBase()*getValorPercentual();
+		return valorDesconto;
 	}
 
 	public void setDescricao(String descricao) {
@@ -41,5 +46,6 @@ public class Desconto {
 	}
 
 	private double valorPercentual;
+	private double valorDesconto;
 	
 }

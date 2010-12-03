@@ -9,10 +9,10 @@ import java.util.Iterator;
 /** 
  * Titulo: Extenso 
  * <p> 
- * Descrição: Programa converte um numero para o valor em extenso 
+ * Descriï¿½ï¿½o: Programa converte um numero para o valor em extenso 
  * <p> 
  *  
- * @author Sérgio Eduardo Rodrigues 
+ * @author Sï¿½rgio Eduardo Rodrigues 
  * @version 1.0 
  * @created 10 de Janeiro de 2001 
  */  
@@ -22,13 +22,13 @@ public class Extenso {
    private BigInteger num;  
   
    private String Qualificadores[][] = { { "centavo", "centavos" },  
-         { "", "" }, { "mil", "mil" }, { "milhão", "milhões" },  
-         { "bilhão", "bilhões" }, { "trilhão", "trilhões" },  
-         { "quatrilhão", "quatrilhões" }, { "quintilhão", "quintilhões" },  
-         { "sextilhão", "sextilhões" }, { "septilhão", "septilhões" } };  
+         { "", "" }, { "mil", "mil" }, { "milhÃ£o", "milhï¿½es" },  
+         { "bilhÃ£o", "bilhï¿½es" }, { "trilhï¿½o", "trilhï¿½es" },  
+         { "quatrilhï¿½o", "quatrilhï¿½es" }, { "quintilhï¿½o", "quintilhï¿½es" },  
+         { "sextilhï¿½o", "sextilhï¿½es" }, { "septilhï¿½o", "septilhï¿½es" } };  
   
    private String Numeros[][] = {  
-         { "zero", "um", "dois", "três", "quatro", "cinco", "seis", "sete",  
+         { "zero", "um", "dois", "trÃªs", "quatro", "cinco", "seis", "sete",  
                "oito", "nove", "dez", "onze", "doze", "treze", "quatorze",  
                "quinze", "desesseis", "desessete", "dezoito", "desenove" },  
          { "vinte", "trinta", "quarenta", "cinquenta", "sessenta",  
@@ -123,7 +123,7 @@ public class Extenso {
       int ct;  
   
       for (ct = nro.size() - 1; ct > 0; ct--) {  
-         // Se ja existe texto e o atual não é zero  
+         // Se ja existe texto e o atual nï¿½o ï¿½ zero  
          if (buf.length() > 0 && !ehGrupoZero(ct)) {  
             buf.append(" e ");  
          }  
