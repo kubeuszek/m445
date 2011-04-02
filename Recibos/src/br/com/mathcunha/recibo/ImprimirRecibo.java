@@ -15,12 +15,14 @@ public class ImprimirRecibo {
 	
 	protected static Logger log = Logger.getLogger(ImprimirRecibo.class
 			.getName());
-	public static void gerarRecibo(int mes, Salario salario) {
+	public static void gerarRecibo(int mes, int year, Salario salario) {
 		
 		GregorianCalendar calendar = (GregorianCalendar) GregorianCalendar.getInstance();
 		calendar.set(Calendar.MONTH, mes);
+		calendar.set(Calendar.YEAR, year);
 		calendar.set(Calendar.DATE, 1);
 		
+		GregorianCalendar calendarClone = (GregorianCalendar) calendar.clone();
 		
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		
@@ -39,32 +41,38 @@ public class ImprimirRecibo {
 		
 		parameters.put("ds", salario.getDescontos());
 
+		calendarClone.add(Calendar.MONTH, 1);
 		
 		parameters.put("FECHAMENTO", calendar.get(Calendar.MONTH)+1+" de "+calendar.get(Calendar.YEAR)+".");
+		parameters.put("FECHAMENTO_TRANS", calendarClone.get(Calendar.MONTH)+" de "+calendarClone.get(Calendar.YEAR)+".");
 		
-		ReportManager.saveReport("/recibo_salario.jrxml", parameters, "/home/mathcunha/Desktop/recibo_"+mes+".pdf");
+		ReportManager.saveReport("/recibo_salario.jrxml", parameters, "./recibo_"+mes+".pdf");
 		
-		ReportManager.saveReport("/recibo_transporte.jrxml", parameters, "/home/mathcunha/Desktop/recibo_transporte"+mes+".pdf");
+		ReportManager.saveReport("/recibo_transporte.jrxml", parameters, "./recibo_transporte"+mes+".pdf");
 	}
 	
 	public static void main(String[] args){
 		Salario salario = new Salario();
 		
-		salario.setValorBase(new Double(args[0]));
+		int i =0;
+		salario.setValorBase(new Double(args[i++]));
 		
-		salario.setValorTransporte(new Double(args[1]));
+		salario.setValorTransporte(new Double(args[i++]));
 		
-		salario.setMes(new Integer(args[2]));
+		salario.setMes(new Integer(args[i++]));
+		
+		salario.setYear(new Integer(args[i++]));
+		
 		
 		salario.setDescontos(new ArrayList<Desconto>(args.length));
 		
-		for (int i = 3; i < args.length; i+=2) {
+		for (; i < args.length; i+=2) {
 			salario.getDescontos().add(new Desconto(new Double(args[i])/(double)100, args[i+1], salario));
 		}
 		
 		salario.calcValorLiquido();
 		
-		gerarRecibo(salario.getMes(), salario);
+		gerarRecibo(salario.getMes(), salario.getYear(), salario);
 	}
 
 }

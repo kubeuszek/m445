@@ -4,7 +4,7 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="DATA" class="java.util.Date" isForPrompting="false"/>
-	<parameter name="FECHAMENTO" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="FECHAMENTO_TRANS" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="SALARIO" class="java.lang.String"/>
 	<parameter name="REFERENCIA" class="java.util.Date"/>
 	<field name="valorPercentual" class="java.lang.Double"/>
@@ -79,7 +79,7 @@ Empregada: Maria da Conceição Rodrigues da Silva]]></text>
 			<textField>
 				<reportElement stretchType="RelativeToBandHeight" x="2" y="17" width="548" height="32"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA["Recebi da Sra. Marlene de Alencar Dutra a importância de "+$F{salario.valorTransporteExtenso}+" , correspondente às despesas com transporte do mês "+$P{FECHAMENTO}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["Recebi da Sra. Marlene de Alencar Dutra a importância de "+$F{salario.valorTransporteExtenso}+" , correspondente às despesas com transporte do mês "+$P{FECHAMENTO_TRANS}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
