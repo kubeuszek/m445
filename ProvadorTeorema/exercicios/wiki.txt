@@ -1,0 +1,75 @@
+Nível 0 -  false[((A | B) > (A & B))]*
+Nível 1 -  true[(A | B)]* null[DEAD_LEAF]
+Nível 2 -  false[(A & B)]* null[DEAD_LEAF]
+Nível 3 -  true[A]* true[B]*
+Nível 4 -  false[A]-CONTRADICAO* false[B]* false[A]* false[B]-CONTRADICAO*
+
+ Não há mais expressões para expandir e tem pelo menos um caminho sem contradição false[B]*
+Nível 0 -  false[(P > (P > Q))]*
+Nível 1 -  true[P]* null[DEAD_LEAF]
+Nível 2 -  false[(P > Q)]* null[DEAD_LEAF]
+Nível 3 -  true[P]* null[DEAD_LEAF]
+Nível 4 -  false[Q]* null[DEAD_LEAF]
+
+ Não há mais expressões para expandir e tem pelo menos um caminho sem contradição false[Q]*
+Nível 0 -  false[(!(P) > (P > Q))]*
+Nível 1 -  true[!(P)]* null[DEAD_LEAF]
+Nível 2 -  false[(P > Q)]* null[DEAD_LEAF]
+Nível 3 -  false[P]* null[DEAD_LEAF]
+Nível 4 -  false[Q]* null[DEAD_LEAF]
+Nível 5 -  true[P]-CONTRADICAO* null[DEAD_LEAF]
+
+ Não há mais expressões para expandir e TODAS as folhas estão em CONTRADIÇÃO com algum nó 
+Nível 0 -  false[(A > !(A))]*
+Nível 1 -  true[A]* null[DEAD_LEAF]
+Nível 2 -  false[!(A)]* null[DEAD_LEAF]
+Nível 3 -  true[A]* null[DEAD_LEAF]
+
+ Não há mais expressões para expandir e tem pelo menos um caminho sem contradição true[A]*
+Nível 0 -  false[((A & B) > !(!(A)))]*
+Nível 1 -  true[(A & B)]* null[DEAD_LEAF]
+Nível 2 -  false[!(!(A))]* null[DEAD_LEAF]
+Nível 3 -  true[A]* null[DEAD_LEAF]
+Nível 4 -  true[B]* null[DEAD_LEAF]
+Nível 5 -  true[!(A)]* null[DEAD_LEAF]
+Nível 6 -  false[A]-CONTRADICAO* null[DEAD_LEAF]
+
+ Não há mais expressões para expandir e TODAS as folhas estão em CONTRADIÇÃO com algum nó 
+Nível 0 -  false[((A | B) > B)]*
+Nível 1 -  true[(A | B)]* null[DEAD_LEAF]
+Nível 2 -  false[B]* null[DEAD_LEAF]
+Nível 3 -  true[A]* true[B]-CONTRADICAO*
+
+ Não há mais expressões para expandir e tem pelo menos um caminho sem contradição true[A]*
+Nível 0 -  false[((!(B) & (A > B)) > !(A))]*
+Nível 1 -  true[(!(B) & (A > B))]* null[DEAD_LEAF]
+Nível 2 -  false[!(A)]* null[DEAD_LEAF]
+Nível 3 -  true[!(B)]* null[DEAD_LEAF]
+Nível 4 -  true[(A > B)]* null[DEAD_LEAF]
+Nível 5 -  true[A]* null[DEAD_LEAF]
+Nível 6 -  false[B]* null[DEAD_LEAF]
+Nível 7 -  false[A]-CONTRADICAO* true[B]-CONTRADICAO*
+
+ Não há mais expressões para expandir e TODAS as folhas estão em CONTRADIÇÃO com algum nó 
+Nível 0 -  false[(A > (B > A))]*
+Nível 1 -  true[A]* null[DEAD_LEAF]
+Nível 2 -  false[(B > A)]* null[DEAD_LEAF]
+Nível 3 -  true[B]* null[DEAD_LEAF]
+Nível 4 -  false[A]-CONTRADICAO* null[DEAD_LEAF]
+
+ Não há mais expressões para expandir e TODAS as folhas estão em CONTRADIÇÃO com algum nó 
+Nível 0 -  false[((P > Q) > !(P))]*
+Nível 1 -  true[(P > Q)]* null[DEAD_LEAF]
+Nível 2 -  false[!(P)]* null[DEAD_LEAF]
+Nível 3 -  true[P]* null[DEAD_LEAF]
+Nível 4 -  false[P]-CONTRADICAO* true[Q]*
+
+ Não há mais expressões para expandir e tem pelo menos um caminho sem contradição true[Q]*
+Nível 0 -  false[(((P > Q) > P) > P)]*
+Nível 1 -  true[((P > Q) > P)]* null[DEAD_LEAF]
+Nível 2 -  false[P]* null[DEAD_LEAF]
+Nível 3 -  false[(P > Q)]* true[P]-CONTRADICAO*
+Nível 4 -  false[Q]* null[DEAD_LEAF]
+Nível 5 -  true[P]-CONTRADICAO* null[DEAD_LEAF]
+
+ Não há mais expressões para expandir e TODAS as folhas estão em CONTRADIÇÃO com algum nó 
