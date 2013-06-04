@@ -45,16 +45,19 @@ public class Execution implements Runnable {
 		switch (valor) {
 		case 0:
 			// Imune
-			return new Individuo(100, 0);
+			return new Individuo(100, "*");
 		case 1:
 			// pseudo Imune
-			return new Individuo(pseudoImune, 0);
+			return new Individuo(pseudoImune, "@");
 		case 2:
 			// Sadio
-			return new Individuo(0, 0);
+			return new Individuo(0, "");
 		case 3:
 			// Infectado
-			return new Individuo(0, 100);
+			Individuo atual = new Individuo(0, "O");
+			atual.setId(++totalInfectados);
+			atual.setRecemInfectado(Boolean.FALSE);
+			return atual;
 		}
 		throw new NullPointerException("nenhum individuo nasceu");
 	}
@@ -67,43 +70,41 @@ public class Execution implements Runnable {
 		Integer jMaisUm = j + 1;
 		Integer infectantes = 0;
 
-		//System.out.println("i=" + i + " j=" + j);
+		// System.out.println("i=" + i + " j=" + j);
 
 		if (iMenosUm >= 0) {
-			if (jMenosUm >= 0) {
-				Individuo atual = matriz[iMenosUm][jMenosUm];
-				if (atual.infectar()) {
-					atual.setId(++totalInfectados);
-					atual.zerarIdade();
-					infectantes++;
-				}
+			Individuo atual = matriz[iMenosUm][j];
+			if (atual != null && atual.infectar()) {
+				atual.setId(++totalInfectados);
+				atual.setRecemInfectado(Boolean.FALSE);
+				infectantes++;
 			}
-			if (jMaisUm < matriz[i].length) {
-				Individuo atual = matriz[iMenosUm][jMaisUm];
-				if (atual.infectar()) {
-					atual.setId(++totalInfectados);
-					atual.zerarIdade();
-					infectantes++;
-				}
+		}
+
+		if (jMenosUm >= 0) {
+			Individuo atual = matriz[i][jMenosUm];
+			if (atual != null && atual.infectar()) {
+				atual.setId(++totalInfectados);
+				atual.setRecemInfectado(Boolean.FALSE);
+				infectantes++;
+			}
+		}
+
+		if (jMaisUm < matriz[i].length) {
+			Individuo atual = matriz[i][jMaisUm];
+			if (atual != null && atual.infectar()) {
+				atual.setId(++totalInfectados);
+				atual.setRecemInfectado(Boolean.TRUE);
+				infectantes++;
 			}
 		}
 
 		if (iMaisUm < matriz.length) {
-			if (jMenosUm >= 0) {
-				Individuo atual = matriz[iMaisUm][jMenosUm];
-				if (atual.infectar()) {
-					atual.setId(++totalInfectados);
-					atual.zerarIdade();
-					infectantes++;
-				}
-			}
-			if (jMaisUm < matriz[i].length) {
-				Individuo atual = matriz[iMaisUm][jMaisUm];
-				if (atual.infectar()) {
-					atual.setId(++totalInfectados);
-					atual.zerarIdade();
-					infectantes++;
-				}
+			Individuo atual = matriz[iMaisUm][j];
+			if (atual != null && atual.infectar()) {
+				atual.setId(++totalInfectados);
+				atual.setRecemInfectado(Boolean.TRUE);
+				infectantes++;
 			}
 		}
 
@@ -124,12 +125,15 @@ public class Execution implements Runnable {
 		}
 		// Infectado
 
-		Individuo doente = new Individuo(0, 100);
+		Individuo doente = new Individuo(0, "O");
 		doente.setId(++totalInfectados);
+		doente.setRecemInfectado(Boolean.FALSE);
 		matriz[random.nextInt(matriz.length)][random.nextInt(matriz[0].length)] = doente;
 
+		printMatriz(matriz);
+
 		while (execute) {
-			printMatriz(matriz);
+
 			atualizacao++;
 			Integer infectantes = 0;
 			Integer sadios = 0;
@@ -139,11 +143,13 @@ public class Execution implements Runnable {
 			for (int i = 0; i < matriz.length; i++) {
 				for (int j = 0; j < matriz[i].length; j++) {
 					Individuo atual = matriz[i][j];
-					if (atual != null) {//Nao Morto
-						if (atual.estaInfectado() && atual.getIdade() > 0) {
+					if (atual != null) {// Nao Morto
+						if (atual.estaInfectado() && !atual.getRecemInfectado()) {
 							infectantes += infectarVizinhos(matriz, i, j);
 						}
 						atual.aniversario();
+						atual.setRecemInfectado(atual.estaInfectado() ? Boolean.FALSE
+								: null);
 
 						String tipo = atual.toString();
 						if ("".equals(tipo)) {
@@ -173,6 +179,9 @@ public class Execution implements Runnable {
 			dados.add(new Dados(map));
 
 			execute = infectantes > 0 || atualizacao == 1;
+
+			printMatriz(matriz);
+			System.out.println("infectantes " + infectantes);
 
 		}
 
@@ -227,27 +236,28 @@ public class Execution implements Runnable {
 		for (int i = 0; i < matriz.length; i++) {
 			for (int j = 0; j < matriz[i].length; j++) {
 				Individuo atual = matriz[i][j];
-				if(atual != null){
+				if (atual != null) {
 					String tipo = atual.toString();
-					switch (atual.getIdade()) {
-					case 10:
-						if ("".equals(tipo) || "*".equals(tipo)) {
-							matriz[i][j] = null;
-						}
-						break;
-					case 4:
-						if ("@".equals(tipo)) {
-							matriz[i][j] = null;
-						}
-						break;
-					case 3:
-						if ("O".contains(tipo)) {
-							matriz[i][j] = null;
-						}
-						break;
+
+					if (("".equals(tipo) || "*".equals(tipo))
+							&& atual.getIdade() >= 10) {
+						matriz[i][j] = null;
 					}
+
+					if ("@".equals(tipo) && atual.getIdade() >= 4) {
+						matriz[i][j] = null;
+					}
+
+					if ("O".indexOf(tipo) != -1 && atual.getIdade() >= 4) {
+						matriz[i][j] = null;
+					}
+
 				}
 			}
 		}
+	}
+	
+	public Integer getPseudoImune(){
+		return pseudoImune;
 	}
 }

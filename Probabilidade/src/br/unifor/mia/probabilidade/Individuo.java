@@ -3,68 +3,68 @@ package br.unifor.mia.probabilidade;
 import java.util.Random;
 
 public class Individuo {
-	
+
 	private Integer imunidade;
-	private Integer infectado;
+
 	private Integer id;
 	private Integer idade;
-	
+	private Boolean recemInfectado;
+	private String tipo;
+
 	private static Random random = new Random();
-			
-	
-	public Individuo (Integer imunidade, Integer infectado){
+
+	public Individuo(Integer imunidade, String tipo) {
 		this.imunidade = imunidade;
-		this.infectado = infectado;
 		this.idade = 0;
+		this.tipo = tipo;
 	}
-	
+
 	@Override
-	public String toString(){
-		if(this.imunidade == 100){
-			return "*";
-		}else if(this.imunidade > 0){
-			return "@";
-		}else if(this.infectado > 0){
-			return "O"+id;
-		}else{
-			return "";
+	public String toString() {
+		if (tipo.equals("O")) {
+			return "O" + id;
+		} else {
+			return tipo;
 		}
-		
 	}
-	
-	public Boolean infectar(){
-		if("@".equals(this.toString())){
+
+	public Boolean infectar() {
+		if ("@".equals(this.toString())) {
 			int valor = random.nextInt(100);
-			if(this.imunidade < valor){
-				this.infectado = 100;
+			if (valor > this.imunidade) {
+				this.tipo = "O";
 				return true;
 			}
-		}else if("".equals(this.toString())){
-			this.infectado = 100;
+		} else if ("".equals(this.toString())) {
+			this.tipo = "O";
 			return true;
 		}
-		
+
 		return false;
 	}
-	
-	public void aniversario(){
+
+	public void aniversario() {
 		idade++;
 	}
-	
-	public void zerarIdade(){
-		idade = 0;
-	}
-	
-	public Integer getIdade(){
+
+	public Integer getIdade() {
 		return idade;
 	}
-	
-	public boolean estaInfectado(){
-		return infectado == 100;
+
+	public boolean estaInfectado() {
+		return toString().indexOf("O") != -1;
 	}
-	
-	public void setId(Integer id){
+
+	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
+	public Boolean getRecemInfectado() {
+		return recemInfectado;
+	}
+
+	public void setRecemInfectado(Boolean recemInfectado) {
+		this.recemInfectado = recemInfectado;
+	}
+
 }
