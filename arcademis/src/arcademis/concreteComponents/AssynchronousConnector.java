@@ -6,7 +6,7 @@ import arcademis.*;
  * This class is the implementation of a <CODE>Connector</CODE> component that does
  * not block
  * the application during the process of connection set up. If the connection cannot
- * be imediately established, this component keeps trying to set it up.
+ * be immediately established, this component keeps trying to set it up.
  */
 public class AssynchronousConnector extends Connector implements Runnable {
 
@@ -32,7 +32,7 @@ public class AssynchronousConnector extends Connector implements Runnable {
 	}
 
 	/**
-	 * This method keeps trying to establish the connection if it cannot be imediately
+	 * This method keeps trying to establish the connection if it cannot be immediately
 	 * set up. Each new attempt takes place in regular intervals of 1 second.
 	 */
 	public void run() {
